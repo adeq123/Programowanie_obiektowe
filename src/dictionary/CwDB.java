@@ -9,61 +9,106 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
+/**
+ * 
+ * @author krzysztof
+ * 
+ */
 public class CwDB {
-	protected LinkedList<Entry> dict;
 
+	protected LinkedList<Entry> dict; // list of Entries
+
+	/**
+	 * Constructor
+	 * 
+	 * @param filename
+	 *            - name of file
+	 */
 	public CwDB(String filename) {
-
 		dict = new LinkedList<Entry>();
-
 		try {
 			createDB(filename);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
+	/**
+	 * Add word and clue to dictionary
+	 * 
+	 * @param word
+	 *            - word to add
+	 * @param clue
+	 *            - clue connected to word
+	 */
 	public void add(String word, String clue) {
 		dict.add(new Entry(word, clue));
 	}
 
+	/**
+	 * Returns Entry connected with word
+	 * 
+	 * @param word
+	 *            - word to find its clue
+	 * @return Entry with found word, null if word doesn't exist in dictionary
+	 */
 	public Entry get(String word) {
-		Entry helper = null;
-		for (ListIterator<Entry> it = dict.listIterator(); it.hasNext();) {
-			helper = it.next();
-			if (helper.getWord().equals(word))
-				return helper;
+		Entry e = null;
+		ListIterator<Entry> it = dict.listIterator();
+		while (it.hasNext() == true) {
+			e = it.next();
+			if (e.getWord().equals(word))
+				break;
 		}
-		return helper;
+		if (e.getWord().equals(word) == false)
+			return null;
+		return e;
 	}
 
+	/**
+	 * Remove Entry connected with word from dictionary
+	 * 
+	 * @param word
+	 *            - key to find Entry to remove from dictionary
+	 */
 	public void remove(String word) {
-		Entry helper = null;
+		Entry e = null;
 		for (ListIterator<Entry> it = dict.listIterator(); it.hasNext();) {
-			helper = it.next();
-			if (helper.getWord().equals(word)) {
+			e = it.next();
+			if (e.getWord().equals(word)) {
 				it.remove();
 				break;
 			}
 		}
 	}
 
+	/**
+	 * Returns size of dictionary
+	 * 
+	 * @return size of dictionary
+	 */
 	public int getSize() {
 		return dict.size();
 	}
 
+	/**
+	 * Saves dictionary to concrete file
+	 * 
+	 * @param filename
+	 *            - name of file to save
+	 * @throws IOException
+	 *             - possible exception
+	 */
 	public void saveDB(String filename) throws IOException {
 		FileWriter fileWriter = new FileWriter(filename);
 		BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-
 		try {
-			Entry temp = null;
+			Entry e = null;
 			for (ListIterator<Entry> it = dict.listIterator(); it.hasNext();) {
-				temp = it.next();
-				bufferedWriter.write(temp.getWord());
+				e = it.next();
+				bufferedWriter.write(e.getWord());
 				bufferedWriter.newLine();
-				bufferedWriter.write(temp.getClue());
+				bufferedWriter.write(e.getClue());
 				bufferedWriter.newLine();
 			}
 		} finally {
@@ -72,22 +117,28 @@ public class CwDB {
 		}
 	}
 
+	/**
+	 * Creates file with dictionary
+	 * 
+	 * @param filename
+	 *            - name of file
+	 * @throws IOException
+	 *             - possible exception
+	 */
 	protected void createDB(String filename) throws IOException {
 		FileReader fileReader = new FileReader(filename);
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
-
 		try {
-
 			String word = null;
 			String clue = null;
 			while ((word = bufferedReader.readLine()) != null
 					&& ((clue = bufferedReader.readLine()) != null))
 				add(word, clue);
-
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} finally {
-			bufferedReader.close();
+			if (bufferedReader != null)
+				bufferedReader.close();
 		}
 	}
 }
