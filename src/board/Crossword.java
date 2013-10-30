@@ -17,7 +17,7 @@ public class Crossword {
 	
 	public Crossword(){
 		entries = new LinkedList<CwEntry>();
-		b = new Board(10,10);
+		b = new Board(20,20);
 		cwdb = new InteliCwDB("cwdb.txt");
 	}
 	

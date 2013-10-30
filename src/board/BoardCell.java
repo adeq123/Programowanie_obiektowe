@@ -8,7 +8,12 @@ public class BoardCell implements Cloneable {
 	public final int START = 0;
 	public final int END = 1;
 	public final int INNER = 2;// true=enable, false =
-														// disable
+						// disable
+	
+	
+	public BoardCell(){
+		content = null;
+	}
 
 	public BoardCell clone() {
 		BoardCell newBoardCell = new BoardCell();

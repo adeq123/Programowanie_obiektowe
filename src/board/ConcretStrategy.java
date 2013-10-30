@@ -28,12 +28,19 @@ public class ConcretStrategy extends Strategy {
 		} else {
 			//int lengthMainWord = cw.entries.get(0).getWord().length();
 			int amountOfWords = cw.entries.size();
-			Pattern currentPattern = cw.b.createPattern(amountOfWords, 0, rand.nextInt(5) + 2, amountOfWords);
-			entry = cw.getCwDB().getRandom(currentPattern.toString());
+			System.out.println(amountOfWords);
+			String currentPattern = cw.b.createPattern(0, amountOfWords-1, rand.nextInt(5) + 3, amountOfWords-1);
+		//	System.out.println("222" + currentPattern.toString() + "222");
+			System.out.println("222");
+			//System.out.println(currentPattern);
+			System.out.println("222");
+			if (currentPattern != null){
+			entry = cw.getCwDB().getRandom(currentPattern);
 			cwentry = new CwEntry(entry.getWord(), entry.getClue(), 0, amountOfWords,
-					Direction.HORIZ);
+					Direction.VERT);
 			
-			System.out.println(entry.getWord());
+			System.out.println(entry.getWord() + "SSSSSSSSS");
+			}
 		}
 
 		return cwentry;
@@ -45,11 +52,21 @@ public class ConcretStrategy extends Strategy {
 		// TODO Auto-generated method stub
 
 		char[] contentOfString = new char[e.getWord().length()];
+		contentOfString = e.getWord().toCharArray();
+		
+		
+		
+		
 
 		if (e.getDir() == Direction.VERT) {
 			for (int i = 0; i < e.getWord().length(); i++) {
+System.out.println(contentOfString[i] + "lll");
+				
 				BoardCell boardcell = new BoardCell();
-				boardcell.setContent(contentOfString.toString());
+				boardcell.setContent(new String(contentOfString, i, 1));
+				
+				
+				
 				boardcell.setAbility(boardcell.VERT, boardcell.START, false);
 				boardcell.setAbility(boardcell.VERT, boardcell.END, false);
 				boardcell.setAbility(boardcell.VERT, boardcell.INNER, false);
@@ -70,12 +87,21 @@ public class ConcretStrategy extends Strategy {
 				else
 					boardcell.setAbility(boardcell.HORIZ, boardcell.INNER,
 							false);
-				b.setCell(e.getX() + i, e.getY(), boardcell);
+				
+				b.setCell(e.getX() , e.getY()+i, boardcell);
 			}
 		} else {
 			for (int i = 0; i < e.getWord().length(); i++) {
+				
+				System.out.println(contentOfString[i] + "kkk");
+				
 				BoardCell boardcell = new BoardCell();
-				boardcell.setContent(contentOfString.toString());
+				boardcell.setContent(new String(contentOfString, i, 1));
+				
+				
+				
+				
+				
 				boardcell.setAbility(boardcell.HORIZ, boardcell.START, false);
 				boardcell.setAbility(boardcell.HORIZ, boardcell.END, false);
 				boardcell.setAbility(boardcell.HORIZ, boardcell.INNER, false);
