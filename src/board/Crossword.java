@@ -69,7 +69,7 @@ public class Crossword {
 	 */
 	public Crossword(int height, int width, String filename) {
 		entries = new LinkedList<CwEntry>();
-		b = new Board(20, 20);
+		b = new Board(height, width);
 		cwdb = new InteliCwDB(filename);
 	}
 

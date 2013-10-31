@@ -58,7 +58,7 @@ public class Board implements Cloneable {
 	 * @return clone of board
 	 */
 	public Board clone() {
-		//TO DO Popraw!
+		// TO DO Popraw!
 		Board newBoard = new Board(height, width);
 		newBoard.height = height;
 		newBoard.width = width;
@@ -171,12 +171,14 @@ public class Board implements Cloneable {
 	public String createPattern(int fromx, int fromy, int tox, int toy) {
 		char[] tableOfChar = new char[(((toy - fromy) > 0) ? (toy - fromy)
 				: (tox - fromx))];
+		tableOfChar[0] = '.';
 		if (fromx == tox) {
 			for (int i = fromy; i < toy; i++) {
-				if (board[fromx][fromy + i].content != null)
-					tableOfChar[i] = board[fromx][fromy + i].content.charAt(0);
-				else
-					tableOfChar[i] = '.';
+					if (board[fromx][fromy + i].content != null)
+						tableOfChar[i] = board[fromx][fromy + i].content
+								.charAt(0);
+					else
+						tableOfChar[i] = '.';
 			}
 		} else if (fromy == toy) {
 			for (int i = fromx; i < tox; i++) {
