@@ -100,7 +100,7 @@ public class InteliCwDB extends CwDB {
 	 */
 	@Override
 	public void add(String word, String clue) {
-		dict.add(new Entry(word, clue));
+		dict.add(new Entry(word.toUpperCase(), clue));
 		Collections.sort(dict, new Comparator<Entry>() {
 			@Override
 			public int compare(Entry first, Entry second) {
