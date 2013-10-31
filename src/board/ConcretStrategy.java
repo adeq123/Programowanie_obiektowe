@@ -25,6 +25,10 @@ public class ConcretStrategy extends Strategy {
 		Random rand = new Random();
 		Entry entry = null;
 		CwEntry cwentry = null;
+		
+		
+		
+		
 		if (cw.getEntries().isEmpty() == true) {
 			do {
 				entry = cw.getCwDB().getRandom(cw.getBoard().getHeight());
@@ -34,7 +38,7 @@ public class ConcretStrategy extends Strategy {
 					|| (entry.getWord().contains("Ń") == true)
 					|| (entry.getWord().contains("Ś") == true)
 					|| (entry.getWord().contains("Ó") == true)
-					|| (entry.getWord().contains("U") == true)
+					// || (entry.getWord().contains("U") == true)
 					|| (entry.getWord().contains("V") == true)
 					|| (entry.getWord().contains("Y") == true)
 					|| (entry.getWord().contains("X") == true)
@@ -45,6 +49,7 @@ public class ConcretStrategy extends Strategy {
 			int amountOfWords = cw.getEntries().size();
 			if (cw.getBoard().getHeight() == (amountOfWords - 1))
 				return null;
+			int licznik = 0;
 			do {
 				do {
 					String currentPattern = cw.getBoard().createPattern(
@@ -53,13 +58,18 @@ public class ConcretStrategy extends Strategy {
 					if (currentPattern != null) {
 						entry = null;
 						entry = cw.getCwDB().getRandom(currentPattern);
-						if (entry == null) {
-							break;
-						}
+						// if (entry == null)
+						// break;
 					} else
 						return null;
-				} while (cw.contains(entry.getWord()) == true);
-			} while (entry == null);
+					licznik++;
+					if (licznik == 1000)
+						return new CwEntry(cw.getBoard()
+								.getCell(amountOfWords - 1, 0).getContent(),
+								"There is no clue", amountOfWords - 1, 0,
+								Direction.VERT);
+				} while (entry == null);
+			} while (cw.contains(entry.getWord()) == true);
 			cwentry = new CwEntry(entry.getWord(), entry.getClue(),
 					amountOfWords - 1, 0, Direction.VERT);
 		}
