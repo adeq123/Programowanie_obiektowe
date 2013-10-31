@@ -86,6 +86,8 @@ public class InteliCwDB extends CwDB {
 	public Entry getRandom(String pattern) {
 		Random rand = new Random();
 		LinkedList<Entry> patternDict = findAll(pattern);
+		if (patternDict.isEmpty() == true)
+			return null;
 		return patternDict.get(rand.nextInt(patternDict.size()));
 	}
 
@@ -101,6 +103,7 @@ public class InteliCwDB extends CwDB {
 	@Override
 	public void add(String word, String clue) {
 		dict.add(new Entry(word.toUpperCase(), clue));
+	//	System.out.println(word.toUpperCase());
 		Collections.sort(dict, new Comparator<Entry>() {
 			@Override
 			public int compare(Entry first, Entry second) {

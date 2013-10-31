@@ -58,6 +58,7 @@ public class Board implements Cloneable {
 	 * @return clone of board
 	 */
 	public Board clone() {
+		//TO DO Popraw!
 		Board newBoard = new Board(height, width);
 		newBoard.height = height;
 		newBoard.width = width;

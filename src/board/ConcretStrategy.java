@@ -23,7 +23,7 @@ public class ConcretStrategy extends Strategy {
 	@Override
 	public CwEntry findEntry(Crossword cw) {
 		Random rand = new Random();
-		Entry entry;
+		Entry entry = null;
 		CwEntry cwentry = null;
 		if (cw.getEntries().isEmpty() == true) {
 			do {
@@ -41,16 +41,22 @@ public class ConcretStrategy extends Strategy {
 					Direction.HORIZ);
 		} else {
 			int amountOfWords = cw.getEntries().size();
-			String currentPattern = cw.getBoard().createPattern(
-					amountOfWords - 1, 0, amountOfWords - 1,
-					rand.nextInt(5) + 3);
-			if (currentPattern != null) {
-				do {
-					entry = cw.getCwDB().getRandom(currentPattern);
-				} while (cw.contains(entry.getWord()) == true);
-				cwentry = new CwEntry(entry.getWord(), entry.getClue(), 0,
-						amountOfWords, Direction.VERT);
-			}
+
+			do {
+				String currentPattern = cw.getBoard().createPattern(
+						amountOfWords - 1, 0, amountOfWords - 1,
+						rand.nextInt(11) + 2);
+				if (currentPattern != null) {
+					do {
+						entry = cw.getCwDB().getRandom(currentPattern);
+						if (entry == null)
+							break;
+					} while (cw.contains(entry.getWord()) == true);
+				} else
+					return null;
+			} while (entry == null);
+			cwentry = new CwEntry(entry.getWord(), entry.getClue(), 0,
+					amountOfWords, Direction.VERT);
 		}
 		return cwentry;
 	}
