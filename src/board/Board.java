@@ -2,6 +2,9 @@ package board;
 
 import java.util.LinkedList;
 
+import board.BoardCell.Direction;
+import board.BoardCell.Position;
+
 /**
  * 
  * @author krzysztof
@@ -139,8 +142,10 @@ public class Board implements Cloneable {
 		LinkedList<BoardCell> startBoardCelllinkedList = new LinkedList<BoardCell>();
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
-				if (board[i][j].abilities[BoardCell.HORIZ][BoardCell.START] == true
-						|| board[i][j].abilities[BoardCell.VERT][BoardCell.START] == true) {
+				if (board[i][j].abilities[Direction.HORIZ.ordinal()][Position.START
+						.ordinal()] == true
+						|| board[i][j].abilities[Direction.VERT.ordinal()][Position.START
+								.ordinal()] == true) {
 					startBoardCelllinkedList.add(board[i][j]);
 				}
 

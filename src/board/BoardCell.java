@@ -8,11 +8,18 @@ package board;
 public class BoardCell implements Cloneable {
 	public String content; // letter in cell
 	public Boolean[][] abilities; // [HORIZ/VERT][START/END/INNER]
-	public final static int HORIZ = 0; // horizontal
-	public final static int VERT = 1; // vertical
-	public final static int START = 0; // beginning of word
-	public final static int END = 1; // ending of word
-	public final static int INNER = 2; // middle of word
+
+	public enum Direction {
+		HORIZ, VERT
+	}; // direction - HORIZ if word is horizontal, SECOND - vertical
+		// public final static int HORIZ = 0; // horizontal
+		// public final static int VERT = 1; // vertical
+	public enum Position {
+		START, END, INNER
+	}; // position - START if content of cell could be beginning of word etc.
+	// public final static int START = 0; // beginning of word
+	// public final static int END = 1; // ending of word
+	// public final static int INNER = 2; // middle of word
 
 	/**
 	 * Constructor
@@ -48,8 +55,8 @@ public class BoardCell implements Cloneable {
 	 * @param ability
 	 *            - ability
 	 */
-	public void setAbility(int direction, int position, boolean ability) {
-		abilities[direction][position] = ability;
+	public void setAbility(Direction direction, Position position, boolean ability) {
+		abilities[direction.ordinal()][position.ordinal()] = ability;
 	}
 
 	/**

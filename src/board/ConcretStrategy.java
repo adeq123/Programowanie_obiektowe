@@ -28,7 +28,15 @@ public class ConcretStrategy extends Strategy {
 		if (cw.getEntries().isEmpty() == true) {
 			do {
 				entry = cw.getCwDB().getRandom();
-			} while (entry.getWord().contains("y") == true);
+			} while ((entry.getWord().contains("Ą") == true)
+					|| (entry.getWord().contains("Ć") == true)
+					|| (entry.getWord().contains("Ę") == true)
+					|| (entry.getWord().contains("Ń") == true)
+					|| (entry.getWord().contains("Ó") == true)
+					|| (entry.getWord().contains("V") == true)
+					|| (entry.getWord().contains("Y") == true)
+					|| (entry.getWord().contains("X") == true)
+					|| (entry.getWord().contains("Ź") == true));
 			cwentry = new CwEntry(entry.getWord(), entry.getClue(), 0, 0,
 					Direction.HORIZ);
 		} else {
@@ -62,25 +70,30 @@ public class ConcretStrategy extends Strategy {
 			for (int i = 0; i < e.getWord().length(); i++) {
 				BoardCell boardcell = new BoardCell();
 				boardcell.setContent(new String(contentOfString, i, 1));
-				boardcell.setAbility(boardcell.VERT, boardcell.START, false);
-				boardcell.setAbility(boardcell.VERT, boardcell.END, false);
-				boardcell.setAbility(boardcell.VERT, boardcell.INNER, false);
+				boardcell.setAbility(BoardCell.Direction.VERT,
+						BoardCell.Position.START, false);
+				boardcell.setAbility(BoardCell.Direction.VERT,
+						BoardCell.Position.END, false);
+				boardcell.setAbility(BoardCell.Direction.VERT,
+						BoardCell.Position.INNER, false);
 				if (e.getY() + 1 < b.getHeight())
-					boardcell
-							.setAbility(boardcell.HORIZ, boardcell.START, true);
+					boardcell.setAbility(BoardCell.Direction.HORIZ,
+							BoardCell.Position.START, true);
 				else
-					boardcell.setAbility(boardcell.HORIZ, boardcell.START,
-							false);
+					boardcell.setAbility(BoardCell.Direction.HORIZ,
+							BoardCell.Position.START, false);
 				if (e.getY() - 1 > 0)
-					boardcell.setAbility(boardcell.HORIZ, boardcell.END, true);
+					boardcell.setAbility(BoardCell.Direction.HORIZ,
+							BoardCell.Position.END, true);
 				else
-					boardcell.setAbility(boardcell.HORIZ, boardcell.END, false);
+					boardcell.setAbility(BoardCell.Direction.HORIZ,
+							BoardCell.Position.END, false);
 				if ((e.getY() + 1 < b.getHeight()) && (e.getY() - 1 > 0))
-					boardcell
-							.setAbility(boardcell.HORIZ, boardcell.INNER, true);
+					boardcell.setAbility(BoardCell.Direction.HORIZ,
+							BoardCell.Position.INNER, true);
 				else
-					boardcell.setAbility(boardcell.HORIZ, boardcell.INNER,
-							false);
+					boardcell.setAbility(BoardCell.Direction.HORIZ,
+							BoardCell.Position.INNER, false);
 
 				b.setCell(e.getX(), e.getY() + i, boardcell);
 			}
@@ -88,23 +101,30 @@ public class ConcretStrategy extends Strategy {
 			for (int i = 0; i < e.getWord().length(); i++) {
 				BoardCell boardcell = new BoardCell();
 				boardcell.setContent(new String(contentOfString, i, 1));
-				boardcell.setAbility(boardcell.HORIZ, boardcell.START, false);
-				boardcell.setAbility(boardcell.HORIZ, boardcell.END, false);
-				boardcell.setAbility(boardcell.HORIZ, boardcell.INNER, false);
+				boardcell.setAbility(BoardCell.Direction.HORIZ,
+						BoardCell.Position.START, false);
+				boardcell.setAbility(BoardCell.Direction.HORIZ,
+						BoardCell.Position.END, false);
+				boardcell.setAbility(BoardCell.Direction.HORIZ,
+						BoardCell.Position.INNER, false);
 				if (e.getX() + 1 < b.getWidth())
-					boardcell.setAbility(boardcell.VERT, boardcell.START, true);
+					boardcell.setAbility(BoardCell.Direction.VERT,
+							BoardCell.Position.START, true);
 				else
-					boardcell
-							.setAbility(boardcell.VERT, boardcell.START, false);
+					boardcell.setAbility(BoardCell.Direction.VERT,
+							BoardCell.Position.START, false);
 				if (e.getX() - 1 > 0)
-					boardcell.setAbility(boardcell.VERT, boardcell.END, true);
+					boardcell.setAbility(BoardCell.Direction.VERT,
+							BoardCell.Position.END, true);
 				else
-					boardcell.setAbility(boardcell.VERT, boardcell.END, false);
+					boardcell.setAbility(BoardCell.Direction.VERT,
+							BoardCell.Position.END, false);
 				if ((e.getX() + 1 < b.getWidth()) && (e.getX() - 1 > 0))
-					boardcell.setAbility(boardcell.VERT, boardcell.INNER, true);
+					boardcell.setAbility(BoardCell.Direction.VERT,
+							BoardCell.Position.INNER, true);
 				else
-					boardcell
-							.setAbility(boardcell.VERT, boardcell.INNER, false);
+					boardcell.setAbility(BoardCell.Direction.VERT,
+							BoardCell.Position.INNER, false);
 				b.setCell(e.getX() + i, e.getY(), boardcell);
 			}
 		}
