@@ -18,6 +18,14 @@ public class Crossword {
 	private Board b; // board
 
 	/**
+	 * Resets content of CwEntries's list and Board
+	 */
+	public void resetAll() {
+		entries = new LinkedList<CwEntry>();
+		b = new Board(b.getHeight(), b.getWidth());
+	}
+
+	/**
 	 * Getter
 	 * 
 	 * @return entries (LinkedList<CwEntry>)

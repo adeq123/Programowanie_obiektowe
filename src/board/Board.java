@@ -166,12 +166,11 @@ public class Board implements Cloneable {
 	 *            - position of ending of x
 	 * @param toy
 	 *            - position of ending of y
-	 * @return pattern (String) or null if created pattern contains only "."
+	 * @return pattern (String) 
 	 */
 	public String createPattern(int fromx, int fromy, int tox, int toy) {
 		char[] tableOfChar = new char[(((toy - fromy) > 0) ? (toy - fromy)
 				: (tox - fromx))];
-		tableOfChar[0] = '.';
 		if (fromx == tox) {
 			for (int i = fromy; i < toy; i++) {
 					if (board[fromx][fromy + i].content != null)
@@ -188,8 +187,6 @@ public class Board implements Cloneable {
 					tableOfChar[i] = '.';
 			}
 		}
-		if (tableOfChar[0] == '.')
-			return null;
 		return new String(tableOfChar, 0, tableOfChar.length);
 	}
 }

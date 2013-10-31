@@ -14,6 +14,19 @@ import dictionary.Entry;
 public class ConcretStrategy extends Strategy {
 
 	/**
+	 * Returns CwEntry beeing new main word
+	 * 
+	 * @param cw
+	 *            - Crossword
+	 * @return CwEntry
+	 */
+	public CwEntry getMainWord(Crossword cw) {
+		Entry entry = cw.getCwDB().getRandom(cw.getBoard().getHeight());
+		return new CwEntry(entry.getWord(), entry.getClue(), 0, 0,
+				Direction.HORIZ);
+	}
+
+	/**
 	 * Finds new CwEntry that could be added to crossword
 	 * 
 	 * @param cw
@@ -25,51 +38,28 @@ public class ConcretStrategy extends Strategy {
 		Random rand = new Random();
 		Entry entry = null;
 		CwEntry cwentry = null;
-		
-		
-		
-		
+
+		int amountOfWords = cw.getEntries().size();
+		if (cw.getBoard().getHeight() == (amountOfWords - 1))
+			return null;
+
 		if (cw.getEntries().isEmpty() == true) {
-			do {
-				entry = cw.getCwDB().getRandom(cw.getBoard().getHeight());
-			} while ((entry.getWord().contains("Ą") == true)
-					|| (entry.getWord().contains("Ć") == true)
-					|| (entry.getWord().contains("Ę") == true)
-					|| (entry.getWord().contains("Ń") == true)
-					|| (entry.getWord().contains("Ś") == true)
-					|| (entry.getWord().contains("Ó") == true)
-					// || (entry.getWord().contains("U") == true)
-					|| (entry.getWord().contains("V") == true)
-					|| (entry.getWord().contains("Y") == true)
-					|| (entry.getWord().contains("X") == true)
-					|| (entry.getWord().contains("Ź") == true));
-			cwentry = new CwEntry(entry.getWord(), entry.getClue(), 0, 0,
-					Direction.HORIZ);
+			cwentry = getMainWord(cw);
 		} else {
-			int amountOfWords = cw.getEntries().size();
-			if (cw.getBoard().getHeight() == (amountOfWords - 1))
-				return null;
 			int licznik = 0;
 			do {
-				do {
-					String currentPattern = cw.getBoard().createPattern(
-							amountOfWords - 1, 0, amountOfWords - 1,
-							rand.nextInt(11) + 2);
-					if (currentPattern != null) {
-						entry = null;
-						entry = cw.getCwDB().getRandom(currentPattern);
-						// if (entry == null)
-						// break;
-					} else
-						return null;
-					licznik++;
-					if (licznik == 1000)
-						return new CwEntry(cw.getBoard()
-								.getCell(amountOfWords - 1, 0).getContent(),
-								"There is no clue", amountOfWords - 1, 0,
-								Direction.VERT);
-				} while (entry == null);
-			} while (cw.contains(entry.getWord()) == true);
+				String currentPattern = cw.getBoard().createPattern(
+						amountOfWords - 1, 0, amountOfWords - 1,
+						rand.nextInt(11) + 2);
+				// entry = null;
+				entry = cw.getCwDB().getRandom(currentPattern);
+			} while ((entry == null || cw.contains(entry.getWord()) == true)
+					&& (++licznik < 1000));
+			if (licznik >= 1000) {
+				// System.out.println("Resetuje!!!!!!!!!!!!!!");
+				cw.resetAll();
+				return getMainWord(cw);
+			}
 			cwentry = new CwEntry(entry.getWord(), entry.getClue(),
 					amountOfWords - 1, 0, Direction.VERT);
 		}

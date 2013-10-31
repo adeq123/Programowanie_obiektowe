@@ -14,12 +14,13 @@ public class BoardCell implements Cloneable {
 	}; // direction - HORIZ if word is horizontal, SECOND - vertical
 		// public final static int HORIZ = 0; // horizontal
 		// public final static int VERT = 1; // vertical
+
 	public enum Position {
 		START, END, INNER
 	}; // position - START if content of cell could be beginning of word etc.
-	// public final static int START = 0; // beginning of word
-	// public final static int END = 1; // ending of word
-	// public final static int INNER = 2; // middle of word
+		// public final static int START = 0; // beginning of word
+		// public final static int END = 1; // ending of word
+		// public final static int INNER = 2; // middle of word
 
 	/**
 	 * Constructor
@@ -36,7 +37,10 @@ public class BoardCell implements Cloneable {
 	 */
 	public BoardCell clone() {
 		BoardCell newBoardCell = new BoardCell();
-		newBoardCell.content = new String(content);
+		if (content != null)
+			newBoardCell.content = new String(content);
+		else
+			newBoardCell.content = null;
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < 3; j++) {
 				newBoardCell.abilities[i][j] = abilities[i][j];
@@ -55,7 +59,8 @@ public class BoardCell implements Cloneable {
 	 * @param ability
 	 *            - ability
 	 */
-	public void setAbility(Direction direction, Position position, boolean ability) {
+	public void setAbility(Direction direction, Position position,
+			boolean ability) {
 		abilities[direction.ordinal()][position.ordinal()] = ability;
 	}
 
