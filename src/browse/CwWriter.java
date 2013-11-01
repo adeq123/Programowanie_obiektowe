@@ -22,17 +22,22 @@ public class CwWriter implements Writer {
 			while (iter.hasNext() == true) {
 				c = iter.next();
 				bufferedWriter.write(c.getWord());
+				System.out.println(c.getWord());
 				bufferedWriter.newLine();
 				bufferedWriter.write(c.getClue());
 				bufferedWriter.newLine();
 			}
-			bufferedWriter.write(crossword.getBoard().getHeight());
+			bufferedWriter.write(Integer.toString(crossword.getBoard().getHeight()));
 			bufferedWriter.newLine();
-			bufferedWriter.write(crossword.getBoard().getWidth());
+			bufferedWriter.write(Integer.toString(crossword.getBoard().getWidth()));
 			bufferedWriter.newLine();
 			for (int i = 0; i < crossword.getBoard().getHeight(); i++) {
 				for (int j = 0; j < crossword.getBoard().getWidth(); j++) {
-					bufferedWriter.write(crossword.getBoard().getCell(i, j).content);
+					if (crossword.getBoard().getCell(i, j).content != null)
+						bufferedWriter
+								.write(crossword.getBoard().getCell(i, j).content);
+					else
+						bufferedWriter.write("null");
 					bufferedWriter.newLine();
 				}
 			}
@@ -40,7 +45,6 @@ public class CwWriter implements Writer {
 			if (bufferedWriter != null)
 				bufferedWriter.close();
 		}
-
 	}
 
 	@Override
