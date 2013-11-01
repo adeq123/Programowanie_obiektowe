@@ -1,5 +1,9 @@
 package board;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -14,8 +18,19 @@ import dictionary.InteliCwDB;
  * 
  */
 public class Crossword {
+	public final long id;
 	private LinkedList<CwEntry> entries; // list of CwEntries
 	private Board b; // board
+
+	
+	public Crossword(long id) throws FileNotFoundException,
+			IOException {
+		this.id = id;
+		String s = Long.toString(id);
+		FileReader fR = new FileReader(s);
+		BufferedReader bR = new BufferedReader(fR);
+
+	}
 
 	/**
 	 * Resets content of CwEntries's list and Board
@@ -79,6 +94,7 @@ public class Crossword {
 		entries = new LinkedList<CwEntry>();
 		b = new Board(height, width);
 		cwdb = new InteliCwDB(filename);
+		id = 0;
 	}
 
 	/**
