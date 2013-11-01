@@ -24,6 +24,7 @@ public class ConcretStrategy extends Strategy {
 	 *            - Crossword
 	 * @return CwEntry
 	 */
+	//TO DO osluz glowne slowo, ze nie moze byc w nowym slowniku (uku), jesli sa 2 slowa na u (uku, ul) to ma nie dzialac
 	public CwEntry getMainWord(Crossword cw) {
 		Map<Character, Integer> firstLettersInDictionary = new HashMap<Character, Integer>();
 		LinkedList<Entry> sameLengthWords = new LinkedList<Entry>();
