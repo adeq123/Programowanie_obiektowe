@@ -25,59 +25,61 @@ public class ConcretStrategy extends Strategy {
 	 * @return CwEntry
 	 */
 	public CwEntry getMainWord(Crossword cw) {
-		Map<Character, Integer> firstLetters = new HashMap<Character, Integer>();
-		LinkedList<Entry> lol = new LinkedList<Entry>();
-		Iterator<Entry> iter = cw.getCwDB().getDict().iterator();
+		Map<Character, Integer> firstLettersInDictionary = new HashMap<Character, Integer>();
+		LinkedList<Entry> sameLengthWords = new LinkedList<Entry>();
 
-		System.out.println("A");
 		Entry e;
-		while (iter.hasNext()) {
-			e = iter.next();
-			if (e.getWord().length() == cw.getBoard().getHeight()) {
-				lol.add(e);
-			}
-			if (firstLetters.containsKey(e.getWord().charAt(0)) == false)
-				firstLetters.put(e.getWord().charAt(0), 1);
+		Iterator<Entry> it = cw.getCwDB().getDict().iterator();
+		while (it.hasNext()) {
+			e = it.next();
+			if (firstLettersInDictionary.containsKey(e.getWord().charAt(0)) == false)
+				firstLettersInDictionary.put(e.getWord().charAt(0), 1);
 			else
-				firstLetters.put(e.getWord().charAt(0),
-						firstLetters.get(e.getWord().charAt(0)) + 1);
+				firstLettersInDictionary
+						.put(e.getWord().charAt(0), firstLettersInDictionary
+								.get(e.getWord().charAt(0)) + 1);
+			if (e.getWord().length() == cw.getBoard().getHeight()) {
+				sameLengthWords.add(e);
+			}
 		}
 
-		Entry d;
-		Random rand = new Random();
-		Iterator<Entry> it = lol.iterator();
-		for (int k = 0; k < lol.size(); k++) {
-			System.out.println("S");
-			d = lol.get(k);
-			Map<Character, Integer> cos = new HashMap<Character, Integer>();
-			for (int i = 0; i < d.getWord().length(); i++) {
-				if (cos.containsKey(d.getWord().charAt(i)) == false)
-					cos.put(d.getWord().charAt(i), 1);
+		Iterator<Entry> iter = sameLengthWords.iterator();
+		LinkedList<Entry> finalListOfWords = new LinkedList<Entry>(
+				sameLengthWords);
+		while (iter.hasNext() == true) {
+			e = iter.next();
+			Map<Character, Integer> lettersInWord = new HashMap<Character, Integer>();
+			for (int j = 0; j < e.getWord().length(); j++) {
+				if (lettersInWord.containsKey(e.getWord().charAt(j)) == false)
+					lettersInWord.put(e.getWord().charAt(j), 1);
 				else
-					cos.put(d.getWord().charAt(i),
-							cos.get(d.getWord().charAt(i)) + 1);
+					lettersInWord.put(e.getWord().charAt(j),
+							lettersInWord.get(e.getWord().charAt(j)) + 1);
 			}
 
-			for (Map.Entry<Character, Integer> entry : cos.entrySet()) {
-				System.out.println(entry.getValue());
-				System.out.println(firstLetters.get(entry.getKey()));
-				if (entry.getValue() >= firstLetters.get(entry.getKey())) {
-					System.out.println("NIE DZIALA!");
-					lol.remove(d);
+			for (Map.Entry<Character, Integer> entry : lettersInWord.entrySet()) {
+				if (firstLettersInDictionary.containsKey(entry.getKey()) == true) {
+					if (entry.getValue() >= firstLettersInDictionary.get(entry
+							.getKey())) {
+						finalListOfWords.remove(e);
+						break;
+					}
+				} else {
+					finalListOfWords.remove(e);
+					break;
 				}
 			}
-			System.out.println(lol.getFirst().getWord());
-			if (lol.size() == 0)
-				System.out.println("PUSTO!"); // wyjatek - nie ma opcji zrobic
-												// krzyzowki z podana dlugoscia
-												// hasla glownego
 
 		}
-		Entry ss = lol.get(rand.nextInt(lol.size()));
-		return new CwEntry(ss.getWord(), ss.getClue(), 0, 0, Direction.HORIZ);
-		// Entry entry = cw.getCwDB().getRandom(cw.getBoard().getHeight());
-		// return new CwEntry(entry.getWord(), entry.getClue(), 0, 0,
-		// Direction.HORIZ);
+		if (finalListOfWords.size() == 0)
+			System.out.println("PUSTO!"); // wyjatek - nie ma opcji zrobic
+											// krzyzowki z podana dlugoscia
+											// hasla glownego
+		Random rand = new Random();
+		Entry finalEntry = finalListOfWords.get(rand.nextInt(finalListOfWords
+				.size()));
+		return new CwEntry(finalEntry.getWord(), finalEntry.getClue(), 0, 0,
+				Direction.HORIZ);
 	}
 
 	/**
