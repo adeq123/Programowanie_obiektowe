@@ -1,5 +1,9 @@
 package board;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
 import java.util.Random;
 
 import dictionary.CwEntry;
@@ -21,9 +25,59 @@ public class ConcretStrategy extends Strategy {
 	 * @return CwEntry
 	 */
 	public CwEntry getMainWord(Crossword cw) {
-		Entry entry = cw.getCwDB().getRandom(cw.getBoard().getHeight());
-		return new CwEntry(entry.getWord(), entry.getClue(), 0, 0,
-				Direction.HORIZ);
+		Map<Character, Integer> firstLetters = new HashMap<Character, Integer>();
+		LinkedList<Entry> lol = new LinkedList<Entry>();
+		Iterator<Entry> iter = cw.getCwDB().getDict().iterator();
+
+		System.out.println("A");
+		Entry e;
+		while (iter.hasNext()) {
+			e = iter.next();
+			if (e.getWord().length() == cw.getBoard().getHeight()) {
+				lol.add(e);
+			}
+			if (firstLetters.containsKey(e.getWord().charAt(0)) == false)
+				firstLetters.put(e.getWord().charAt(0), 1);
+			else
+				firstLetters.put(e.getWord().charAt(0),
+						firstLetters.get(e.getWord().charAt(0)) + 1);
+		}
+
+		Entry d;
+		Random rand = new Random();
+		Iterator<Entry> it = lol.iterator();
+		for (int k = 0; k < lol.size(); k++) {
+			System.out.println("S");
+			d = lol.get(k);
+			Map<Character, Integer> cos = new HashMap<Character, Integer>();
+			for (int i = 0; i < d.getWord().length(); i++) {
+				if (cos.containsKey(d.getWord().charAt(i)) == false)
+					cos.put(d.getWord().charAt(i), 1);
+				else
+					cos.put(d.getWord().charAt(i),
+							cos.get(d.getWord().charAt(i)) + 1);
+			}
+
+			for (Map.Entry<Character, Integer> entry : cos.entrySet()) {
+				System.out.println(entry.getValue());
+				System.out.println(firstLetters.get(entry.getKey()));
+				if (entry.getValue() >= firstLetters.get(entry.getKey())) {
+					System.out.println("NIE DZIALA!");
+					lol.remove(d);
+				}
+			}
+			System.out.println(lol.getFirst().getWord());
+			if (lol.size() == 0)
+				System.out.println("PUSTO!"); // wyjatek - nie ma opcji zrobic
+												// krzyzowki z podana dlugoscia
+												// hasla glownego
+
+		}
+		Entry ss = lol.get(rand.nextInt(lol.size()));
+		return new CwEntry(ss.getWord(), ss.getClue(), 0, 0, Direction.HORIZ);
+		// Entry entry = cw.getCwDB().getRandom(cw.getBoard().getHeight());
+		// return new CwEntry(entry.getWord(), entry.getClue(), 0, 0,
+		// Direction.HORIZ);
 	}
 
 	/**
@@ -46,20 +100,14 @@ public class ConcretStrategy extends Strategy {
 		if (cw.getEntries().isEmpty() == true) {
 			cwentry = getMainWord(cw);
 		} else {
-			int licznik = 0;
 			do {
 				String currentPattern = cw.getBoard().createPattern(
 						amountOfWords - 1, 0, amountOfWords - 1,
 						rand.nextInt(11) + 2);
-				// entry = null;
+				System.out.println(currentPattern);
 				entry = cw.getCwDB().getRandom(currentPattern);
-			} while ((entry == null || cw.contains(entry.getWord()) == true)
-					&& (++licznik < 1000));
-			if (licznik >= 1000) {
-				// System.out.println("Resetuje!!!!!!!!!!!!!!");
-				cw.resetAll();
-				return getMainWord(cw);
-			}
+				System.out.print("Q");
+			} while ((entry == null || cw.contains(entry.getWord()) == true));
 			cwentry = new CwEntry(entry.getWord(), entry.getClue(),
 					amountOfWords - 1, 0, Direction.VERT);
 		}

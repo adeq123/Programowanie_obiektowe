@@ -18,7 +18,7 @@ public class MAINTEST {
 	 *            - arguments of main
 	 */
 	public static void main(String[] args) {
-		Crossword crossword = new Crossword(12, 20, "cwdb.txt"); // od 2 do 12
+		Crossword crossword = new Crossword(11, 20, "tak.txt"); // od 2 do 12
 		ConcretStrategy s = new ConcretStrategy();
 		crossword.generate(s);
 		Iterator<CwEntry> iter = crossword.getROEntryIter();
