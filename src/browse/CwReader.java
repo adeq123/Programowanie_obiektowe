@@ -40,7 +40,6 @@ public class CwReader implements Reader {
 					for (int j = 0; j < width; j++) {
 						BoardCell bc = new BoardCell();
 						String s = bufferedReader.readLine();
-						System.out.println(s);
 						if (s.equals("null") == true)
 							bc.setContent(null);
 						else

@@ -38,7 +38,7 @@ public class CwBrowser {
 	
 	public void loadCrosswords(){
 		try {
-			cwreader.getAllCws(path);
+			crosswordsList = cwreader.getAllCws(path);
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -54,11 +54,11 @@ public class CwBrowser {
 	public static void main(String[] args) {
 		CwBrowser cwbrowser = new CwBrowser(
 				"/home/krzysztof/workspace/Programowanie_obiektowe/krzyzowki");
-	/*	cwbrowser.generateCrossword(10, 20, "cwdb.txt");
+		cwbrowser.generateCrossword(10, 20, "cwdb.txt");
 		cwbrowser.generateCrossword(12, 20, "cwdb.txt");
 		cwbrowser.generateCrossword(11, 20, "cwdb.txt");
 
-		cwbrowser.saveCrosswords();*/
+		cwbrowser.saveCrosswords();
 		
 		cwbrowser.loadCrosswords();
 		
@@ -75,7 +75,6 @@ public class CwBrowser {
 			System.out.println(c.getClue());
 			}
 		}
-
 		System.out.println("KONIEC");
 	}
 }
