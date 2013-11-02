@@ -17,16 +17,6 @@ public class CwWriter implements Writer {
 		FileWriter fileWriter = new FileWriter(Long.toString(getUniqueID()));
 		BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 		try {
-			Iterator<CwEntry> iter = crossword.getEntries().iterator();
-			CwEntry c;
-			while (iter.hasNext() == true) {
-				c = iter.next();
-				bufferedWriter.write(c.getWord());
-				System.out.println(c.getWord());
-				bufferedWriter.newLine();
-				bufferedWriter.write(c.getClue());
-				bufferedWriter.newLine();
-			}
 			bufferedWriter.write(Integer.toString(crossword.getBoard().getHeight()));
 			bufferedWriter.newLine();
 			bufferedWriter.write(Integer.toString(crossword.getBoard().getWidth()));
@@ -40,6 +30,16 @@ public class CwWriter implements Writer {
 						bufferedWriter.write("null");
 					bufferedWriter.newLine();
 				}
+			}
+			Iterator<CwEntry> iter = crossword.getEntries().iterator();
+			CwEntry c;
+			while (iter.hasNext() == true) {
+				c = iter.next();
+				bufferedWriter.write(c.getWord());
+				System.out.println(c.getWord());
+				bufferedWriter.newLine();
+				bufferedWriter.write(c.getClue());
+				bufferedWriter.newLine();
 			}
 		} finally {
 			if (bufferedWriter != null)

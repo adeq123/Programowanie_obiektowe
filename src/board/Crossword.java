@@ -26,9 +26,9 @@ public class Crossword {
 	public Crossword(long id) throws FileNotFoundException,
 			IOException {
 		this.id = id;
-		String s = Long.toString(id);
-		FileReader fR = new FileReader(s);
-		BufferedReader bR = new BufferedReader(fR);
+	//	String s = Long.toString(id);
+	//	FileReader fR = new FileReader(s);
+	//	BufferedReader bR = new BufferedReader(fR);
 
 	}
 

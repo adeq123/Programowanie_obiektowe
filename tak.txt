@@ -267,12 +267,10 @@ lakmus
 rabatka
 [Botanika] grządka kwiatowa
 rabunek
-kradzież, łupiestwo
+kradzież, łupiestwoą
 baba
 ... z wozu koniom lżej
-czar
-powab, urok
-ćwiek
+asdfgejaetb
 gwóźdź z dużym łebkiem
 droga
 Prowadzi do celu
@@ -280,8 +278,8 @@ eter
 Służył do narkozy
 ford
 Amerykańska marka samochodu 
+akupunktura
 głaz
-duży kamień
 hak
 Można na nim cos powiesić
 imag
@@ -1640,8 +1638,6 @@ berdysz
 Szeroki topór o zakrzywionym ostrzu i długim drzewcu.
 biebrza
 Prawy dopływ Narwi.
-bigamia
-Dwużeństwo.
 biopsja
 Pobranie do badania fragmentu tkanek.
 błonica
@@ -1781,8 +1777,6 @@ Wysoki, oficerski stopień w wojsku.
 kapitan
 Oficerski stopień w wojsku polskim.
 georgia
-Stan w USA.
-gębacze
 Ryby z rodziny pielęgnicowatych.
 gierłoż
 Wieś w pobliżu Kętrzyna, znana z ruin kwatery Hitlera.
@@ -2456,64 +2450,6 @@ papierówka
 Drewno przeznaczone do wyrobu masy celulozowej.
 przepiórka
 Ptak z rodziny bażantowatych.
-abakanowicz
-Polska artystka plastyczka. Tw. tzw. abakanów - serii przestrzennych kompozycji olbrzymich rozmiarów.
-abstynencja
-Powstrzymywanie się od używania lub przyjmowania czegoś.
-aerostatyka
-Dział fizyki, który zajmuje się badaniem równowagi gazów.
-pogłębiarka
-Statek lub barka zaopatrzona w urządzenia przeznaczone do wydobywania gruntu z dna zbiornika wodnego.
-agalmatolit
-Minerał, zbita odmiana pirofyllitu.
-akcelerator
-Urządzenie służące do przyspieszania cząstek naładowanych.
-akupunktura
-Metoda lecznicza pochodząca ze Wschodu, polegająca na wkłuwaniu w skórę srebrnych lub złotych igieł.
-alkmeonidzi
-Ród eupatrydów ateńskich(starożytne Ateny)
-amortyzator
-Element tłumiący drgania lub uderzenia.
-różanecznik
-Inaczej azalia.
-benedyktyni
-Zgromadzenie zakonne, założone przez św. Benedykat z Nursji.
-beresteczko
-Masto na Ukrainie w obwodzie Wołyńskim.
-chłodziarka
-Urządzenie stosowane do obniżania temperatury poniżej temperatury otoczenia.
-cybernetyka
-Nauka zajmująca sie zagadnieniem sterowania i samosterowności.
-cykliniarka
-Maszyna do wyrównywania podłóg drewnianych.
-częstochowa
-Miasto w Polsce z Sanktuarium Matki Boskiej na Jasnej Górze.
-rozwielitka
-Inaczej dafnia.
-dziesięcina
-Średniowieczna danina na rzecz Kościoła.
-elektronika
-Nauka zajmująca się wykorzystaniem zjawisk ruchu swobodnego elektronów w próżni, gazach i ciałach stałych.
-poręczyciel
-Żyrant.
-heterofilia
-Wykształcenie u tej samej rośliny różnego rodzaju liści.
-induktancja
-Indukcyjny opór bierny.
-informatyka
-Nauka zajmująca się budową komputerów, ich eksploatacją oraz programowaniem.
-jurysdykcja
-Prawo sądzenia. Uprawnienie do rozstrzygania spornych spraw.
-fatamorgana
-Miraż.
-ożaglowanie
-Zespół wszystkich żagli statku żaglowego.
-pensylwania
-Stan w północno-wschodniej części USA.
-półfabrykat
-Nie skończony wyrób, przeznaczony do dalszej obróbki.
-abolicjonizm
-Ruch społeczno-polityczny w XVIII-XIX w., zabiegający o zniesienie niewolnictwa.
 absolutorium
 Poświadczenie odbycia studiów w uczelni wyższej.
 aeroakustyka
