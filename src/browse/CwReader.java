@@ -18,14 +18,11 @@ public class CwReader implements Reader {
 	@Override
 	public LinkedList<Crossword> getAllCws(String path) throws NumberFormatException, FileNotFoundException, IOException {
 		// TODO Auto-generated method stub
-		System.out.println("A");
 		LinkedList<Crossword> crosswords = new LinkedList<Crossword>();
 		File file = new File(path);
 		if (file.isDirectory() == true) {
 			String[] files = file.list();
 			for (int i = 0; i < files.length; i++) {
-				System.out.println("A");
-				System.out.println(files[i]);
 				Crossword cw = new Crossword(Long.parseLong(files[i]));
 
 				FileReader fileReader = new FileReader(path + "/" + files[i]);
@@ -36,15 +33,14 @@ public class CwReader implements Reader {
 				 System.out.println(height);
 				 System.out.println(width);
 				Board b = new Board(height, width);
+				String s;
 				for (int k = 0; k < height; k++) {
 					for (int j = 0; j < width; j++) {
 						BoardCell bc = new BoardCell();
-						String s = bufferedReader.readLine();
-						if (s.equals("null") == true)
-							bc.setContent(null);
-						else
+						s = new String(bufferedReader.readLine());
+						if (s.equals("null") != true)
 							bc.setContent(s);
-						// bufferedReader.readLine();
+						b.getBoard()[k][j] = bc;
 					}
 				}
 				cw.setBoard(b);

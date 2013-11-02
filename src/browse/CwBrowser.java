@@ -35,8 +35,8 @@ public class CwBrowser {
 			e.printStackTrace();
 		}
 	}
-	
-	public void loadCrosswords(){
+
+	public void loadCrosswords() {
 		try {
 			crosswordsList = cwreader.getAllCws(path);
 		} catch (NumberFormatException e) {
@@ -51,6 +51,38 @@ public class CwBrowser {
 		}
 	}
 
+	public void browseCrosswords() {
+		Iterator<Crossword> iter = crosswordsList.iterator();
+		Crossword cw;
+		while (iter.hasNext()) {
+			cw = iter.next();
+
+			for (int i = 0; i < cw.getBoard().getHeight(); i++) {
+				for (int j = 0; j < cw.getBoard().getWidth(); j++) {
+					if (cw.getBoard().getCell(i, j).content != null)
+					{
+						System.out.print(cw.getBoard().getCell(i, j).content);
+					}
+					else
+						System.out.print(".");
+				}
+				System.out.println();
+			}
+			
+			System.out.println();
+			
+			Iterator<CwEntry> it = cw.getEntries().iterator();
+			CwEntry c;
+			while (it.hasNext()) {
+				c = it.next();
+				System.out.println(c.getWord());
+				System.out.println(c.getClue());
+			}
+
+			System.out.println();
+		}
+	}
+
 	public static void main(String[] args) {
 		CwBrowser cwbrowser = new CwBrowser(
 				"/home/krzysztof/workspace/Programowanie_obiektowe/krzyzowki");
@@ -59,22 +91,11 @@ public class CwBrowser {
 		cwbrowser.generateCrossword(11, 20, "cwdb.txt");
 
 		cwbrowser.saveCrosswords();
-		
+
 		cwbrowser.loadCrosswords();
 		
-		Iterator<Crossword> iter = cwbrowser.crosswordsList.iterator();
-		Crossword cw;
-		while(iter.hasNext()){
-			cw = iter.next();
-			
-			Iterator<CwEntry> it = cw.getEntries().iterator(); 
-			CwEntry c;
-			while(it.hasNext()){
-			c = it.next();
-			System.out.println(c.getWord());
-			System.out.println(c.getClue());
-			}
-		}
+		cwbrowser.browseCrosswords();
+
 		System.out.println("KONIEC");
 	}
 }
