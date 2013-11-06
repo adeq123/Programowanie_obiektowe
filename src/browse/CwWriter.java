@@ -15,7 +15,6 @@ public class CwWriter implements Writer {
 
 	@Override
 	public void write(String path, LinkedList<Crossword> crosswordsList) throws IOException {
-		// TODO Auto-generated method stub
 		File file = new File(path);
 
 		Iterator<Crossword> it = crosswordsList.iterator();
@@ -60,7 +59,6 @@ public class CwWriter implements Writer {
 
 	@Override
 	public long getUniqueID() {
-		// TODO Auto-generated method stub
 		return new Date().getTime();
 	}
 

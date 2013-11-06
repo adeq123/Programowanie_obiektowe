@@ -92,7 +92,7 @@ public class CwBrowser {
 
 		cwbrowser.saveCrosswords();
 
-		cwbrowser.loadCrosswords();
+	//	cwbrowser.loadCrosswords();
 		
 		cwbrowser.browseCrosswords();
 
