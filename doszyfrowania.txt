@@ -1,2 +1,2 @@
-abcdefghijkl mno p qrstuvwx yz
-ABCDEFGHIJKL MNO P QRSTUVWX YZ
+Ala ma kota
+a to jest DRUGA linia

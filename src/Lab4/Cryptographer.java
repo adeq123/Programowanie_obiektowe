@@ -8,11 +8,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Cryptographer {
-	public static void cryptfile(String filename, Algorythm algorythm)
+	public static void cryptfile(String filename, String output, Algorythm algorythm)
 			throws IOException {
 		FileReader fileReader = new FileReader(filename);
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
-		FileWriter fileWriter = new FileWriter("zaszyfrowane.txt");
+		FileWriter fileWriter = new FileWriter(output);
 		BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 		try {
 			String word = null;
@@ -28,14 +28,14 @@ public class Cryptographer {
 			if (bufferedWriter != null)
 				bufferedWriter.close();
 		}
-		System.out.println("Plik zaszyfrowany: zaszyfrowane.txt");
+		System.out.println("Plik zaszyfrowany: " + output);
 	}
 
-	public static void decryptfile(String filename, Algorythm algorythm)
+	public static void decryptfile(String filename, String output, Algorythm algorythm)
 			throws IOException {
 		FileReader fileReader = new FileReader(filename);
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
-		FileWriter fileWriter = new FileWriter("odszyfrowane.txt");
+		FileWriter fileWriter = new FileWriter(output);
 		BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 		try {
 			String word = null;
@@ -51,6 +51,6 @@ public class Cryptographer {
 			if (bufferedWriter != null)
 				bufferedWriter.close();
 		}
-		System.out.println("Plik odszyfrowany: odszyfrowane.txt");
+		System.out.println("Plik odszyfrowany: " + output);
 	}
 }

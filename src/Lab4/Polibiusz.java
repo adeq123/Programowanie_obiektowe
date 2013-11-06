@@ -13,11 +13,15 @@ public class Polibiusz implements Algorythm {
 				if (i * 10 + j < 14) {
 					dictionary.put((char) ('A' + i * 5 + j), (i + 1) * 10 + j
 							+ 1);
+					dictionary.put((char) ('a' + i * 5 + j), (i + 1) * 10 + j
+							+ 1);
 					dictionary2.put((i + 1) * 10 + j + 1,
 							(char) ('A' + i * 5 + j));
 				}
 				if (i * 10 + j > 12) {
 					dictionary.put((char) ('B' + i * 5 + j), (i + 1) * 10 + j
+							+ 1);
+					dictionary.put((char) ('b' + i * 5 + j), (i + 1) * 10 + j
 							+ 1);
 					dictionary2.put((i + 1) * 10 + j + 1,
 							(char) ('B' + i * 5 + j));
@@ -35,6 +39,8 @@ public class Polibiusz implements Algorythm {
 				rezultat += dictionary.get(table[i]);
 				rezultat += " ";
 			}
+			else
+				rezultat += table[i];
 		}
 		return rezultat;
 	}
