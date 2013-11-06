@@ -8,10 +8,9 @@ public class Main {
 
 	/**
 	 * @param args
-	 * @throws IOException 
+	 * @throws IOException
 	 */
-	public static void main(String[] args){
-		// TODO Auto-generated method stub
+	public static void main(String[] args) {
 
 		System.out.println("Podaj sciezke do pliku wejsciowego");
 		String inputF = JIn.getString();
@@ -21,38 +20,34 @@ public class Main {
 
 		System.out.println("Wybierz algorytm: ROT11 lub Polibusz? (r/p)");
 		String algo = JIn.getString();
-		
+
 		if (algo.equals("r") == true) {
 			Algorythm rot11 = new ROT11();
 			if (choice.equals("s")) {
 				try {
 					Cryptographer.cryptfile(inputF, rot11);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			} else {
 				try {
 					Cryptographer.decryptfile(inputF, rot11);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 		} else {
 			Algorythm poli = new Polibiusz();
-			if (choice.equals("d") == true) {
+			if (choice.equals("s") == true) {
 				try {
 					Cryptographer.cryptfile(inputF, poli);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			} else {
 				try {
 					Cryptographer.decryptfile(inputF, poli);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
