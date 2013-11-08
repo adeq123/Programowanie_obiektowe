@@ -70,6 +70,7 @@ public class CwBrowser {
 	}
 
 	public void browseCrosswords() {
+		System.out.println("SSSSSSSSSS");
 		Iterator<Crossword> iter = crosswordsList.iterator();
 		Crossword cw;
 		while (iter.hasNext()) {
