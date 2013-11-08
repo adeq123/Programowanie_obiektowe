@@ -28,6 +28,9 @@ import java.awt.FlowLayout;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JEditorPane;
+import javax.swing.JTextPane;
+import java.awt.Canvas;
 
 public class myJFrame extends JFrame {
 
@@ -55,7 +58,7 @@ public class myJFrame extends JFrame {
 	 */
 	public myJFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1052, 470);
+		setBounds(100, 100, 1052, 652);
 		contentPane = new JPanel();
 		contentPane.setBorder(UIManager.getBorder("ComboBox.border"));
 		contentPane.setLayout(null);
@@ -127,8 +130,17 @@ public class myJFrame extends JFrame {
 		btnPrint.setBounds(218, 26, 89, 23);
 		panel_2.add(btnPrint);
 		
+		JPanel panel_3 = new JPanel();
+		panel_3.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Crossword preview", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_3.setBounds(10, 87, 1016, 515);
+		contentPane.add(panel_3);
+		panel_3.setLayout(null);
 		
-		JFileChooser pliki = new JFileChooser(".");
+		Canvas canvas = new Canvas();
+		canvas.setBounds(10, 28, 996, 477);
+		panel_3.add(canvas);
+		
+		/*JFileChooser pliki = new JFileChooser(".");
 		if (JFileChooser.APPROVE_OPTION==pliki.showOpenDialog(this))
 		try
 		{
@@ -145,7 +157,7 @@ public class myJFrame extends JFrame {
 		catch (IOException ex)
 		{
 			System.out.println("Brak pliku");
-		}
+		}*/
 		
 	}
 }
