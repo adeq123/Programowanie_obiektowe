@@ -9,6 +9,7 @@ import java.util.Random;
 import dictionary.CwEntry;
 import dictionary.CwEntry.Direction;
 import dictionary.Entry;
+import exceptions.noPossibilityToGenerateCrosswordException;
 
 /**
  * 
@@ -23,9 +24,9 @@ public class ConcretStrategy extends Strategy {
 	 * @param cw
 	 *            - Crossword
 	 * @return CwEntry
+	 * @throws noPossibilityToGenerateCrosswordException 
 	 */
-	//TO DO osluz glowne slowo, ze nie moze byc w nowym slowniku (uku), jesli sa 2 slowa na u (uku, ul) to ma nie dzialac
-	public CwEntry getMainWord(Crossword cw) {
+	public CwEntry getMainWord(Crossword cw) throws noPossibilityToGenerateCrosswordException {
 		Map<Character, Integer> firstLettersInDictionary = new HashMap<Character, Integer>();
 		LinkedList<Entry> sameLengthWords = new LinkedList<Entry>();
 
@@ -73,9 +74,7 @@ public class ConcretStrategy extends Strategy {
 
 		}
 		if (finalListOfWords.size() == 0)
-			System.out.println("PUSTO!"); // wyjatek - nie ma opcji zrobic
-											// krzyzowki z podana dlugoscia
-											// hasla glownego
+			throw new noPossibilityToGenerateCrosswordException();
 		Random rand = new Random();
 		Entry finalEntry = finalListOfWords.get(rand.nextInt(finalListOfWords
 				.size()));
@@ -89,9 +88,10 @@ public class ConcretStrategy extends Strategy {
 	 * @param cw
 	 *            - Crossword
 	 * @return new CwEntry
+	 * @throws noPossibilityToGenerateCrosswordException 
 	 */
 	@Override
-	public CwEntry findEntry(Crossword cw) {
+	public CwEntry findEntry(Crossword cw) throws noPossibilityToGenerateCrosswordException {
 		Random rand = new Random();
 		Entry entry = null;
 		CwEntry cwentry = null;

@@ -1,6 +1,7 @@
 package board;
 
 import dictionary.CwEntry;
+import exceptions.noPossibilityToGenerateCrosswordException;
 
 /**
  * 
@@ -13,10 +14,11 @@ public abstract class Strategy {
 	 * Abstract method that finds CwEntry
 	 * 
 	 * @param cw
-	 *            - Crossowrd
+	 *            - Crossword
 	 * @return found CwEntry
+	 * @throws noPossibilityToGenerateCrosswordException 
 	 */
-	public abstract CwEntry findEntry(Crossword cw);
+	public abstract CwEntry findEntry(Crossword cw) throws noPossibilityToGenerateCrosswordException;
 
 	/**
 	 * Updates board

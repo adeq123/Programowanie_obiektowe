@@ -12,15 +12,10 @@ public class BoardCell implements Cloneable {
 	public enum Direction {
 		HORIZ, VERT
 	}; // direction - HORIZ if word is horizontal, SECOND - vertical
-		// public final static int HORIZ = 0; // horizontal
-		// public final static int VERT = 1; // vertical
 
 	public enum Position {
 		START, END, INNER
 	}; // position - START if content of cell could be beginning of word etc.
-		// public final static int START = 0; // beginning of word
-		// public final static int END = 1; // ending of word
-		// public final static int INNER = 2; // middle of word
 
 	/**
 	 * Constructor
