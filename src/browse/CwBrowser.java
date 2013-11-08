@@ -8,47 +8,65 @@ import java.util.LinkedList;
 import board.ConcretStrategy;
 import board.Crossword;
 import dictionary.CwEntry;
+import exceptions.noPossibilityToGenerateCrosswordException;
+import exceptions.wrongCrosswordDimensionsException;
 
+/**
+ * 
+ * @author krzysztof
+ * 
+ */
 public class CwBrowser {
-	String path;
-	public CwReader cwreader = new CwReader();
-	public CwWriter cwwriter = new CwWriter();
-	public LinkedList<Crossword> crosswordsList = new LinkedList<Crossword>();
+	String path; // path to files
+	public CwReader cwreader = new CwReader(); // to file reader
+	public CwWriter cwwriter = new CwWriter(); // to file writer
+	public LinkedList<Crossword> crosswordsList = new LinkedList<Crossword>(); // list
+																				// of
+																				// crosswords
 
+	/**
+	 * Constructor
+	 * 
+	 * @param path
+	 *            - path to directory
+	 */
 	public CwBrowser(String path) {
 		this.path = path;
 	}
 
+	/**
+	 * 
+	 * @param height
+	 *            - crossword's height
+	 * @param width
+	 *            - crossword's width
+	 * @param dictionaryFilename
+	 *            - name of directory
+	 * @throws noPossibilityToGenerateCrosswordException
+	 * @throws wrongCrosswordDimensionsException
+	 */
 	public void generateCrossword(int height, int width,
-			String dictionaryFilename) {
+			String dictionaryFilename)
+			throws noPossibilityToGenerateCrosswordException,
+			wrongCrosswordDimensionsException {
 		Crossword cw = new Crossword(height, width, dictionaryFilename);
 		ConcretStrategy s = new ConcretStrategy();
 		cw.generate(s);
 		crosswordsList.add(cw);
 	}
 
-	public void saveCrosswords() {
-		try {
-			cwwriter.write(path, crosswordsList);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	/**
+	 * Saves crosswords in specified directory
+	 * 
+	 * @throws IOException
+	 * 
+	 */
+	public void saveCrosswords() throws IOException {
+		cwwriter.write(path, crosswordsList);
 	}
 
-	public void loadCrosswords() {
-		try {
-			crosswordsList = cwreader.getAllCws(path);
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void loadCrosswords() throws NumberFormatException, FileNotFoundException, IOException {
+		crosswordsList = cwreader.getAllCws(path);
 	}
 
 	public void browseCrosswords() {
@@ -59,18 +77,16 @@ public class CwBrowser {
 
 			for (int i = 0; i < cw.getBoard().getHeight(); i++) {
 				for (int j = 0; j < cw.getBoard().getWidth(); j++) {
-					if (cw.getBoard().getCell(i, j).content != null)
-					{
+					if (cw.getBoard().getCell(i, j).content != null) {
 						System.out.print(cw.getBoard().getCell(i, j).content);
-					}
-					else
+					} else
 						System.out.print(".");
 				}
 				System.out.println();
 			}
-			
+
 			System.out.println();
-			
+
 			Iterator<CwEntry> it = cw.getEntries().iterator();
 			CwEntry c;
 			while (it.hasNext()) {
@@ -83,17 +99,34 @@ public class CwBrowser {
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args)
+			throws noPossibilityToGenerateCrosswordException {
 		CwBrowser cwbrowser = new CwBrowser(
 				"/home/krzysztof/workspace/Programowanie_obiektowe/krzyzowki");
-		cwbrowser.generateCrossword(10, 20, "cwdb.txt");
-		cwbrowser.generateCrossword(12, 20, "cwdb.txt");
-		cwbrowser.generateCrossword(11, 20, "cwdb.txt");
+		try {
+			cwbrowser.generateCrossword(10, 20, "cwdb.txt");
+			cwbrowser.generateCrossword(12, 20, "cwdb.txt");
+			cwbrowser.generateCrossword(11, 20, "cwdb.txt");
+		} catch (wrongCrosswordDimensionsException e) {
+			e.printStackTrace();
+		}
 
-		cwbrowser.saveCrosswords();
+		try {
+			cwbrowser.saveCrosswords();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-	//	cwbrowser.loadCrosswords();
-		
+/*	 try {
+		cwbrowser.loadCrosswords();
+	} catch (NumberFormatException e) {
+		e.printStackTrace();
+	} catch (FileNotFoundException e) {
+		e.printStackTrace();
+	} catch (IOException e) {
+		e.printStackTrace();
+	}*/
+
 		cwbrowser.browseCrosswords();
 
 		System.out.println("KONIEC");

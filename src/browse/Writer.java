@@ -5,7 +5,28 @@ import java.util.LinkedList;
 
 import board.Crossword;
 
+/**
+ * 
+ * @author krzysztof
+ * 
+ */
 public interface Writer {
-	public void write(String path,LinkedList<Crossword> crosswordsList) throws IOException;
-    public long getUniqueID();
+
+	/**
+	 * 
+	 * @param path
+	 *            - path to file
+	 * @param crosswordsList
+	 *            - list of crosswords to write to files
+	 * @throws IOException
+	 */
+	public void write(String path, LinkedList<Crossword> crosswordsList)
+			throws IOException;
+
+	/**
+	 * Creatures unique ID
+	 * 
+	 * @return value of unique ID
+	 */
+	public long getUniqueID();
 }

@@ -13,11 +13,16 @@ import board.Crossword;
 import dictionary.CwEntry;
 import dictionary.CwEntry.Direction;
 
+/**
+ * 
+ * @author krzysztof
+ * 
+ */
 public class CwReader implements Reader {
 
 	@Override
-	public LinkedList<Crossword> getAllCws(String path) throws NumberFormatException, FileNotFoundException, IOException {
-		// TODO Auto-generated method stub
+	public LinkedList<Crossword> getAllCws(String path)
+			throws NumberFormatException, FileNotFoundException, IOException {
 		LinkedList<Crossword> crosswords = new LinkedList<Crossword>();
 		File file = new File(path);
 		if (file.isDirectory() == true) {
@@ -30,8 +35,8 @@ public class CwReader implements Reader {
 
 				int height = Integer.parseInt(bufferedReader.readLine());
 				int width = Integer.parseInt(bufferedReader.readLine());
-				 System.out.println(height);
-				 System.out.println(width);
+				System.out.println(height);
+				System.out.println(width);
 				Board b = new Board(height, width);
 				String s;
 				for (int k = 0; k < height; k++) {
@@ -44,7 +49,7 @@ public class CwReader implements Reader {
 					}
 				}
 				cw.setBoard(b);
-				
+
 				LinkedList<CwEntry> entries = new LinkedList<CwEntry>();
 				String word;
 				String clue;
@@ -53,9 +58,9 @@ public class CwReader implements Reader {
 					entries.add(new CwEntry(word, clue, 0, 0, Direction.HORIZ));
 				}
 				cw.setEntries(entries);
-				
+
 				crosswords.add(cw);
-				
+
 				if (bufferedReader != null)
 					bufferedReader.close();
 			}

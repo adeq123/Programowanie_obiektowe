@@ -11,6 +11,11 @@ import java.util.LinkedList;
 import board.Crossword;
 import dictionary.CwEntry;
 
+/**
+ * 
+ * @author krzysztof
+ *
+ */
 public class CwWriter implements Writer {
 
 	@Override

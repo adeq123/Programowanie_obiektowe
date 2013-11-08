@@ -9,6 +9,8 @@ import java.util.ListIterator;
 
 import dictionary.CwEntry;
 import dictionary.InteliCwDB;
+import exceptions.noPossibilityToGenerateCrosswordException;
+import exceptions.wrongCrosswordDimensionsException;
 
 /**
  * 
@@ -81,9 +83,12 @@ public class Crossword {
 	 *            - width
 	 * @param filename
 	 *            - file contained dictionary
+	 * @throws wrongCrosswordDimensionsException 
 	 */
-	public Crossword(int height, int width, String filename) {
+	public Crossword(int height, int width, String filename) throws wrongCrosswordDimensionsException {
 		entries = new LinkedList<CwEntry>();
+		if (height < 1 || width < 2)
+			throw new wrongCrosswordDimensionsException();
 		b = new Board(height, width);
 		cwdb = new InteliCwDB(filename);
 		id = 0;
@@ -162,8 +167,9 @@ public class Crossword {
 	 * 
 	 * @param s
 	 *            - Strategy
+	 * @throws noPossibilityToGenerateCrosswordException 
 	 */
-	public final void generate(Strategy s) {
+	public final void generate(Strategy s) throws noPossibilityToGenerateCrosswordException {
 		CwEntry e = null;
 		while ((e = s.findEntry(this)) != null) {
 			addCwEntry(e, s);
