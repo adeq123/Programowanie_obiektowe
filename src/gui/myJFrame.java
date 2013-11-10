@@ -1,7 +1,7 @@
 package gui;
 
-import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -44,7 +45,9 @@ public class myJFrame extends JFrame {
 	JSpinner spinner;
 	JSpinner spinner_1;
 	JFileChooser fileChooser;
-	MyCanvas canvas;
+	JScrollPane scrollPane;
+	JScrollPane scrollPane_1;
+	myDrawingJPanel drawingPanel;
 
 	/**
 	 * Launch the application.
@@ -119,15 +122,34 @@ public class myJFrame extends JFrame {
 					} catch (noPossibilityToGenerateCrosswordException e) {
 						e.printStackTrace();
 					}
-					canvas.repaint();
-					
-					
-					
+
+					int a = crossword.getBoard().getHeight();
+					int b = crossword.getBoard().getWidth();
+					System.out.println(drawingPanel.getHeight() + " "
+							+ drawingPanel.getWidth() + " " + a * 30 * 2 + 40
+							+ " " + b * 30);
+					if (drawingPanel.getHeight() < 2 * a * 30 + 60) {// ||
+																		// drawingPanel.getWidth()
+																		// < ){
+						drawingPanel.setPreferredSize(new Dimension(100,
+								2 * a * 30 + 60));
+						drawingPanel.revalidate();
+					} else {
+						System.out.println(drawingPanel.getHeight() + " "
+								+ drawingPanel.getWidth());
+						if (436 > 2 * a * 30 + 60)
+							drawingPanel.setPreferredSize(new Dimension(1037,
+									436));
+						else
+							drawingPanel.setPreferredSize(new Dimension(100,
+									2 * a * 30 + 60));
+						drawingPanel.revalidate();
+					}
+					drawingPanel.repaint();
 				} catch (wrongCrosswordDimensionsException e) {
 					JOptionPane.showMessageDialog(myJFrame.this,
-						    "The dimensions of crossword are wrong!");
-					
-					//e.printStackTrace();
+							"The dimensions of crossword are wrong!");
+					// e.printStackTrace();
 				}
 			}
 		});
@@ -150,20 +172,21 @@ public class myJFrame extends JFrame {
 		JButton btnNewButton = new JButton("...");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 				fileChooser = new JFileChooser();
 				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				fileChooser.showOpenDialog(myJFrame.this); 
+				fileChooser.showOpenDialog(myJFrame.this);
 				{
 					// try {
-					//File f = fileChooser.getSelectedFile();
-					
+					// File f = fileChooser.getSelectedFile();
+
 					File f = fileChooser.getCurrentDirectory();
 					setTitle(f.getAbsolutePath());
 					path = f.getAbsolutePath();
 					textField.setText(path);
-					
-					// BufferedReader br = new BufferedReader(new FileReader(f));
+
+					// BufferedReader br = new BufferedReader(new
+					// FileReader(f));
 					// String temp = "";
 					// while (br.ready()) {
 					// temp += br.readLine() + "\n";
@@ -171,7 +194,8 @@ public class myJFrame extends JFrame {
 					// } catch (IOException ex) {
 					// System.out.println("Brak pliku");
 					// }
-				};
+				}
+				;
 			}
 		});
 		btnNewButton.setBounds(168, 27, 39, 25);
@@ -183,17 +207,16 @@ public class myJFrame extends JFrame {
 				cwbrowser = new CwBrowser(path);
 				cwbrowser.browseCrosswords();
 				System.out.println("AAA");
-				
-				
+
 			}
 		});
 		btnNewButton_1.setBounds(240, 27, 110, 25);
 		panel_1.add(btnNewButton_1);
-		
+
 		JButton btnNewButton_3 = new JButton("Previous");
 		btnNewButton_3.setBounds(65, 66, 110, 25);
 		panel_1.add(btnNewButton_3);
-		
+
 		JButton btnNewButton_4 = new JButton("Next");
 		btnNewButton_4.setBounds(195, 66, 110, 25);
 		panel_1.add(btnNewButton_4);
@@ -230,71 +253,67 @@ public class myJFrame extends JFrame {
 		btnPrint.setBounds(280, 26, 110, 25);
 		panel_2.add(btnPrint);
 
-		JPanel panel_3 = new JPanel();
-		panel_3.setBorder(new TitledBorder(UIManager
-				.getBorder("TitledBorder.border"), "Crossword preview",
+		drawingPanel = new myDrawingJPanel();
+		drawingPanel.setBackground(Color.white);
+		// drawingPane.addMouseListener(this);
+
+		scrollPane_1 = new JScrollPane(drawingPanel);
+		scrollPane_1.setBorder(new TitledBorder(UIManager
+				.getBorder("TitledBorder.border"), "Crosswords preview",
 				TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_3.setBounds(10, 135, 1067, 467);
-		contentPane.add(panel_3);
-		panel_3.setLayout(null);
-
-		canvas = new MyCanvas();
-		canvas.setBounds(20, 29, 996, 477);
-		panel_3.add(canvas);
-
-		
+		scrollPane_1.setBounds(10, 135, 1067, 476);
+		contentPane.add(scrollPane_1);
 	}
-	
-	public class MyCanvas extends Canvas {
 
+	public class myDrawingJPanel extends JPanel {
+		/**
+		 * 
+		 */
 		private static final long serialVersionUID = 1L;
-		
-		public void paint(Graphics g){
-			//Graphics2D g2 = (Graphics2D) getGraphics();
+
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+
 			Graphics2D g2 = (Graphics2D) g;
-			
-			if (crossword != null){
+
+			if (crossword != null) {
 				Crossword cw = myJFrame.this.crossword;
 
 				for (int i = 0; i < cw.getBoard().getHeight(); i++) {
+					g2.drawString(String.valueOf(i + 1) + ".", 20, 50 + i * 30);
+					g2.drawString(String.valueOf(i + 1) + ".", 20, 70 + i * 30
+							+ 30 * cw.getBoard().getHeight());
 					for (int j = 0; j < cw.getBoard().getWidth(); j++) {
+
 						if (cw.getBoard().getCell(i, j).content != null) {
-							g2.drawString(String.valueOf(i+1)+".", 0, 20 +i*30);
+
 							g2.setColor(Color.BLACK);
-							g2.drawRect(20+j*30, i*30, 30, 30);
-							System.out.print(cw.getBoard().getCell(i, j).content);
-							g2.drawString(String.valueOf(i+1)+ ".", 0, 40 +i*30+30*cw.getBoard().getHeight());
-							g2.drawString(cw.getEntries().get(i).getClue(), 20, 20+30*i+30*cw.getBoard().getHeight());
-						} else{
+							g2.drawRect(40 + j * 30, i * 30 + 30, 30, 30);
+
+							g2.drawString(cw.getEntries().get(i).getClue(), 40,
+									70 + 30 * i + 30
+											* cw.getBoard().getHeight());
+						} else {
 							System.out.print(".");
-						//	g2.setColor(Color.BLUE);
-						//	g2.drawRect(j*20, i*20, 20, 20);
 						}
-							
+
 					}
 					System.out.println();
 				}
 
-				System.out.println();
+				// System.out.println();
 
 				Iterator<CwEntry> it = cw.getEntries().iterator();
 				CwEntry c;
 				while (it.hasNext()) {
 					c = it.next();
-					System.out.println(c.getWord());
-					System.out.println(c.getClue());
+					// System.out.println(c.getWord());
+					// System.out.println(c.getClue());
 				}
 
-				System.out.println();
+				// System.out.println();
 			}
-			
-			
-			
 		}
-			
-			
-			
-		
 
 	}
 }
