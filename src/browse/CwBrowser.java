@@ -1,5 +1,6 @@
 package browse;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
@@ -65,6 +66,13 @@ public class CwBrowser {
 		cwwriter.write(path, crosswordsList);
 	}
 
+	public void saveCrosswords(Crossword crossword) throws IOException {
+		System.out.println("AAAAAAAAAAA");
+		LinkedList<Crossword> list = new LinkedList<Crossword>();
+		list.add(crossword);
+		cwwriter.write(path, list);
+	}
+	
 	public void loadCrosswords() throws NumberFormatException, FileNotFoundException, IOException {
 		crosswordsList = cwreader.getAllCws(path);
 	}

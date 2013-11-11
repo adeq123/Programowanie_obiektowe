@@ -20,8 +20,9 @@ public class CwWriter implements Writer {
 
 	@Override
 	public void write(String path, LinkedList<Crossword> crosswordsList) throws IOException {
+		System.out.println("QQQQQQQQQQQQQQQQQQQQQQ");
 		File file = new File(path);
-
+System.out.println("QQQQQQQQQQQQQQQQQQQQQQ");
 		Iterator<Crossword> it = crosswordsList.iterator();
 		Crossword crossword;
 		while (it.hasNext()) {
