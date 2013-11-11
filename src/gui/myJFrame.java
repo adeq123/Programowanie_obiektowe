@@ -8,14 +8,18 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Iterator;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
@@ -34,21 +38,52 @@ import exceptions.wrongCrosswordDimensionsException;
 public class myJFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+
 	private JPanel contentPane;
-	private JTextField textField;
+	private JPanel firstPanel;
+	private JLabel heightLabel;
+	private JSpinner heightSpinner;
+	private JLabel widthLabel;
+	private JSpinner widthSpinner;
+	private JButton generateButton;
+
+	private JPanel secondPanel;
+	private JTextField pathTextField;
+	private JButton loadButton;
+	private JFileChooser fileChooser;
+	private JButton threeDotsButton;
+	private File currentDirectory;
+	private int actualIndexOfCrossword = 0;
+	private JButton previousButton;
+	private JButton nextButton;
+
+	private JPanel thirdPanel;
+	private JButton solveButton;
+	private JButton saveButton;
+	private JButton printButton;
+	private myDrawingJPanel drawingPanel;
+	private JScrollPane scrollPanel;
+
 	private Crossword crossword;
 	private ConcretStrategy strategy;
 	private int height;
 	private int width;
-	private CwBrowser cwbrowser;
-	private String path;
-	JSpinner spinner;
-	JSpinner spinner_1;
-	JFileChooser fileChooser;
-	JScrollPane scrollPane;
-	JScrollPane scrollPane_1;
-	myDrawingJPanel drawingPanel;
+	private CwBrowser cwbrowser = null;
+	boolean lol = false;
 
+	public enum PaintType{
+		SOLVED, NOTSOLVED
+	}
+	
+	PaintType paintType = PaintType.NOTSOLVED;
+	private JRadioButton rdbtnNotSolved;
+	private JRadioButton rdbtnSolved;
+	
+	public void drawProper(PaintType pt){
+		paintType = pt;
+		drawingPanel.repaint();
+	}
+	
 	/**
 	 * Launch the application.
 	 */
@@ -57,6 +92,7 @@ public class myJFrame extends JFrame {
 			public void run() {
 				try {
 					myJFrame frame = new myJFrame();
+					frame.setTitle("Crossword's Program");
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -70,199 +106,277 @@ public class myJFrame extends JFrame {
 	 */
 	public myJFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1087, 652);
+		setBounds(100, 100, 1028, 652);
 		contentPane = new JPanel();
 		contentPane.setBorder(UIManager.getBorder("ComboBox.border"));
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
 
-		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(UIManager
+		firstPanel = new JPanel();
+		firstPanel.setBorder(new TitledBorder(UIManager
 				.getBorder("TitledBorder.border"), "New crossword",
 				TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		// panel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		panel.setBounds(10, 11, 266, 112);
-		contentPane.add(panel);
-		panel.setLayout(null);
+		firstPanel.setBounds(10, 11, 266, 112);
+		contentPane.add(firstPanel);
+		firstPanel.setLayout(null);
 
-		JLabel lblHeight = new JLabel("Height");
-		lblHeight.setBounds(20, 27, 64, 25);
-		panel.add(lblHeight);
+		heightLabel = new JLabel("Height");
+		heightLabel.setBounds(20, 27, 64, 25);
+		firstPanel.add(heightLabel);
 
-		spinner = new JSpinner();
-		spinner.addChangeListener(new ChangeListener() {
+		heightSpinner = new JSpinner();
+		heightSpinner.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
-				height = ((Number) spinner.getValue()).intValue();
+				height = ((Number) heightSpinner.getValue()).intValue();
 			}
 		});
-		spinner.setBounds(83, 27, 34, 25);
-		panel.add(spinner);
+		heightSpinner.setBounds(83, 27, 34, 25);
+		firstPanel.add(heightSpinner);
 
-		JLabel lblWidth = new JLabel("Width");
-		lblWidth.setBounds(150, 27, 64, 25);
-		panel.add(lblWidth);
+		widthLabel = new JLabel("Width");
+		widthLabel.setBounds(150, 27, 64, 25);
+		firstPanel.add(widthLabel);
 
-		spinner_1 = new JSpinner();
-		spinner_1.addChangeListener(new ChangeListener() {
+		widthSpinner = new JSpinner();
+		widthSpinner.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
-				width = ((Number) spinner_1.getValue()).intValue();
+				width = ((Number) widthSpinner.getValue()).intValue();
 			}
 		});
-		spinner_1.setBounds(212, 27, 34, 25);
-		panel.add(spinner_1);
+		widthSpinner.setBounds(212, 27, 34, 25);
+		firstPanel.add(widthSpinner);
 
-		JButton btnGenerate = new JButton("Generate");
-		btnGenerate.addActionListener(new ActionListener() {
+		// ZMIEN TO!!!!!!!!!!!!!!
+		generateButton = new JButton("Generate");
+		generateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					crossword = new Crossword(height, width, "tak.txt");
-					ConcretStrategy s = new ConcretStrategy();
-					try {
-						crossword.generate(s);
-					} catch (noPossibilityToGenerateCrosswordException e) {
-						e.printStackTrace();
-					}
-
-					int a = crossword.getBoard().getHeight();
-					int b = crossword.getBoard().getWidth();
-					System.out.println(drawingPanel.getHeight() + " "
-							+ drawingPanel.getWidth() + " " + a * 30 * 2 + 40
-							+ " " + b * 30);
-					if (drawingPanel.getHeight() < 2 * a * 30 + 60) {// ||
-																		// drawingPanel.getWidth()
-																		// < ){
-						drawingPanel.setPreferredSize(new Dimension(100,
-								2 * a * 30 + 60));
-						drawingPanel.revalidate();
-					} else {
-						System.out.println(drawingPanel.getHeight() + " "
-								+ drawingPanel.getWidth());
-						if (436 > 2 * a * 30 + 60)
-							drawingPanel.setPreferredSize(new Dimension(1037,
-									436));
-						else
-							drawingPanel.setPreferredSize(new Dimension(100,
-									2 * a * 30 + 60));
-						drawingPanel.revalidate();
-					}
-					drawingPanel.repaint();
 				} catch (wrongCrosswordDimensionsException e) {
 					JOptionPane.showMessageDialog(myJFrame.this,
 							"The dimensions of crossword are wrong!");
-					// e.printStackTrace();
 				}
+				ConcretStrategy s = new ConcretStrategy();
+				try {
+					crossword.generate(s);
+				} catch (noPossibilityToGenerateCrosswordException e) {
+					// ZROb COS Z TM!!!!!!!!
+					e.printStackTrace();
+				}
+				drawCrossword(crossword);
 			}
 		});
-		btnGenerate.setBounds(73, 66, 110, 25);
-		panel.add(btnGenerate);
+		generateButton.setBounds(73, 66, 110, 25);
+		firstPanel.add(generateButton);
 
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(UIManager
+		secondPanel = new JPanel();
+		secondPanel.setBorder(new TitledBorder(UIManager
 				.getBorder("TitledBorder.border"), "From file",
 				TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_1.setBounds(285, 11, 370, 112);
-		contentPane.add(panel_1);
-		panel_1.setLayout(null);
+		secondPanel.setBounds(285, 11, 370, 112);
+		contentPane.add(secondPanel);
+		secondPanel.setLayout(null);
 
-		textField = new JTextField("Path...");
-		textField.setBounds(20, 27, 146, 25);
-		panel_1.add(textField);
-		textField.setColumns(10);
+		pathTextField = new JTextField("Path...");
+		pathTextField.setBounds(20, 27, 146, 25);
+		secondPanel.add(pathTextField);
+		pathTextField.setColumns(10);
 
-		JButton btnNewButton = new JButton("...");
-		btnNewButton.addActionListener(new ActionListener() {
+		threeDotsButton = new JButton("...");
+		threeDotsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
 				fileChooser = new JFileChooser();
 				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				fileChooser.showOpenDialog(myJFrame.this);
-				{
-					// try {
-					// File f = fileChooser.getSelectedFile();
-
-					File f = fileChooser.getCurrentDirectory();
-					setTitle(f.getAbsolutePath());
-					path = f.getAbsolutePath();
-					textField.setText(path);
-
-					// BufferedReader br = new BufferedReader(new
-					// FileReader(f));
-					// String temp = "";
-					// while (br.ready()) {
-					// temp += br.readLine() + "\n";
-					// } // textArea.setText(temp);
-					// } catch (IOException ex) {
-					// System.out.println("Brak pliku");
-					// }
+				int option = fileChooser.showDialog(myJFrame.this,
+						"Approve directory");
+				if (option == JFileChooser.APPROVE_OPTION) {
+					currentDirectory = fileChooser.getSelectedFile();
+					pathTextField.setText(currentDirectory.getAbsolutePath());
 				}
-				;
 			}
 		});
-		btnNewButton.setBounds(168, 27, 39, 25);
-		panel_1.add(btnNewButton);
+		threeDotsButton.setBounds(168, 27, 39, 25);
+		secondPanel.add(threeDotsButton);
 
-		JButton btnNewButton_1 = new JButton("Load");
-		btnNewButton_1.addActionListener(new ActionListener() {
+		loadButton = new JButton("Load");
+		loadButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				cwbrowser = new CwBrowser(path);
-				cwbrowser.browseCrosswords();
-				System.out.println("AAA");
+				if (currentDirectory.getAbsolutePath() != null) {
+					cwbrowser = new CwBrowser(currentDirectory
+							.getAbsolutePath());
+					cwbrowser.browseCrosswords();
 
+					try {
+						cwbrowser.loadCrosswords();
+						// zrob wyjatek ze jak nie ma ani jednej krzyzowki,a lbo
+						// sa inne zle pliki...
+
+						if (cwbrowser.crosswordsList.size() > 0) {
+							actualIndexOfCrossword = 0;
+							crossword = cwbrowser.crosswordsList
+									.get(actualIndexOfCrossword);
+							drawCrossword(crossword);
+						} else {
+							JOptionPane.showMessageDialog(myJFrame.this,
+									"Any crossword was load");
+						}
+					} catch (NumberFormatException e) {
+						e.printStackTrace();
+						// TO DO ZROB COS z TYM!!!!!!!!!!!
+					} catch (FileNotFoundException e) {
+						JOptionPane.showMessageDialog(myJFrame.this,
+								"There is not such directory!");
+					} catch (IOException e) {
+						JOptionPane
+								.showMessageDialog(myJFrame.this,
+										"Sorry, there is a problem with loading crosswords from directory");
+					}
+
+					// jezeli jest pusto to jdialog nie ma tam krzyzowek!
+				}
 			}
 		});
-		btnNewButton_1.setBounds(240, 27, 110, 25);
-		panel_1.add(btnNewButton_1);
+		loadButton.setBounds(240, 27, 110, 25);
+		secondPanel.add(loadButton);
 
-		JButton btnNewButton_3 = new JButton("Previous");
-		btnNewButton_3.setBounds(65, 66, 110, 25);
-		panel_1.add(btnNewButton_3);
+		previousButton = new JButton("Previous");
+		previousButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (cwbrowser != null && cwbrowser.crosswordsList.size() > 0) {
+					actualIndexOfCrossword--;
+					if (actualIndexOfCrossword < 0)
+						actualIndexOfCrossword = actualIndexOfCrossword
+								+ cwbrowser.crosswordsList.size();
+					System.out.println(actualIndexOfCrossword);
+					crossword = cwbrowser.crosswordsList
+							.get(actualIndexOfCrossword);
+					drawCrossword(crossword);
+				} else
+					JOptionPane.showMessageDialog(myJFrame.this,
+							"There's no previous crossowrds to display");
+			}
+		});
+		previousButton.setBounds(65, 66, 110, 25);
+		secondPanel.add(previousButton);
 
-		JButton btnNewButton_4 = new JButton("Next");
-		btnNewButton_4.setBounds(195, 66, 110, 25);
-		panel_1.add(btnNewButton_4);
+		nextButton = new JButton("Next");
+		nextButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (cwbrowser != null && cwbrowser.crosswordsList.size() > 0) {
+					actualIndexOfCrossword++;
+					if (actualIndexOfCrossword >= cwbrowser.crosswordsList
+							.size())
+						actualIndexOfCrossword = actualIndexOfCrossword
+								% cwbrowser.crosswordsList.size();
+					System.out.println(actualIndexOfCrossword);
+					crossword = cwbrowser.crosswordsList
+							.get(actualIndexOfCrossword);
+					drawCrossword(crossword);
+				} else
+					JOptionPane.showMessageDialog(myJFrame.this,
+							"There's no next crossowrds to display");
+			}
+		});
+		nextButton.setBounds(195, 66, 110, 25);
+		secondPanel.add(nextButton);
 
-		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new TitledBorder(UIManager
+		thirdPanel = new JPanel();
+		thirdPanel.setBorder(new TitledBorder(UIManager
 				.getBorder("TitledBorder.border"), "Control",
 				TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_2.setBounds(667, 11, 410, 112);
-		contentPane.add(panel_2);
-		panel_2.setLayout(null);
+		thirdPanel.setBounds(868, 11, 150, 112);
+		contentPane.add(thirdPanel);
+		thirdPanel.setLayout(null);
 
-		JButton btnNewButton_2 = new JButton("Solve");
-		btnNewButton_2.addActionListener(new ActionListener() {
+	/*	solveButton = new JButton("Solve");
+		solveButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					paintType = PaintType.SOLVED;
+					drawCrossword(crossword);
+			}
+		});
+		solveButton.setBounds(20, 26, 110, 25);
+		thirdPanel.add(solveButton);*/
+
+		saveButton = new JButton("Save");
+		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnNewButton_2.setBounds(20, 26, 110, 25);
-		panel_2.add(btnNewButton_2);
+		saveButton.setBounds(20, 27, 110, 25);
+		thirdPanel.add(saveButton);
 
-		JButton btnSave = new JButton("Save");
-		btnSave.addActionListener(new ActionListener() {
+		printButton = new JButton("Print");
+		printButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnSave.setBounds(150, 26, 110, 25);
-		panel_2.add(btnSave);
-
-		JButton btnPrint = new JButton("Print");
-		btnPrint.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnPrint.setBounds(280, 26, 110, 25);
-		panel_2.add(btnPrint);
+		printButton.setBounds(20, 66, 110, 25);
+		thirdPanel.add(printButton);
 
 		drawingPanel = new myDrawingJPanel();
 		drawingPanel.setBackground(Color.white);
-		// drawingPane.addMouseListener(this);
 
-		scrollPane_1 = new JScrollPane(drawingPanel);
-		scrollPane_1.setBorder(new TitledBorder(UIManager
+		scrollPanel = new JScrollPane(drawingPanel);
+		scrollPanel.setBorder(new TitledBorder(UIManager
 				.getBorder("TitledBorder.border"), "Crosswords preview",
 				TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		scrollPane_1.setBounds(10, 135, 1067, 476);
-		contentPane.add(scrollPane_1);
+		scrollPanel.setBounds(10, 135, 1008, 476);
+		contentPane.add(scrollPanel);
+		
+		JPanel panel = new JPanel();
+		panel.setBorder(new TitledBorder(UIManager
+				.getBorder("TitledBorder.border"), "Displayed crossword",
+				TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel.setBounds(667, 11, 189, 112);
+		contentPane.add(panel);
+		panel.setLayout(null);
+		
+		rdbtnNotSolved = new JRadioButton("not solved");
+		rdbtnNotSolved.setBounds(20, 27, 149, 25);
+		rdbtnNotSolved.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				paintType = PaintType.NOTSOLVED;
+				drawingPanel.repaint();
+			}
+		});
+		rdbtnNotSolved.setSelected(true);
+		panel.add(rdbtnNotSolved);
+		
+		rdbtnSolved = new JRadioButton("solved");
+		rdbtnSolved.setBounds(20, 66, 149, 25);
+		rdbtnSolved.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				paintType = PaintType.SOLVED;
+				drawingPanel.repaint();
+			}
+		});
+		panel.add(rdbtnSolved);
+		
+		ButtonGroup group = new ButtonGroup();
+	    group.add(rdbtnNotSolved);
+	    group.add(rdbtnSolved);
+	
+		
+	}
+
+	public void drawCrossword(Crossword crossword) {
+
+		int a = crossword.getBoard().getHeight();
+		int b = crossword.getBoard().getWidth();
+		if (drawingPanel.getHeight() < 2 * a * 30 + 60) {
+			drawingPanel.setPreferredSize(new Dimension(100, 2 * a * 30 + 60));
+			drawingPanel.revalidate();
+		} else {
+			if (436 > 2 * a * 30 + 60)
+				drawingPanel.setPreferredSize(new Dimension(1008, 436));
+			else
+				drawingPanel.setPreferredSize(new Dimension(100,
+						2 * a * 30 + 60));
+			drawingPanel.revalidate();
+		}
+		drawingPanel.repaint();
+
 	}
 
 	public class myDrawingJPanel extends JPanel {
@@ -284,9 +398,13 @@ public class myJFrame extends JFrame {
 					g2.drawString(String.valueOf(i + 1) + ".", 20, 70 + i * 30
 							+ 30 * cw.getBoard().getHeight());
 					for (int j = 0; j < cw.getBoard().getWidth(); j++) {
-
 						if (cw.getBoard().getCell(i, j).content != null) {
 
+							if (paintType == PaintType.SOLVED)
+								g2.drawString(cw.getBoard().getCell(i, j).getContent(), 40 + j*30 + 10,
+										15 + 30 * i+35);
+							
+							
 							g2.setColor(Color.BLACK);
 							g2.drawRect(40 + j * 30, i * 30 + 30, 30, 30);
 
