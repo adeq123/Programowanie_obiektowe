@@ -1,5 +1,4 @@
-{1}{1}25
-{84}{183}www.NapiProjekt.pl - nowa jakoœæ napisów.|Napisy zosta³y specjalnie dopasowane do Twojej wersji filmu.
+{asdasd}{1}25
 {184}{238}Hey, gorgeous! How's it going?
 {244}{316}Dehydrated Japanese noodles|under fluorescent lights.
 {322}{376}Does it get better than this?
@@ -305,7 +304,7 @@
 {30975}{30999}Hey, Lowell.
 {31007}{31039}Oh, hey, Chandler.
 {31092}{31151}So how's it going in|Financial Services?
-{31157}{31236}It's like Mardi gras without|the papier-mâché heads.
+{31157}{31236}It's like Mardi gras without|the papier-mï¿½chï¿½ heads.
 {31242}{31268}How about you?
 {31273}{31320}Good. Good. Listen. . .
 {31365}{31440}. . .I don't know what Shelly told you|about me, but. . .
@@ -323,4 +322,4 @@
 {32397}{32435}Out of my league!
 {32441}{32540}I could get a Brian. If I wanted to|get a Brian, I could get a Brian.
 {32549}{32590}Hey, Brian.
-{32615}{32714}www.NapiProjekt.pl - nowa jakoœæ napisów.|Napisy zosta³y specjalnie dopasowane do Twojej wersji filmu.
+{32615}{32714}www.NapiProjekt.pl - nowa jakoï¿½ï¿½ napisï¿½w.|Napisy zostaï¿½y specjalnie dopasowane do Twojej wersji filmu.

@@ -450,7 +450,7 @@ public class myJFrame extends JFrame {
 		document.addSubject("Crossword");
 		document.addKeywords("crossword");
 		document.addCreator("My program using iText");
-
+// a zamknac plik to co?!
 		Paragraph p = new Paragraph();
 		try {
 			BaseFont bf = BaseFont.createFont(BaseFont.TIMES_ROMAN,

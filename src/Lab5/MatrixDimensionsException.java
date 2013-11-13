@@ -1,19 +1,14 @@
 package Lab5;
 
-/**
- * 
- * @author krzysztof
- *
- */
-public class UnproperSequenceOfCharsException extends Exception {
-
+public class MatrixDimensionsException extends Exception {
+	
 	private static final long serialVersionUID = 1L;
 	Matrix matrix;
 
 	/**
 	 * Constructor
 	 */
-	public UnproperSequenceOfCharsException() {
+	public MatrixDimensionsException() {
 	}
 
 	/**
@@ -22,7 +17,7 @@ public class UnproperSequenceOfCharsException extends Exception {
 	 * @param message
 	 *            - information about exception
 	 */
-	public UnproperSequenceOfCharsException(String message) {
+	public MatrixDimensionsException(String message) {
 		super(message);
 	}
 
@@ -32,7 +27,7 @@ public class UnproperSequenceOfCharsException extends Exception {
 	 * @param cause
 	 *            - cause of exception
 	 */
-	public UnproperSequenceOfCharsException(Throwable cause) {
+	public MatrixDimensionsException(Throwable cause) {
 		super(cause);
 	}
 
@@ -44,7 +39,18 @@ public class UnproperSequenceOfCharsException extends Exception {
 	 * @param cause
 	 *            - cause of exception
 	 */
-	public UnproperSequenceOfCharsException(String message, Throwable cause) {
+	public MatrixDimensionsException(String message, Throwable cause) {
 		super(message, cause);
 	}
+	
+	/**
+	 * Constructor
+	 * 
+	 * @param matrix
+	 *            - matrix
+	 */
+	public MatrixDimensionsException(Matrix matrix) {
+		this.matrix = matrix;
+	}
 }
+

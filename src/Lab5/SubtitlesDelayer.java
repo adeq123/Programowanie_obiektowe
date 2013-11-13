@@ -44,18 +44,17 @@ public class SubtitlesDelayer {
 	 * @throws UnproperSequenceOfCharsException
 	 */
 	public void delay() throws IOException, UnproperSequenceOfCharsException {
-		FileReader fr = new FileReader(in);
-		BufferedReader bf = new BufferedReader(fr);
-		FileWriter fw = new FileWriter(out);
-		BufferedWriter bw = new BufferedWriter(fw);
-		String line = null;
-		int begin;
-		int end;
-
+		BufferedReader bf = null;
+		BufferedWriter bw = null;
 		try {
+			bf = new BufferedReader(new FileReader(in));
+			bw = new BufferedWriter(new FileWriter(out));
+			String line = null;
+			int begin;
+			int end;
+
 			while ((line = bf.readLine()) != null) {
 				String[] splitedLine = line.split("\\}");
-
 				if ((Pattern.matches("\\{[[0-9]]*", splitedLine[0])) == true
 						&& (Pattern.matches("\\{[[0-9]]*", splitedLine[1]))) {
 					begin = Integer.parseInt(splitedLine[0].split("\\{")[1]);
@@ -64,8 +63,8 @@ public class SubtitlesDelayer {
 						throw new UnproperSequenceOfCharsException(
 								"Begining time of subtitles cannot be further than the end");
 					}
-					begin += fps + delay; // jakie wzory?!
-					end += fps + delay;
+					begin += (fps * delay / 1000);
+					end += (fps * delay / 1000);
 					bw.write("{" + String.valueOf(begin) + "}{"
 							+ String.valueOf(end) + "}" + splitedLine[2]);
 					bw.newLine();
