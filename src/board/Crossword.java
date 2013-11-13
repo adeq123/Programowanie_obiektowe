@@ -172,7 +172,9 @@ public class Crossword {
 	public final void generate(Strategy s) throws noPossibilityToGenerateCrosswordException {
 		CwEntry e = null;
 		while ((e = s.findEntry(this)) != null) {
+			System.out.println(e.getWord());
 			addCwEntry(e, s);
+			System.out.println("??");
 		}
 	}
 }

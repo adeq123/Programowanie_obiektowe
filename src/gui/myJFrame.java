@@ -168,7 +168,9 @@ public class myJFrame extends JFrame {
 				}
 				ConcretStrategy s = new ConcretStrategy();
 				try {
+					System.out.println("AAAAAAAAAAAAAA");
 					crossword.generate(s);
+					System.out.println("AAAAAAAAAAAAAA");
 				} catch (noPossibilityToGenerateCrosswordException e) {
 					// ZROb COS Z TM!!!!!!!!
 					e.printStackTrace();
@@ -394,7 +396,7 @@ public class myJFrame extends JFrame {
 
 		int a = crossword.getBoard().getHeight();
 		int b = crossword.getBoard().getWidth();
-
+System.out.println("QQQQQQQQQQQQQQQ");
 		if (drawingPanel.getHeight() < 2 * a * 30 + 60) {
 			drawingPanel.setPreferredSize(new Dimension(1078, 2 * a * 30 + 60));
 			drawingPanel.revalidate();

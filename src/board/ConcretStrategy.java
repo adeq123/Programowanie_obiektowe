@@ -28,24 +28,29 @@ public class ConcretStrategy extends Strategy {
 	 */
 	public CwEntry getMainWord(Crossword cw)
 			throws noPossibilityToGenerateCrosswordException {
-		Map<Character, Integer> firstLettersInDictionary = new HashMap<Character, Integer>();
+		Map<Character, Integer> firstLettersInDictionary = new HashMap<Character, Integer>();//o max dlugosci szerokosci krzyzowki!
 		LinkedList<Entry> sameLengthWords = new LinkedList<Entry>();
 
-		Entry e;
+		Entry e = null;
 		Iterator<Entry> it = cw.getCwDB().getDict().iterator();
 		while (it.hasNext()) {
 			e = it.next();
-			if (firstLettersInDictionary.containsKey(e.getWord().charAt(0)) == false)
+			if ((firstLettersInDictionary.containsKey(e.getWord().charAt(0)) == false) && (e.getWord().length() <= cw.getBoard().getWidth()))
 				firstLettersInDictionary.put(e.getWord().charAt(0), 1);
-			else
+			else if (e.getWord().length() <= cw.getBoard().getWidth())
 				firstLettersInDictionary
 						.put(e.getWord().charAt(0), firstLettersInDictionary
 								.get(e.getWord().charAt(0)) + 1);
 			if (e.getWord().length() == cw.getBoard().getHeight()) {
-				sameLengthWords.add(e);
+				System.out.println(e.getWord());
+				sameLengthWords.add(new Entry(e.getWord(),e.getClue()));
 			}
 		}
-
+		
+		
+		System.out.println(firstLettersInDictionary);
+		System.out.println(sameLengthWords);
+		
 		Iterator<Entry> iter = sameLengthWords.iterator();
 		LinkedList<Entry> finalListOfWords = new LinkedList<Entry>(
 				sameLengthWords);
@@ -53,14 +58,20 @@ public class ConcretStrategy extends Strategy {
 			e = iter.next();
 			Map<Character, Integer> lettersInWord = new HashMap<Character, Integer>();
 			for (int j = 0; j < e.getWord().length(); j++) {
-				if (lettersInWord.containsKey(e.getWord().charAt(j)) == false)
+				if (lettersInWord.containsKey(e.getWord().charAt(j)) == false){
+					
 					lettersInWord.put(e.getWord().charAt(j), 1);
-				else
+				}
+				else{
+					
 					lettersInWord.put(e.getWord().charAt(j),
 							lettersInWord.get(e.getWord().charAt(j)) + 1);
+				}
 			}
+			System.out.println(lettersInWord);
 
 			for (Map.Entry<Character, Integer> entry : lettersInWord.entrySet()) {
+				
 				if (firstLettersInDictionary.containsKey(entry.getKey()) == true) {
 					if (entry.getValue() >= firstLettersInDictionary.get(entry
 							.getKey())) {
@@ -72,13 +83,16 @@ public class ConcretStrategy extends Strategy {
 					break;
 				}
 			}
+			System.out.println(finalListOfWords);
 
 		}
 		if (finalListOfWords.size() == 0)
-			throw new noPossibilityToGenerateCrosswordException();
+			throw new noPossibilityToGenerateCrosswordException("TUTAJ!");
 		Random rand = new Random();
+
 		Entry finalEntry = finalListOfWords.get(rand.nextInt(finalListOfWords
 				.size()));
+		
 		return new CwEntry(finalEntry.getWord(), finalEntry.getClue(), 0, 0,
 				Direction.HORIZ);
 	}
@@ -107,14 +121,16 @@ public class ConcretStrategy extends Strategy {
 			cwentry = getMainWord(cw);
 		} else {
 			do {
+				//System.out.println(rand.nextInt(cw.getBoard().getWidth())); wykonuje sie caly czas!!!!!!!
 				String currentPattern = cw.getBoard().createPattern(
 						amountOfWords - 1, 0, amountOfWords - 1,
-						rand.nextInt(cw.getBoard().getWidth()) - 1);
+						rand.nextInt(cw.getBoard().getWidth() + 1)); // usun -1
 				entry = cw.getCwDB().getRandom(currentPattern);
 			} while ((entry == null || cw.contains(entry.getWord()) == true));
 			cwentry = new CwEntry(entry.getWord(), entry.getClue(),
 					amountOfWords - 1, 0, Direction.VERT);
 		}
+System.out.println("!!");
 		return cwentry;
 	}
 
