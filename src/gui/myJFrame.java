@@ -59,19 +59,21 @@ public class myJFrame extends JFrame {
 	private JButton generateButton;
 
 	private JPanel secondPanel;
-	private JTextField pathTextField;
+	private JTextField pathTextField = null;
 	private JButton loadButton;
 	private JFileChooser fileChooser;
 	private JButton threeDotsButton;
-	private File currentDirectory;
+	private File currentDirectory = null;
 	private int actualIndexOfCrossword = 0;
 	private JButton previousButton;
 	private JButton nextButton;
-	
+
 	private JPanel thirdPanel;
+
 	public enum PaintType {
 		SOLVED, NOTSOLVED
 	}
+
 	PaintType paintType = PaintType.NOTSOLVED;
 	private JRadioButton notSolvedRadioButton;
 	private JRadioButton solvedRadioButton;
@@ -79,13 +81,13 @@ public class myJFrame extends JFrame {
 	private JPanel fourthPanel;
 	private JButton saveButton;
 	private JButton printButton;
-	
+
 	private myDrawingJPanel drawingPanel;
 	private JScrollPane scrollDrawingPanel;
-	
+
 	private Crossword crossword;
-	private int height;
-	private int width;
+	private int crosswordHeight;
+	private int crosswordWidth;
 	private CwBrowser cwbrowser = null;
 
 	public void drawProper(PaintType pt) {
@@ -100,7 +102,8 @@ public class myJFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+					UIManager.setLookAndFeel(UIManager
+							.getSystemLookAndFeelClassName());
 					myJFrame frame = new myJFrame();
 					frame.setTitle("Crossword's Program");
 					frame.setVisible(true);
@@ -137,7 +140,8 @@ public class myJFrame extends JFrame {
 		heightSpinner = new JSpinner();
 		heightSpinner.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
-				height = ((Number) heightSpinner.getValue()).intValue();
+				crosswordHeight = ((Number) heightSpinner.getValue())
+						.intValue();
 			}
 		});
 		heightSpinner.setBounds(73, 27, 47, 25);
@@ -150,7 +154,7 @@ public class myJFrame extends JFrame {
 		widthSpinner = new JSpinner();
 		widthSpinner.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
-				width = ((Number) widthSpinner.getValue()).intValue();
+				crosswordWidth = ((Number) widthSpinner.getValue()).intValue();
 			}
 		});
 		widthSpinner.setBounds(197, 27, 47, 25);
@@ -161,21 +165,20 @@ public class myJFrame extends JFrame {
 		generateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					crossword = new Crossword(height, width, "tak.txt");
-				} catch (wrongCrosswordDimensionsException e) {
-					JOptionPane.showMessageDialog(myJFrame.this,
-							"The dimensions of crossword are wrong!");
-				}
-				ConcretStrategy s = new ConcretStrategy();
-				try {
+					crossword = new Crossword(crosswordHeight, crosswordWidth,
+							"tak.txt");
+					ConcretStrategy s = new ConcretStrategy();
 					System.out.println("AAAAAAAAAAAAAA");
 					crossword.generate(s);
 					System.out.println("AAAAAAAAAAAAAA");
+					drawCrossword(crossword);
+				} catch (wrongCrosswordDimensionsException e) {
+					JOptionPane.showMessageDialog(myJFrame.this,
+							"The dimensions of crossword are wrong!");
 				} catch (noPossibilityToGenerateCrosswordException e) {
 					// ZROb COS Z TM!!!!!!!!
 					e.printStackTrace();
 				}
-				drawCrossword(crossword);
 			}
 		});
 		generateButton.setBounds(73, 66, 110, 25);
@@ -190,6 +193,11 @@ public class myJFrame extends JFrame {
 		secondPanel.setLayout(null);
 
 		pathTextField = new JTextField("Path...");
+		pathTextField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("lol");
+			}
+		});
 		pathTextField.setBounds(20, 27, 146, 25);
 		secondPanel.add(pathTextField);
 		pathTextField.setColumns(10);
@@ -213,6 +221,9 @@ public class myJFrame extends JFrame {
 		loadButton = new JButton("Load");
 		loadButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				//ma pobierac z path i dopiero cos tworxyc!!!!!!!!!!!!! zrob tu try i łap wyjatek!
+				System.out.println(pathTextField.getText());
+				//if to co wyzej rozne of=d nulaa to dalej rob!
 				if (currentDirectory.getAbsolutePath() != null) {
 					cwbrowser = new CwBrowser(currentDirectory
 							.getAbsolutePath());
@@ -233,6 +244,7 @@ public class myJFrame extends JFrame {
 									"Any crossword was load");
 						}
 					} catch (NumberFormatException e) {
+						System.out.println("A");
 						e.printStackTrace();
 						// TO DO ZROB COS z TYM!!!!!!!!!!!
 					} catch (FileNotFoundException e) {
@@ -333,13 +345,6 @@ public class myJFrame extends JFrame {
 		contentPane.add(fourthPanel);
 		fourthPanel.setLayout(null);
 
-		/*
-		 * solveButton = new JButton("Solve"); solveButton.addActionListener(new
-		 * ActionListener() { public void actionPerformed(ActionEvent e) {
-		 * paintType = PaintType.SOLVED; drawCrossword(crossword); } });
-		 * solveButton.setBounds(20, 26, 110, 25); thirdPanel.add(solveButton);
-		 */
-
 		saveButton = new JButton("Save");
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -396,7 +401,7 @@ public class myJFrame extends JFrame {
 
 		int a = crossword.getBoard().getHeight();
 		int b = crossword.getBoard().getWidth();
-System.out.println("QQQQQQQQQQQQQQQ");
+		System.out.println("QQQQQQQQQQQQQQQ");
 		if (drawingPanel.getHeight() < 2 * a * 30 + 60) {
 			drawingPanel.setPreferredSize(new Dimension(1078, 2 * a * 30 + 60));
 			drawingPanel.revalidate();
@@ -412,7 +417,7 @@ System.out.println("QQQQQQQQQQQQQQQ");
 	}
 
 	public class myDrawingJPanel extends JPanel {
-		
+
 		private static final long serialVersionUID = 1L;
 
 		protected void paintComponent(Graphics g) {
@@ -452,7 +457,7 @@ System.out.println("QQQQQQQQQQQQQQQ");
 		document.addSubject("Crossword");
 		document.addKeywords("crossword");
 		document.addCreator("My program using iText");
-// a zamknac plik to co?!
+		// a zamknac plik to co?!
 		Paragraph p = new Paragraph();
 		try {
 			BaseFont bf = BaseFont.createFont(BaseFont.TIMES_ROMAN,
