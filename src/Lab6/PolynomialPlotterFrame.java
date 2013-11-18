@@ -2,22 +2,34 @@ package Lab6;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JButton;
 
 public class PolynomialPlotterFrame extends JFrame {
 
+	private static final long serialVersionUID = 1L;
+
 	private JPanel contentPane;
+	
+	private JPanel panel;
+	private JLabel lblWsp;
 	private JTextField txtNp;
+	private JLabel lblZakres;
 	private JTextField txtNp_1;
+	private JLabel lblNewLabel;
 	private JTextField txtNp_2;
+	private JButton btnRysuj;
+	
+	private PolynomialPlotterPanel panel_1;
 
 	/**
 	 * Launch the application.
@@ -40,13 +52,13 @@ public class PolynomialPlotterFrame extends JFrame {
 	 */
 	public PolynomialPlotterFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 726, 600);
+		setBounds(100, 100, 726, 663);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
 		
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		panel.setBorder(new TitledBorder(UIManager
 				.getBorder("TitledBorder.border"), "Kontrola",
 				TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
@@ -54,7 +66,7 @@ public class PolynomialPlotterFrame extends JFrame {
 		panel.setLayout(null);
 		contentPane.add(panel);
 		
-		JLabel lblWsp = new JLabel("Wspolczynniki wielomianu");
+		lblWsp = new JLabel("Wspolczynniki wielomianu");
 		lblWsp.setBounds(72, 23, 200, 15);
 		panel.add(lblWsp);
 		
@@ -64,7 +76,7 @@ public class PolynomialPlotterFrame extends JFrame {
 		panel.add(txtNp);
 		txtNp.setColumns(10);
 		
-		JLabel lblZakres = new JLabel("Zakres");
+		lblZakres = new JLabel("Zakres");
 		lblZakres.setBounds(359, 23, 70, 15);
 		panel.add(lblZakres);
 		
@@ -74,7 +86,7 @@ public class PolynomialPlotterFrame extends JFrame {
 		panel.add(txtNp_1);
 		txtNp_1.setColumns(10);
 		
-		JLabel lblNewLabel = new JLabel("Probkowanie");
+		lblNewLabel = new JLabel("Probkowanie");
 		lblNewLabel.setBounds(456, 23, 100, 15);
 		panel.add(lblNewLabel);
 		
@@ -84,15 +96,24 @@ public class PolynomialPlotterFrame extends JFrame {
 		panel.add(txtNp_2);
 		txtNp_2.setColumns(10);
 		
-		JButton btnRysuj = new JButton("Rysuj");
+		btnRysuj = new JButton("Rysuj");
+		btnRysuj.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				panel_1.setWspWiel(txtNp.getText());
+				panel_1.setZakres(txtNp_1.getText());
+				panel_1.setProbkowanie(txtNp_2.getText());
+				if (panel_1.createPoints() == true)
+				repaint();
+			}
+		});
 		btnRysuj.setBounds(574, 35, 116, 26);
 		panel.add(btnRysuj);
 		
-		JPanel panel_1 = new JPanel();
+		panel_1 = new PolynomialPlotterPanel();
 		panel_1.setBorder(new TitledBorder(UIManager
 				.getBorder("TitledBorder.border"), "Wykres wielomianu",
 				TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_1.setBounds(12, 120, 702, 439);
+		panel_1.setBounds(12, 119, 500, 501);
 		panel_1.setBackground(Color.white);
 		panel_1.setLayout(null);
 		contentPane.add(panel_1);
