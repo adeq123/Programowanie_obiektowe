@@ -4,14 +4,14 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-import javax.swing.JPanel;
+import java.awt.Panel;
 
-public class MyPanelLab extends JPanel {
+public class MyAWTPanelLab extends Panel {
 
 	private static final long serialVersionUID = 1L;
 	public LinkedList<Shape> shapes = new LinkedList<Shape>();
 
-	public MyPanelLab() {
+	public MyAWTPanelLab() {
 	}
 	
 	public void paint(Graphics g){
