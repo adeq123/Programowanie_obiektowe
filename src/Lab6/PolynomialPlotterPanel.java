@@ -1,11 +1,14 @@
 package Lab6;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.border.TitledBorder;
 
 public class PolynomialPlotterPanel extends JPanel {
 
@@ -20,6 +23,15 @@ public class PolynomialPlotterPanel extends JPanel {
 	private Double prob;
 	private LinkedList<Double> punktX;
 	private LinkedList<Double> punktY;
+	
+	public PolynomialPlotterPanel(){
+		setBorder(new TitledBorder(UIManager
+				.getBorder("TitledBorder.border"), "Wykres wielomianu",
+				TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		setBounds(22, 120, 500, 501);
+		setBackground(Color.white);
+		setLayout(null);
+	}
 
 	public boolean createPoints() {
 		if (wspWiel == null || zakres == null || probkowanie == null)
@@ -131,6 +143,7 @@ public class PolynomialPlotterPanel extends JPanel {
 	}
 
 	public void paint(Graphics g) {
+		super.paint(g); //zawsze to pisz!!
 		g.drawLine(0, this.getHeight() / 2, this.getWidth(),
 				this.getHeight() / 2);
 		g.drawLine(this.getWidth() / 2, 0, this.getWidth() / 2,

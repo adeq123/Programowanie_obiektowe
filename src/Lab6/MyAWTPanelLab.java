@@ -1,5 +1,6 @@
 package Lab6;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -12,9 +13,11 @@ public class MyAWTPanelLab extends Panel {
 	public LinkedList<Shape> shapes = new LinkedList<Shape>();
 
 	public MyAWTPanelLab() {
+		setBackground(Color.WHITE);
 	}
 	
 	public void paint(Graphics g){
+		super.paint(g);
 		for (ListIterator<Shape> it = shapes.listIterator(); it.hasNext();)
 			it.next().draw(g);
 	}

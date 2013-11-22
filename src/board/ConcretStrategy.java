@@ -42,14 +42,9 @@ public class ConcretStrategy extends Strategy {
 						.put(e.getWord().charAt(0), firstLettersInDictionary
 								.get(e.getWord().charAt(0)) + 1);
 			if (e.getWord().length() == cw.getBoard().getHeight()) {
-				System.out.println(e.getWord());
 				sameLengthWords.add(new Entry(e.getWord(),e.getClue()));
 			}
 		}
-		
-		
-		System.out.println(firstLettersInDictionary);
-		System.out.println(sameLengthWords);
 		
 		Iterator<Entry> iter = sameLengthWords.iterator();
 		LinkedList<Entry> finalListOfWords = new LinkedList<Entry>(
@@ -68,8 +63,7 @@ public class ConcretStrategy extends Strategy {
 							lettersInWord.get(e.getWord().charAt(j)) + 1);
 				}
 			}
-			System.out.println(lettersInWord);
-
+		
 			for (Map.Entry<Character, Integer> entry : lettersInWord.entrySet()) {
 				
 				if (firstLettersInDictionary.containsKey(entry.getKey()) == true) {
@@ -83,8 +77,7 @@ public class ConcretStrategy extends Strategy {
 					break;
 				}
 			}
-			System.out.println(finalListOfWords);
-
+		
 		}
 		if (finalListOfWords.size() == 0)
 			throw new noPossibilityToGenerateCrosswordException("TUTAJ!");
@@ -130,7 +123,6 @@ public class ConcretStrategy extends Strategy {
 			cwentry = new CwEntry(entry.getWord(), entry.getClue(),
 					amountOfWords - 1, 0, Direction.VERT);
 		}
-System.out.println("!!");
 		return cwentry;
 	}
 

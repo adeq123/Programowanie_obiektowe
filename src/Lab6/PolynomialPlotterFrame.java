@@ -10,8 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 public class PolynomialPlotterFrame extends JFrame {
@@ -59,9 +59,7 @@ public class PolynomialPlotterFrame extends JFrame {
 		setContentPane(contentPane);
 		
 		panel = new JPanel();
-		panel.setBorder(new TitledBorder(UIManager
-				.getBorder("TitledBorder.border"), "Kontrola",
-				TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Kontrola", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel.setBounds(12, 12, 702, 96);
 		panel.setLayout(null);
 		contentPane.add(panel);
@@ -110,12 +108,6 @@ public class PolynomialPlotterFrame extends JFrame {
 		panel.add(btnRysuj);
 		
 		panel_1 = new PolynomialPlotterPanel();
-		panel_1.setBorder(new TitledBorder(UIManager
-				.getBorder("TitledBorder.border"), "Wykres wielomianu",
-				TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_1.setBounds(12, 119, 500, 501);
-		panel_1.setBackground(Color.white);
-		panel_1.setLayout(null);
 		contentPane.add(panel_1);
 	}
 }

@@ -47,7 +47,7 @@ public class MyAWTFrameLab extends Frame {
             }
         });
 		
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 330);
 		contentPane = new Panel();
 		contentPane.setLayout(null);
 		this.add(contentPane);
