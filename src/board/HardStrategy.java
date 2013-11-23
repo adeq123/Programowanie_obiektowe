@@ -1,9 +1,7 @@
 package board;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Random;
 
 import dictionary.CwEntry;
@@ -24,62 +22,33 @@ public class HardStrategy extends Strategy {
 	 * @param cw
 	 *            - Crossword
 	 * @return CwEntry
-	 * @throws noPossibilityToGenerateCrosswordException 
+	 * @throws noPossibilityToGenerateCrosswordException
 	 */
-	public CwEntry getMainWord(Crossword cw) throws noPossibilityToGenerateCrosswordException {
-		Map<Character, Integer> firstLettersInDictionary = new HashMap<Character, Integer>();
-		LinkedList<Entry> sameLengthWords = new LinkedList<Entry>();
+	public CwEntry getFirstWord(Crossword cw)
+			throws noPossibilityToGenerateCrosswordException {
+		LinkedList<Entry> propriateLengthWords = new LinkedList<Entry>();
+		Random rand = new Random();
 
 		Entry e;
 		Iterator<Entry> it = cw.getCwDB().getDict().iterator();
 		while (it.hasNext()) {
 			e = it.next();
-			if (firstLettersInDictionary.containsKey(e.getWord().charAt(0)) == false)
-				firstLettersInDictionary.put(e.getWord().charAt(0), 1);
-			else
-				firstLettersInDictionary
-						.put(e.getWord().charAt(0), firstLettersInDictionary
-								.get(e.getWord().charAt(0)) + 1);
-			if (e.getWord().length() == cw.getBoard().getHeight()) {
-				sameLengthWords.add(e);
+			if (e.getWord().length() <= cw.getBoard().getHeight()
+					|| e.getWord().length() <= cw.getBoard().getWidth()) {
+				propriateLengthWords.add(e);
 			}
 		}
 
-		Iterator<Entry> iter = sameLengthWords.iterator();
-		LinkedList<Entry> finalListOfWords = new LinkedList<Entry>(
-				sameLengthWords);
-		while (iter.hasNext() == true) {
-			e = iter.next();
-			Map<Character, Integer> lettersInWord = new HashMap<Character, Integer>();
-			for (int j = 0; j < e.getWord().length(); j++) {
-				if (lettersInWord.containsKey(e.getWord().charAt(j)) == false)
-					lettersInWord.put(e.getWord().charAt(j), 1);
-				else
-					lettersInWord.put(e.getWord().charAt(j),
-							lettersInWord.get(e.getWord().charAt(j)) + 1);
-			}
-
-			for (Map.Entry<Character, Integer> entry : lettersInWord.entrySet()) {
-				if (firstLettersInDictionary.containsKey(entry.getKey()) == true) {
-					if (entry.getValue() >= firstLettersInDictionary.get(entry
-							.getKey())) {
-						finalListOfWords.remove(e);
-						break;
-					}
-				} else {
-					finalListOfWords.remove(e);
-					break;
-				}
-			}
-
-		}
-		if (finalListOfWords.size() == 0)
+		if (propriateLengthWords.size() == 0)
 			throw new noPossibilityToGenerateCrosswordException();
-		Random rand = new Random();
-		Entry finalEntry = finalListOfWords.get(rand.nextInt(finalListOfWords
-				.size()));
-		return new CwEntry(finalEntry.getWord(), finalEntry.getClue(), 0, 0,
-				Direction.HORIZ);
+		Entry finalEntry = propriateLengthWords.get(rand
+				.nextInt(propriateLengthWords.size()));
+		if (cw.getBoard().getHeight() > cw.getBoard().getWidth())
+			return new CwEntry(finalEntry.getWord(), finalEntry.getClue(), 0,
+					0, Direction.HORIZ);
+		else
+			return new CwEntry(finalEntry.getWord(), finalEntry.getClue(), 0,
+					0, Direction.VERT);
 	}
 
 	/**
@@ -88,23 +57,47 @@ public class HardStrategy extends Strategy {
 	 * @param cw
 	 *            - Crossword
 	 * @return new CwEntry
-	 * @throws noPossibilityToGenerateCrosswordException 
+	 * @throws noPossibilityToGenerateCrosswordException
 	 */
 	@Override
-	public CwEntry findEntry(Crossword cw) throws noPossibilityToGenerateCrosswordException {
+	public CwEntry findEntry(Crossword cw)
+			throws noPossibilityToGenerateCrosswordException {
 		Random rand = new Random();
 		Entry entry = null;
 		CwEntry cwentry = null;
 
 		int amountOfWords = cw.getEntries().size();
-		//zakoncz generowanie gdy znajdziesz juz wszystkie słowa
-		if (cw.getBoard().getHeight() == (amountOfWords - 1))
-			return null;
-		// jako pierwsze wygeneruj słowo GŁÓWNE
+		// jako pierwsze wygeneruj słowo losowe
 		if (cw.getEntries().isEmpty() == true) {
-			cwentry = getMainWord(cw);
+			cwentry = getFirstWord(cw);
 		} else {
 			do {
+				LinkedList<BoardCell> newBoardCellList = new LinkedList<BoardCell>();
+				// dla kazdej komorki
+				for (int i = 0; i < cw.getBoard().getHeight(); i++) {
+					for (int j = 0; j < cw.getBoard().getHeight(); j++) {
+						// jesli komorka nie jest pusta
+						if (cw.getBoard().getBoard()[i][j].getContent() != null) {
+							newBoardCellList
+									.add(cw.getBoard().getBoard()[i][j]);
+						}
+					}
+				}
+
+				// slownik, usun z niego wyrazy ktore juz sa na krzyzowce!!!!!!
+				LinkedList<Entry> newDictList = new LinkedList<Entry>(
+						cw.getEntries());
+				Iterator<BoardCell> iter = newBoardCellList.iterator();
+				// dopoki newDictList ma slowa...
+				while (iter.hasNext() == true) {
+						
+					LinkedList<String> newPatternList = new LinkedList<String>();
+					Iterator<BoardCell> it = newBoardCellList.iterator();
+					while (it.hasNext() == true) {
+
+					}
+				}
+
 				String currentPattern = cw.getBoard().createPattern(
 						amountOfWords - 1, 0, amountOfWords - 1,
 						rand.nextInt(cw.getBoard().getWidth()) - 1);
@@ -129,6 +122,7 @@ public class HardStrategy extends Strategy {
 		char[] contentOfString = e.getWord().toCharArray();
 		if (e.getDir() == Direction.VERT) {
 			for (int i = 0; i < e.getWord().length(); i++) {
+				// jezeli dodatkowo przecina jakies komorki to je zmien!!!!!!
 				BoardCell boardcell = new BoardCell();
 				boardcell.setContent(new String(contentOfString, i, 1));
 				boardcell.setAbility(BoardCell.Direction.VERT,

@@ -1,5 +1,7 @@
 package dictionary;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -20,8 +22,11 @@ public class InteliCwDB extends CwDB {
 	 * 
 	 * @param filename
 	 *            - name of file
+	 * @throws FileNotFoundException
+	 *             , IOException
 	 */
-	public InteliCwDB(String filename) {
+	public InteliCwDB(String filename) throws FileNotFoundException,
+			IOException {
 		super(filename);
 	}
 
@@ -103,7 +108,6 @@ public class InteliCwDB extends CwDB {
 	@Override
 	public void add(String word, String clue) {
 		dict.add(new Entry(word.toUpperCase(), clue));
-	//	System.out.println(word.toUpperCase());
 		Collections.sort(dict, new Comparator<Entry>() {
 			@Override
 			public int compare(Entry first, Entry second) {

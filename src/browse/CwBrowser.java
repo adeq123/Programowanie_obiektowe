@@ -45,11 +45,13 @@ public class CwBrowser {
 	 *            - name of directory
 	 * @throws noPossibilityToGenerateCrosswordException
 	 * @throws wrongCrosswordDimensionsException
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
 	 */
 	public void generateCrossword(int height, int width,
 			String dictionaryFilename)
 			throws noPossibilityToGenerateCrosswordException,
-			wrongCrosswordDimensionsException {
+			wrongCrosswordDimensionsException, FileNotFoundException, IOException {
 		Crossword cw = new Crossword(height, width, dictionaryFilename);
 		ConcretStrategy s = new ConcretStrategy();
 		cw.generate(s);
@@ -67,7 +69,6 @@ public class CwBrowser {
 	}
 
 	public void saveCrosswords(Crossword crossword) throws IOException {
-		System.out.println("AAAAAAAAAAA");
 		LinkedList<Crossword> list = new LinkedList<Crossword>();
 		list.add(crossword);
 		cwwriter.write(path, list);
@@ -78,12 +79,10 @@ public class CwBrowser {
 	}
 
 	public void browseCrosswords() {
-		System.out.println("SSSSSSSSSS");
 		Iterator<Crossword> iter = crosswordsList.iterator();
 		Crossword cw;
 		while (iter.hasNext()) {
 			cw = iter.next();
-
 			for (int i = 0; i < cw.getBoard().getHeight(); i++) {
 				for (int j = 0; j < cw.getBoard().getWidth(); j++) {
 					if (cw.getBoard().getCell(i, j).content != null) {
@@ -112,13 +111,13 @@ public class CwBrowser {
 			throws noPossibilityToGenerateCrosswordException {
 		CwBrowser cwbrowser = new CwBrowser(
 				"/home/krzysztof/workspace/Programowanie_obiektowe/krzyzowki");
-		try {
-			cwbrowser.generateCrossword(10, 20, "cwdb.txt");
-			cwbrowser.generateCrossword(12, 20, "cwdb.txt");
-			cwbrowser.generateCrossword(11, 20, "cwdb.txt");
-		} catch (wrongCrosswordDimensionsException e) {
-			e.printStackTrace();
-		}
+		//try {
+		//	cwbrowser.generateCrossword(10, 20, "cwdb.txt");
+		//	cwbrowser.generateCrossword(12, 20, "cwdb.txt");
+		//	cwbrowser.generateCrossword(11, 20, "cwdb.txt");
+		//} catch (wrongCrosswordDimensionsException e) {
+			//e.printStackTrace();
+		//}
 
 		try {
 			cwbrowser.saveCrosswords();

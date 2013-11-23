@@ -1,5 +1,7 @@
 package board;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Iterator;
 
 import dictionary.CwEntry;
@@ -18,13 +20,15 @@ public class MAINTEST {
 	 * 
 	 * @param args
 	 *            - arguments of main
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException, IOException {
 		Crossword crossword;
 		try {
-			crossword = new Crossword(9, 20, "tak.txt");
+			crossword = new Crossword(6, 6, "tak.txt");
 
-			ConcretStrategy s = new ConcretStrategy();
+			HardStrategy s = new HardStrategy();
 			try {
 				crossword.generate(s);
 			} catch (noPossibilityToGenerateCrosswordException e) {

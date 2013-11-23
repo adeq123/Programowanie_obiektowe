@@ -114,7 +114,6 @@ public class ConcretStrategy extends Strategy {
 			cwentry = getMainWord(cw);
 		} else {
 			do {
-				//System.out.println(rand.nextInt(cw.getBoard().getWidth())); wykonuje sie caly czas!!!!!!!
 				String currentPattern = cw.getBoard().createPattern(
 						amountOfWords - 1, 0, amountOfWords - 1,
 						rand.nextInt(cw.getBoard().getWidth() + 1)); // usun -1

@@ -22,21 +22,24 @@ public class CwReader implements Reader {
 
 	@Override
 	public LinkedList<Crossword> getAllCws(String path)
-			throws NumberFormatException, FileNotFoundException, IOException {
+			throws FileNotFoundException, IOException {
 		LinkedList<Crossword> crosswords = new LinkedList<Crossword>();
 		File file = new File(path);
 		if (file.isDirectory() == true) {
 			String[] files = file.list();
 			for (int i = 0; i < files.length; i++) {
-				Crossword cw = new Crossword(Long.parseLong(files[i]));
-
+				long temp;
+				try {
+					temp = Long.parseLong(files[i]);
+				} catch (NumberFormatException e) {
+					continue;
+				}
+				Crossword cw = new Crossword(temp);
 				FileReader fileReader = new FileReader(path + "/" + files[i]);
 				BufferedReader bufferedReader = new BufferedReader(fileReader);
 
 				int height = Integer.parseInt(bufferedReader.readLine());
 				int width = Integer.parseInt(bufferedReader.readLine());
-				System.out.println(height);
-				System.out.println(width);
 				Board b = new Board(height, width);
 				String s;
 				for (int k = 0; k < height; k++) {
@@ -63,7 +66,9 @@ public class CwReader implements Reader {
 
 				if (bufferedReader != null)
 					bufferedReader.close();
+
 			}
+
 		}
 		return crosswords;
 	}

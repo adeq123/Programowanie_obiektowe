@@ -72,7 +72,7 @@ public class Crossword {
 		this.b = b;
 	}
 
-	private InteliCwDB cwdb; // InteliCwDB
+	private static InteliCwDB cwdb; // InteliCwDB
 
 	/**
 	 * Constructor
@@ -84,8 +84,10 @@ public class Crossword {
 	 * @param filename
 	 *            - file contained dictionary
 	 * @throws wrongCrosswordDimensionsException 
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
 	 */
-	public Crossword(int height, int width, String filename) throws wrongCrosswordDimensionsException {
+	public Crossword(int height, int width, String filename) throws wrongCrosswordDimensionsException, FileNotFoundException, IOException {
 		entries = new LinkedList<CwEntry>();
 		if (height < 1 || width < 2)
 			throw new wrongCrosswordDimensionsException();
@@ -126,12 +128,14 @@ public class Crossword {
 	 * 
 	 * @param cwdb
 	 *            - CwDB
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
 	 */
-	public void setCwDB(InteliCwDB cwdb) {
-		this.cwdb = cwdb;
+	public static void setCwDB(String filename) throws FileNotFoundException, IOException {
+		cwdb = new InteliCwDB(filename);
 	}
 
-	/**
+	/**s
 	 * Checks if crossword contains word
 	 * 
 	 * @param word
@@ -172,9 +176,7 @@ public class Crossword {
 	public final void generate(Strategy s) throws noPossibilityToGenerateCrosswordException {
 		CwEntry e = null;
 		while ((e = s.findEntry(this)) != null) {
-			System.out.println(e.getWord());
 			addCwEntry(e, s);
-			System.out.println("??");
 		}
 	}
 }

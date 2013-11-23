@@ -18,22 +18,20 @@ public class CwDB {
 
 	protected LinkedList<Entry> dict; // list of Entries
 
-	public LinkedList<Entry> getDict(){
+	public LinkedList<Entry> getDict() {
 		return dict;
 	}
+
 	/**
 	 * Constructor
 	 * 
 	 * @param filename
 	 *            - name of file
+	 * @throws IOException
 	 */
-	public CwDB(String filename) {
+	public CwDB(String filename) throws FileNotFoundException, IOException {
 		dict = new LinkedList<Entry>();
-		try {
-			createDB(filename);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		createDB(filename);
 	}
 
 	/**
@@ -128,20 +126,17 @@ public class CwDB {
 	 * @throws IOException
 	 *             - possible exception
 	 */
-	protected void createDB(String filename) throws IOException {
+	protected void createDB(String filename) throws FileNotFoundException,
+			IOException {
 		FileReader fileReader = new FileReader(filename);
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
-		try {
-			String word = null;
-			String clue = null;
-			while ((word = bufferedReader.readLine()) != null
-					&& ((clue = bufferedReader.readLine()) != null))
-				add(word, clue);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} finally {
-			if (bufferedReader != null)
-				bufferedReader.close();
-		}
+		String word = null;
+		String clue = null;
+		while ((word = bufferedReader.readLine()) != null
+				&& ((clue = bufferedReader.readLine()) != null))
+			add(word, clue);
+		if (bufferedReader != null)
+			bufferedReader.close();
+
 	}
 }
