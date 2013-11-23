@@ -13,5 +13,6 @@
 	<classpathentry kind="lib" path="pdfLibrary/itext-xtra-5.4.4.jar"/>
 	<classpathentry kind="lib" path="pdfLibrary/itext-xtra-5.4.4-javadoc.jar"/>
 	<classpathentry kind="lib" path="pdfLibrary/itext-xtra-5.4.4-sources.jar"/>
+	<classpathentry kind="lib" path="sqlLibrary/postgresql-9.3-1100.jdbc41.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
