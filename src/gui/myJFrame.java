@@ -253,7 +253,6 @@ public class myJFrame extends JFrame {
 								&& currentDirectory.canExecute() == true) {
 							cwbrowser = new CwBrowser(currentDirectory
 									.getAbsolutePath());
-							// cwbrowser.browseCrosswords();
 
 							try {
 								cwbrowser.loadCrosswords();
@@ -263,11 +262,11 @@ public class myJFrame extends JFrame {
 									crossword = cwbrowser.crosswordsList
 											.get(actualIndexOfCrossword);
 									drawCrossword(crossword);
-									previousButton.setEnabled(true); // NOWE!
-									nextButton.setEnabled(true);// NOWE!
+									previousButton.setEnabled(true);
+									nextButton.setEnabled(true);
 								} else {
-									previousButton.setEnabled(false);// NOWE!
-									nextButton.setEnabled(false);// NOWE!
+									previousButton.setEnabled(false);
+									nextButton.setEnabled(false);
 									JOptionPane.showMessageDialog(
 											myJFrame.this,
 											"Any crossword was found to load");
