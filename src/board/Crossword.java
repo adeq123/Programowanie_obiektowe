@@ -18,10 +18,19 @@ import exceptions.wrongCrosswordDimensionsException;
  * 
  */
 public class Crossword {
-	public final long id; // id
+	private final long id; // id
 	private LinkedList<CwEntry> entries; // list of CwEntries
 	private Board b; // board
 
+	/**
+	 * Getter
+	 * 
+	 * @return ID
+	 */
+	public long getID(){
+		return id;
+	}
+	
 	/**
 	 * Constructor
 	 * 
@@ -88,16 +97,36 @@ public class Crossword {
 	 * @throws FileNotFoundException 
 	 */
 	public Crossword(int height, int width, String filename) throws wrongCrosswordDimensionsException, FileNotFoundException, IOException {
-		entries = new LinkedList<CwEntry>();
 		if (height < 1 || width < 2)
 			throw new wrongCrosswordDimensionsException();
+		entries = new LinkedList<CwEntry>();
 		b = new Board(height, width);
 		cwdb = new InteliCwDB(filename);
-		id = 0;
+		id = -1;
 	}
 
 	/**
-	 * Returns readonly iterator of list of CwEntries
+	 * Constructor
+	 * 
+	 * @param height
+	 *            - height
+	 * @param width
+	 *            - width
+	 * @param db
+	 *            - database
+	 * @throws wrongCrosswordDimensionsException 
+	 */
+	public Crossword(int height, int width, InteliCwDB db) throws wrongCrosswordDimensionsException {
+		if (height < 1 || width < 2)
+			throw new wrongCrosswordDimensionsException();
+		entries = new LinkedList<CwEntry>();
+		b = new Board(height, width);
+		cwdb = db;
+		id = -1;
+	}
+	
+	/**
+	 * Returns read-only iterator of list of CwEntries
 	 * 
 	 * @return iterator
 	 */

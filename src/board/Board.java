@@ -2,8 +2,8 @@ package board;
 
 import java.util.LinkedList;
 
-import board.BoardCell.Direction;
 import board.BoardCell.Position;
+import dictionary.CwEntry.Direction;
 
 /**
  * 
@@ -52,13 +52,7 @@ public class Board implements Cloneable {
 		this.width = width;
 	}
 
-	/**
-	 * Clones board
-	 * 
-	 * @return clone of board
-	 */
 	public Board clone() {
-		// TO DO Popraw!
 		Board newBoard = new Board(height, width);
 		newBoard.height = height;
 		newBoard.width = width;

@@ -14,7 +14,8 @@ public class CwEntry extends Entry {
 	 */
 	public enum Direction {
 		HORIZ, VERT
-	}; // possibilities - HORIZ if word is horizontal, SECOND - vertical
+	}; // possibilities - HORIZ if word is horizontal, VERT - vertical
+
 	private int x; // position in x-axe
 	private int y; // position in y-axe
 	private Direction d; // direction
@@ -65,5 +66,10 @@ public class CwEntry extends Entry {
 	 */
 	public Direction getDir() {
 		return d;
+	}
+
+	public String toString() {
+		return getDir().toString() + " " + getX() + " " + getY() + " "
+				+ getWord() + "\n" + getClue();
 	}
 }

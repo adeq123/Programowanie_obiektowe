@@ -14,20 +14,20 @@ import dictionary.CwEntry;
 /**
  * 
  * @author krzysztof
- *
+ * 
  */
 public class CwWriter implements Writer {
 
 	@Override
-	public void write(String path, LinkedList<Crossword> crosswordsList) throws IOException {
-		System.out.println("QQQQQQQQQQQQQQQQQQQQQQ");
+	public void write(String path, LinkedList<Crossword> crosswordsList)
+			throws IOException {
 		File file = new File(path);
-System.out.println("QQQQQQQQQQQQQQQQQQQQQQ");
 		Iterator<Crossword> it = crosswordsList.iterator();
 		Crossword crossword;
 		while (it.hasNext()) {
 			crossword = it.next();
-			FileWriter fileWriter = new FileWriter(file.getAbsoluteFile() + "/" + Long.toString(getUniqueID()));
+			FileWriter fileWriter = new FileWriter(file.getAbsoluteFile() + "/"
+					+ Long.toString(getUniqueID()));
 			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 			try {
 				bufferedWriter.write(Integer.toString(crossword.getBoard()
@@ -36,24 +36,11 @@ System.out.println("QQQQQQQQQQQQQQQQQQQQQQ");
 				bufferedWriter.write(Integer.toString(crossword.getBoard()
 						.getWidth()));
 				bufferedWriter.newLine();
-				for (int i = 0; i < crossword.getBoard().getHeight(); i++) {
-					for (int j = 0; j < crossword.getBoard().getWidth(); j++) {
-						if (crossword.getBoard().getCell(i, j).content != null)
-							bufferedWriter.write(crossword.getBoard().getCell(
-									i, j).content);
-						else
-							bufferedWriter.write("null");
-						bufferedWriter.newLine();
-					}
-				}
 				Iterator<CwEntry> iter = crossword.getEntries().iterator();
 				CwEntry c;
 				while (iter.hasNext() == true) {
 					c = iter.next();
-					bufferedWriter.write(c.getWord());
-					System.out.println(c.getWord());
-					bufferedWriter.newLine();
-					bufferedWriter.write(c.getClue());
+					bufferedWriter.write(c.toString());
 					bufferedWriter.newLine();
 				}
 			} finally {

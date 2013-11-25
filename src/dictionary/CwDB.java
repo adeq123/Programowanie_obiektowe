@@ -18,6 +18,11 @@ public class CwDB {
 
 	protected LinkedList<Entry> dict; // list of Entries
 
+	/**
+	 * Getter
+	 * 
+	 * @return dict
+	 */
 	public LinkedList<Entry> getDict() {
 		return dict;
 	}

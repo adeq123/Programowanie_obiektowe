@@ -1,5 +1,7 @@
 package board;
 
+import dictionary.CwEntry.Direction;
+
 /**
  * 
  * @author krzysztof
@@ -8,10 +10,6 @@ package board;
 public class BoardCell implements Cloneable {
 	public String content; // letter in cell
 	public Boolean[][] abilities; // [HORIZ/VERT][START/END/INNER]
-
-	public enum Direction {
-		HORIZ, VERT
-	}; // direction - HORIZ if word is horizontal, SECOND - vertical
 
 	public enum Position {
 		START, END, INNER
@@ -25,11 +23,6 @@ public class BoardCell implements Cloneable {
 		abilities = new Boolean[2][3];
 	}
 
-	/**
-	 * Clones BoardCell
-	 * 
-	 * return clone of BoardCell
-	 */
 	public BoardCell clone() {
 		BoardCell newBoardCell = new BoardCell();
 		if (content != null)

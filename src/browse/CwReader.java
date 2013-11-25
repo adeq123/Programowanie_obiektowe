@@ -41,35 +41,30 @@ public class CwReader implements Reader {
 				int height = Integer.parseInt(bufferedReader.readLine());
 				int width = Integer.parseInt(bufferedReader.readLine());
 				Board b = new Board(height, width);
-				String s;
-				for (int k = 0; k < height; k++) {
-					for (int j = 0; j < width; j++) {
+				String line1, line2;
+				LinkedList<CwEntry> entries = new LinkedList<CwEntry>();
+				while ((line1 = bufferedReader.readLine()) != null) {
+					String[] splitted = line1.split(" ");
+					line2 = bufferedReader.readLine();
+					entries.add(new CwEntry(splitted[3], line2, Integer
+							.parseInt(splitted[1]), Integer
+							.parseInt(splitted[2]), Direction
+							.valueOf(splitted[0])));
+					for (int j = 0; j < splitted[3].length(); j++) {
 						BoardCell bc = new BoardCell();
-						s = new String(bufferedReader.readLine());
-						if (s.equals("null") != true)
-							bc.setContent(s);
-						b.getBoard()[k][j] = bc;
+						bc.setContent(String.valueOf(splitted[3].charAt(j)));
+						b.setCell(Integer.parseInt(splitted[1]),
+								Integer.parseInt(splitted[2]) + j, bc);
 					}
 				}
-				cw.setBoard(b);
-
-				LinkedList<CwEntry> entries = new LinkedList<CwEntry>();
-				String word;
-				String clue;
-				while ((word = bufferedReader.readLine()) != null) {
-					clue = bufferedReader.readLine();
-					entries.add(new CwEntry(word, clue, 0, 0, Direction.HORIZ));
-				}
 				cw.setEntries(entries);
-
+				cw.setBoard(b);
 				crosswords.add(cw);
-
 				if (bufferedReader != null)
 					bufferedReader.close();
-
 			}
-
 		}
+
 		return crosswords;
 	}
 }

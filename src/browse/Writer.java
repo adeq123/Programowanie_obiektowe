@@ -17,7 +17,7 @@ public interface Writer {
 	 * @param path
 	 *            - path to file
 	 * @param crosswordsList
-	 *            - list of crosswords to write to files
+	 *            - list of crosswords to write to file
 	 * @throws IOException
 	 */
 	public void write(String path, LinkedList<Crossword> crosswordsList)

@@ -17,7 +17,7 @@ public interface Reader {
 	 * 
 	 * @param path
 	 *            - path to file
-	 * @return list of crossword from directory with files including crosswords
+	 * @return list of crosswords from directory
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
