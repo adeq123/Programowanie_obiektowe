@@ -33,65 +33,55 @@ import com.itextpdf.text.DocumentException;
 import dictionary.InteliCwDB;
 import exceptions.noPossibilityToGenerateCrosswordException;
 import exceptions.wrongCrosswordDimensionsException;
+import javax.swing.border.LineBorder;
 
 public class myJFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
 	private JPanel contentPane;
+
 	private JPanel firstPanel;
+	private JTextField pathDatabaseTextField;// = null;?????????
+	private JFileChooser databaseFileChooser;
+	private JButton threeDotsDatabaseButton;
+	private JButton changeDatabaseButton;
+
+	private JPanel secondPanel;
+	private JTextField pathTextField;// = null; ????????
+	private JButton loadButton;
+	private JFileChooser fileChooser;
+	private JButton threeDotsButton;
+	private File currentDirectory;// = null; ????????????
+	private JButton previousButton;
+	private JButton nextButton;
+
+	private JPanel thirdPanel;
+	private JFileChooser saveFileChooser;
+	private JButton saveButton;
+	private JFileChooser toPDFFileChooser;
+	private JButton toPDFButton;
+	private PDFCreator pdfCreator = new PDFCreator();
+
+	private JPanel fourthPanel;
 	private JLabel heightLabel;
 	private JSpinner heightSpinner;
 	private JLabel widthLabel;
 	private JSpinner widthSpinner;
 	private JButton generateButton;
 
-	private JPanel secondPanel;
-	private JTextField pathTextField = null;
-	private JButton loadButton;
-	private JFileChooser fileChooser;
-	private JButton threeDotsButton;
-	private File currentDirectory = null;
-	private JButton previousButton;
-	private JButton nextButton;
-
-	private JPanel thirdPanel;
-
+	private JPanel fifthPanel;
 	public enum PaintType {
 		SOLVED, NOTSOLVED
 	}
-
 	PaintType paintType = PaintType.NOTSOLVED;
 	private JRadioButton notSolvedRadioButton;
 	private JRadioButton solvedRadioButton;
 
-	private JPanel fourthPanel;
-	private JFileChooser saveFileChooser;
-	private JButton saveButton;
-	private JFileChooser toPDFFileChooser;
-	private JButton toPDFButton;
-
-	private JPanel fifthPanel;
-	private JTextField pathDatabaseTextField = null;
-	private JFileChooser databaseFileChooser;
-	private JButton threeDotsDatabaseButton;
-	private JButton changeDatabaseButton;
-
 	private MyDrawingJPanel drawingPanel;
 	private JScrollPane scrollDrawingPanel;
 
-	private PDFCreator pdfCreator = new PDFCreator();
-
-	private int crosswordHeight;
-	private int crosswordWidth;
 	private CwBrowser cwbrowser = new CwBrowser();
-
-	public void drawProper(PaintType pt) {
-		paintType = pt;
-		drawingPanel.repaint();
-	}
-	
-	private JFileChooser defaultDatabaseFileChooser;
 
 	/**
 	 * Launch the application.
@@ -118,60 +108,11 @@ public class myJFrame extends JFrame {
 	public myJFrame() {
 
 		try {
-			// zrob while! dopoki jest zle to dialogi!
-			cwbrowser.setDatabase(new InteliCwDB("casasassssssssssss.txt"));
-			
-		} catch (FileNotFoundException e2) {
-			Object[] options = { "exit", "choose database" };
-			int n = JOptionPane
-					.showOptionDialog(
-							this,
-							"Failed to load default database. Do you want to choose it or exit the program?",
-							"A question before start the program",
-							JOptionPane.YES_NO_OPTION,
-							JOptionPane.QUESTION_MESSAGE, null, options, null);
-			if (n == 1) {
-				defaultDatabaseFileChooser = new JFileChooser();
-				int option = defaultDatabaseFileChooser.showDialog(this, "Load");
-				
-				
-				defaultDatabaseFileChooser.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						try {
-							cwbrowser.setDatabase(new InteliCwDB(pathDatabaseTextField
-									.getText()));
-						} catch (FileNotFoundException e1) {
-							JOptionPane.showMessageDialog(myJFrame.this,
-									"File with database not found", "Database error",
-									JOptionPane.ERROR_MESSAGE);
-						} catch (IOException e1) {
-							JOptionPane.showMessageDialog(myJFrame.this,
-									"Failed to import database from file",
-									"Database error", JOptionPane.ERROR_MESSAGE);
-						}
-					}
-				});
-				
-				
-				
-				/*if (option == JFileChooser.APPROVE_OPTION){
-					System.out.println(defaultDatabaseFileChooser.getSelectedFile().getName());
-					try {
-						cwbrowser.setDatabase(new InteliCwDB(defaultDatabaseFileChooser.getSelectedFile().getName()));
-					} catch (FileNotFoundException e1) {
-						JOptionPane.showMessageDialog(defaultDatabaseFileChooser,
-								"This file doesn't exist");
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}*/
-			} else {
-
-			}
-		} catch (IOException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
+			cwbrowser.setDatabase(new InteliCwDB("cwdb.txt"));
+		} catch (FileNotFoundException e1) {
+			cwbrowser.setDatabase(null);
+		} catch (IOException e1) {
+			cwbrowser.setDatabase(null);
 		}
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -181,49 +122,47 @@ public class myJFrame extends JFrame {
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
 
-		firstPanel = new JPanel();
-		firstPanel.setBorder(new TitledBorder(UIManager
+		fourthPanel = new JPanel();
+		fourthPanel.setBorder(new TitledBorder(UIManager
 				.getBorder("TitledBorder.border"), "New crossword",
 				TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		firstPanel.setBounds(12, 123, 406, 71);
-		contentPane.add(firstPanel);
-		firstPanel.setLayout(null);
+		fourthPanel.setBounds(12, 123, 406, 71);
+		contentPane.add(fourthPanel);
+		fourthPanel.setLayout(null);
 
 		heightLabel = new JLabel("Height");
 		heightLabel.setBounds(20, 25, 64, 25);
-		firstPanel.add(heightLabel);
+		fourthPanel.add(heightLabel);
 
 		heightSpinner = new JSpinner();
-		heightSpinner.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent arg0) {
-				crosswordHeight = ((Number) heightSpinner.getValue())
-						.intValue();
-			}
-		});
 		heightSpinner.setBounds(73, 25, 47, 25);
-		firstPanel.add(heightSpinner);
+		fourthPanel.add(heightSpinner);
 
 		widthLabel = new JLabel("Width");
 		widthLabel.setBounds(140, 27, 64, 25);
-		firstPanel.add(widthLabel);
+		fourthPanel.add(widthLabel);
 
 		widthSpinner = new JSpinner();
-		widthSpinner.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent arg0) {
-				crosswordWidth = ((Number) widthSpinner.getValue()).intValue();
-			}
-		});
 		widthSpinner.setBounds(197, 25, 47, 25);
-		firstPanel.add(widthSpinner);
+		fourthPanel.add(widthSpinner);
 
 		generateButton = new JButton("Generate");
 		generateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					cwbrowser
-							.generateCrossword(crosswordHeight, crosswordWidth);
-					drawingPanel.drawCrossword(cwbrowser.getCrossword(),
-							paintType);
+					if (cwbrowser.getDatabase() == null) {
+						JOptionPane
+								.showMessageDialog(myJFrame.this,
+										"Failed to load database. Choose one before generating crossword.");
+						threeDotsDatabaseButton.doClick();
+						changeDatabaseButton.doClick();
+					} else {
+						cwbrowser.generateCrossword(
+								((Number) heightSpinner.getValue()).intValue(),
+								((Number) widthSpinner.getValue()).intValue());
+						drawingPanel.drawCrossword(cwbrowser.getCrossword(),
+								paintType);
+					}
 				} catch (wrongCrosswordDimensionsException e) {
 					JOptionPane.showMessageDialog(myJFrame.this,
 							"The dimensions of crossword are wrong!");
@@ -235,7 +174,7 @@ public class myJFrame extends JFrame {
 			}
 		});
 		generateButton.setBounds(276, 25, 110, 25);
-		firstPanel.add(generateButton);
+		fourthPanel.add(generateButton);
 
 		secondPanel = new JPanel();
 		secondPanel.setBorder(new TitledBorder(UIManager
@@ -282,7 +221,6 @@ public class myJFrame extends JFrame {
 								&& currentDirectory.canExecute() == true) {
 							cwbrowser.setPath(currentDirectory
 									.getAbsolutePath());
-
 							try {
 								cwbrowser.loadCrosswords();
 
@@ -357,13 +295,13 @@ public class myJFrame extends JFrame {
 		nextButton.setEnabled(false);
 		secondPanel.add(nextButton);
 
-		thirdPanel = new JPanel();
-		thirdPanel.setBorder(new TitledBorder(UIManager
+		fifthPanel = new JPanel();
+		fifthPanel.setBorder(new TitledBorder(UIManager
 				.getBorder("TitledBorder.border"), "Displayed crossword",
 				TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		thirdPanel.setBounds(426, 123, 330, 71);
-		contentPane.add(thirdPanel);
-		thirdPanel.setLayout(null);
+		fifthPanel.setBounds(426, 123, 330, 71);
+		contentPane.add(fifthPanel);
+		fifthPanel.setLayout(null);
 
 		notSolvedRadioButton = new JRadioButton("not solved");
 		notSolvedRadioButton.setBounds(20, 25, 140, 25);
@@ -374,7 +312,7 @@ public class myJFrame extends JFrame {
 			}
 		});
 		notSolvedRadioButton.setSelected(true);
-		thirdPanel.add(notSolvedRadioButton);
+		fifthPanel.add(notSolvedRadioButton);
 
 		solvedRadioButton = new JRadioButton("solved");
 		solvedRadioButton.setBounds(185, 25, 140, 25);
@@ -384,7 +322,7 @@ public class myJFrame extends JFrame {
 				drawingPanel.drawCrossword(cwbrowser.getCrossword(), paintType);
 			}
 		});
-		thirdPanel.add(solvedRadioButton);
+		fifthPanel.add(solvedRadioButton);
 
 		ButtonGroup group = new ButtonGroup();
 		group.add(notSolvedRadioButton);
@@ -400,19 +338,18 @@ public class myJFrame extends JFrame {
 		scrollDrawingPanel.setBounds(12, 202, 744, 476);
 		contentPane.add(scrollDrawingPanel);
 
-		fifthPanel = new JPanel();
-		fifthPanel.setBorder(new TitledBorder(UIManager
-				.getBorder("TitledBorder.border"), "Change default database",
-				TitledBorder.LEADING, TitledBorder.TOP, null,
-				new Color(0, 0, 0)));
-		fifthPanel.setBounds(12, 11, 236, 104);
-		contentPane.add(fifthPanel);
-		fifthPanel.setLayout(null);
+		firstPanel = new JPanel();
+		firstPanel.setBorder(new TitledBorder(new LineBorder(new Color(184,
+				207, 229)), "Change database", TitledBorder.LEADING,
+				TitledBorder.TOP, null, new Color(0, 0, 0)));
+		firstPanel.setBounds(12, 11, 236, 104);
+		contentPane.add(firstPanel);
+		firstPanel.setLayout(null);
 
 		pathDatabaseTextField = new JTextField();
 		pathDatabaseTextField.setText("Path...");
 		pathDatabaseTextField.setBounds(20, 24, 156, 25);
-		fifthPanel.add(pathDatabaseTextField);
+		firstPanel.add(pathDatabaseTextField);
 		pathDatabaseTextField.setColumns(10);
 
 		threeDotsDatabaseButton = new JButton("...");
@@ -423,13 +360,8 @@ public class myJFrame extends JFrame {
 						".txt", "txt");
 				databaseFileChooser.setAcceptAllFileFilterUsed(false);
 				databaseFileChooser.setFileFilter(filter);
-				int option = databaseFileChooser.showDialog(myJFrame.this,// a
-																			// moze
-																			// rodzicem
-																			// ma
-																			// byc
-																			// button??
-						"Import");
+				int option = databaseFileChooser.showDialog(myJFrame.this,
+						"Import");/* a moze rodzicem ma byc button?? */
 				if (option == JFileChooser.APPROVE_OPTION) {
 					pathDatabaseTextField.setText(databaseFileChooser
 							.getSelectedFile().getAbsolutePath());
@@ -439,7 +371,7 @@ public class myJFrame extends JFrame {
 			}
 		});
 		threeDotsDatabaseButton.setBounds(177, 24, 39, 25);
-		fifthPanel.add(threeDotsDatabaseButton);
+		firstPanel.add(threeDotsDatabaseButton);
 
 		changeDatabaseButton = new JButton("Change");
 		changeDatabaseButton.addActionListener(new ActionListener() {
@@ -459,15 +391,15 @@ public class myJFrame extends JFrame {
 			}
 		});
 		changeDatabaseButton.setBounds(63, 60, 110, 25);
-		fifthPanel.add(changeDatabaseButton);
+		firstPanel.add(changeDatabaseButton);
 
-		fourthPanel = new JPanel();
-		fourthPanel.setBounds(624, 11, 132, 104);
-		contentPane.add(fourthPanel);
-		fourthPanel.setBorder(new TitledBorder(UIManager
+		thirdPanel = new JPanel();
+		thirdPanel.setBounds(624, 11, 132, 104);
+		contentPane.add(thirdPanel);
+		thirdPanel.setBorder(new TitledBorder(UIManager
 				.getBorder("TitledBorder.border"), "Control",
 				TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		fourthPanel.setLayout(null);
+		thirdPanel.setLayout(null);
 
 		saveButton = new JButton("Save");
 		saveButton.addActionListener(new ActionListener() {
@@ -478,19 +410,25 @@ public class myJFrame extends JFrame {
 							.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 					int option = saveFileChooser.showDialog(myJFrame.this,
 							"Approve directory");
-					if (option == JFileChooser.APPROVE_OPTION) {
-						try {
-							cwbrowser.setPath(saveFileChooser.getSelectedFile()
-									.toString());
-							cwbrowser.saveCrosswords(cwbrowser.getCrossword());
-							JOptionPane.showMessageDialog(
-									myJFrame.this,
-									"Crossword saved in: "
-											+ cwbrowser.getPath());
-						} catch (IOException e1) {
-							JOptionPane.showMessageDialog(myJFrame.this,
-									"Failed to save crossowrd!");
+					if (saveFileChooser.getSelectedFile().canWrite() == true) {
+						if (option == JFileChooser.APPROVE_OPTION) {
+							try {
+								cwbrowser.setPath(saveFileChooser
+										.getSelectedFile().toString());
+								cwbrowser.saveCrosswords(cwbrowser
+										.getCrossword());
+								JOptionPane.showMessageDialog(
+										myJFrame.this,
+										"Crossword saved in: "
+												+ cwbrowser.getPath());
+							} catch (IOException e1) {
+								JOptionPane.showMessageDialog(myJFrame.this,
+										"Failed to save crossowrd!");
+							}
 						}
+					} else {
+						JOptionPane.showMessageDialog(myJFrame.this,
+								"Can't write to this directory!");
 					}
 				} else {
 					JOptionPane.showMessageDialog(myJFrame.this,
@@ -499,7 +437,7 @@ public class myJFrame extends JFrame {
 			}
 		});
 		saveButton.setBounds(21, 25, 90, 25);
-		fourthPanel.add(saveButton);
+		thirdPanel.add(saveButton);
 
 		toPDFButton = new JButton("To PDF");
 		toPDFButton.addActionListener(new ActionListener() {
@@ -538,6 +476,6 @@ public class myJFrame extends JFrame {
 			}
 		});
 		toPDFButton.setBounds(21, 60, 90, 25);
-		fourthPanel.add(toPDFButton);
+		thirdPanel.add(toPDFButton);
 	}
 }
