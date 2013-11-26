@@ -120,6 +120,7 @@ public class myJFrame extends JFrame {
 		try {
 			// zrob while! dopoki jest zle to dialogi!
 			cwbrowser.setDatabase(new InteliCwDB("casasassssssssssss.txt"));
+			
 		} catch (FileNotFoundException e2) {
 			Object[] options = { "exit", "choose database" };
 			int n = JOptionPane
