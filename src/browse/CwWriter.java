@@ -29,24 +29,21 @@ public class CwWriter implements Writer {
 			FileWriter fileWriter = new FileWriter(file.getAbsoluteFile() + "/"
 					+ Long.toString(getUniqueID()));
 			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-			try {
-				bufferedWriter.write(Integer.toString(crossword.getBoard()
-						.getHeight()));
+			bufferedWriter.write(Integer.toString(crossword.getBoard()
+					.getHeight()));
+			bufferedWriter.newLine();
+			bufferedWriter.write(Integer.toString(crossword.getBoard()
+					.getWidth()));
+			bufferedWriter.newLine();
+			Iterator<CwEntry> iter = crossword.getEntries().iterator();
+			CwEntry c;
+			while (iter.hasNext() == true) {
+				c = iter.next();
+				bufferedWriter.write(c.toString());
 				bufferedWriter.newLine();
-				bufferedWriter.write(Integer.toString(crossword.getBoard()
-						.getWidth()));
-				bufferedWriter.newLine();
-				Iterator<CwEntry> iter = crossword.getEntries().iterator();
-				CwEntry c;
-				while (iter.hasNext() == true) {
-					c = iter.next();
-					bufferedWriter.write(c.toString());
-					bufferedWriter.newLine();
-				}
-			} finally {
-				if (bufferedWriter != null)
-					bufferedWriter.close();
 			}
+			if (bufferedWriter != null)
+				bufferedWriter.close();
 		}
 	}
 

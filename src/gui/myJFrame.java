@@ -6,9 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Date;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -27,19 +25,10 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import board.Crossword;
+import pdf.PDFCreator;
 import browse.CwBrowser;
 
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.GrayColor;
-import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfWriter;
 
 import dictionary.InteliCwDB;
 import exceptions.noPossibilityToGenerateCrosswordException;
@@ -55,7 +44,6 @@ public class myJFrame extends JFrame {
 	private JSpinner heightSpinner;
 	private JLabel widthLabel;
 	private JSpinner widthSpinner;
-	// private File defaultDatabase = new File("tak.txt");
 	private JButton generateButton;
 
 	private JPanel secondPanel;
@@ -64,7 +52,6 @@ public class myJFrame extends JFrame {
 	private JFileChooser fileChooser;
 	private JButton threeDotsButton;
 	private File currentDirectory = null;
-	// private int actualIndexOfCrossword = 0;
 	private JButton previousButton;
 	private JButton nextButton;
 
@@ -93,16 +80,18 @@ public class myJFrame extends JFrame {
 	private MyDrawingJPanel drawingPanel;
 	private JScrollPane scrollDrawingPanel;
 
-	// private Crossword crossword = null;
+	private PDFCreator pdfCreator = new PDFCreator();
+
 	private int crosswordHeight;
 	private int crosswordWidth;
-	// private CwBrowser cwbrowser = null;
 	private CwBrowser cwbrowser = new CwBrowser();
 
 	public void drawProper(PaintType pt) {
 		paintType = pt;
 		drawingPanel.repaint();
 	}
+	
+	private JFileChooser defaultDatabaseFileChooser;
 
 	/**
 	 * Launch the application.
@@ -129,10 +118,56 @@ public class myJFrame extends JFrame {
 	public myJFrame() {
 
 		try {
-			cwbrowser.setDatabase(new InteliCwDB("cwdb.txt"));
+			// zrob while! dopoki jest zle to dialogi!
+			cwbrowser.setDatabase(new InteliCwDB("casasassssssssssss.txt"));
 		} catch (FileNotFoundException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
+			Object[] options = { "exit", "choose database" };
+			int n = JOptionPane
+					.showOptionDialog(
+							this,
+							"Failed to load default database. Do you want to choose it or exit the program?",
+							"A question before start the program",
+							JOptionPane.YES_NO_OPTION,
+							JOptionPane.QUESTION_MESSAGE, null, options, null);
+			if (n == 1) {
+				defaultDatabaseFileChooser = new JFileChooser();
+				int option = defaultDatabaseFileChooser.showDialog(this, "Load");
+				
+				
+				defaultDatabaseFileChooser.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						try {
+							cwbrowser.setDatabase(new InteliCwDB(pathDatabaseTextField
+									.getText()));
+						} catch (FileNotFoundException e1) {
+							JOptionPane.showMessageDialog(myJFrame.this,
+									"File with database not found", "Database error",
+									JOptionPane.ERROR_MESSAGE);
+						} catch (IOException e1) {
+							JOptionPane.showMessageDialog(myJFrame.this,
+									"Failed to import database from file",
+									"Database error", JOptionPane.ERROR_MESSAGE);
+						}
+					}
+				});
+				
+				
+				
+				/*if (option == JFileChooser.APPROVE_OPTION){
+					System.out.println(defaultDatabaseFileChooser.getSelectedFile().getName());
+					try {
+						cwbrowser.setDatabase(new InteliCwDB(defaultDatabaseFileChooser.getSelectedFile().getName()));
+					} catch (FileNotFoundException e1) {
+						JOptionPane.showMessageDialog(defaultDatabaseFileChooser,
+								"This file doesn't exist");
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}*/
+			} else {
+
+			}
 		} catch (IOException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
@@ -186,7 +221,8 @@ public class myJFrame extends JFrame {
 				try {
 					cwbrowser
 							.generateCrossword(crosswordHeight, crosswordWidth);
-					drawingPanel.drawCrossword(cwbrowser.getCrossword(), paintType);
+					drawingPanel.drawCrossword(cwbrowser.getCrossword(),
+							paintType);
 				} catch (wrongCrosswordDimensionsException e) {
 					JOptionPane.showMessageDialog(myJFrame.this,
 							"The dimensions of crossword are wrong!");
@@ -243,9 +279,6 @@ public class myJFrame extends JFrame {
 					if (currentDirectory.isDirectory() == true) {
 						if (currentDirectory.canRead() == true
 								&& currentDirectory.canExecute() == true) {
-
-							// cwbrowser = new CwBrowser(currentDirectory
-							// .getAbsolutePath());
 							cwbrowser.setPath(currentDirectory
 									.getAbsolutePath());
 
@@ -253,12 +286,8 @@ public class myJFrame extends JFrame {
 								cwbrowser.loadCrosswords();
 
 								if (cwbrowser.crosswordsList.size() > 0) {
-									// System.out.println("SSSSSSSSSS");
-									// actualIndexOfCrossword = 0;
-									// crossword = cwbrowser.crosswordsList
-									// .get(actualIndexOfCrossword);
-									// drawCrossword(crossword);
-									drawingPanel.drawCrossword(cwbrowser.getCrossword(), paintType);
+									drawingPanel.drawCrossword(
+											cwbrowser.getCrossword(), paintType);
 									previousButton.setEnabled(true);
 									nextButton.setEnabled(true);
 								} else {
@@ -300,15 +329,8 @@ public class myJFrame extends JFrame {
 		previousButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (cwbrowser != null && cwbrowser.crosswordsList.size() > 0) {
-					// actualIndexOfCrossword--;
-					// if (actualIndexOfCrossword < 0)
-					// actualIndexOfCrossword = actualIndexOfCrossword
-					// + cwbrowser.crosswordsList.size();
-					// System.out.println(actualIndexOfCrossword);
-					// crossword = cwbrowser.crosswordsList
-					// .get(actualIndexOfCrossword);
-					// drawCrossword(crossword);
-					drawingPanel.drawCrossword(cwbrowser.previousCrossword(), paintType);
+					drawingPanel.drawCrossword(cwbrowser.previousCrossword(),
+							paintType);
 					System.out.println("Q");
 				} else
 					JOptionPane.showMessageDialog(myJFrame.this,
@@ -323,16 +345,8 @@ public class myJFrame extends JFrame {
 		nextButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (cwbrowser != null && cwbrowser.crosswordsList.size() > 0) {
-					// actualIndexOfCrossword++;
-					// if (actualIndexOfCrossword >= cwbrowser.crosswordsList
-					// .size())
-					// actualIndexOfCrossword = actualIndexOfCrossword
-					// % cwbrowser.crosswordsList.size();
-					// System.out.println(actualIndexOfCrossword);
-					// crossword = cwbrowser.crosswordsList
-					// .get(actualIndexOfCrossword);
-					// drawCrossword(crossword);
-					drawingPanel.drawCrossword(cwbrowser.nextCrossword(), paintType);
+					drawingPanel.drawCrossword(cwbrowser.nextCrossword(),
+							paintType);
 				} else
 					JOptionPane.showMessageDialog(myJFrame.this,
 							"There's no next crossowrds to display");
@@ -416,7 +430,6 @@ public class myJFrame extends JFrame {
 																			// button??
 						"Import");
 				if (option == JFileChooser.APPROVE_OPTION) {
-					// defaultDatabase = databaseFileChooser.getSelectedFile();
 					pathDatabaseTextField.setText(databaseFileChooser
 							.getSelectedFile().getAbsolutePath());
 
@@ -431,13 +444,8 @@ public class myJFrame extends JFrame {
 		changeDatabaseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					// crossword.setCwDB(pathDatabaseTextField.getText());
-					// cwbrowser.getCrossword().setCwDB(pathDatabaseTextField.getText());
 					cwbrowser.setDatabase(new InteliCwDB(pathDatabaseTextField
 							.getText()));
-
-					// pathDatabaseTextField.setText(defaultDatabase
-					// .getAbsolutePath());
 				} catch (FileNotFoundException e1) {
 					JOptionPane.showMessageDialog(myJFrame.this,
 							"File with database not found", "Database error",
@@ -463,7 +471,6 @@ public class myJFrame extends JFrame {
 		saveButton = new JButton("Save");
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// if (crossword != null) {
 				if (cwbrowser.getCrossword() != null) {
 					saveFileChooser = new JFileChooser();
 					saveFileChooser
@@ -472,12 +479,13 @@ public class myJFrame extends JFrame {
 							"Approve directory");
 					if (option == JFileChooser.APPROVE_OPTION) {
 						try {
-							// cwbrowser = new CwBrowser(toPDFFileChooser
-							// .getSelectedFile().toString());
-							// cwbrowser.saveCrosswords(crossword);
 							cwbrowser.setPath(saveFileChooser.getSelectedFile()
 									.toString());
 							cwbrowser.saveCrosswords(cwbrowser.getCrossword());
+							JOptionPane.showMessageDialog(
+									myJFrame.this,
+									"Crossword saved in: "
+											+ cwbrowser.getPath());
 						} catch (IOException e1) {
 							JOptionPane.showMessageDialog(myJFrame.this,
 									"Failed to save crossowrd!");
@@ -502,78 +510,33 @@ public class myJFrame extends JFrame {
 					int option = toPDFFileChooser.showDialog(myJFrame.this,
 							"Approve directory");
 					if (option == JFileChooser.APPROVE_OPTION) {
-						File fff = createPdf(
-								toPDFFileChooser.getSelectedFile(),
-								cwbrowser.getCrossword());
-						JOptionPane.showMessageDialog(myJFrame.this,
-								"Crossword saved in: " + fff.getAbsolutePath());
+						File toPDFFile;
+						try {
+							toPDFFile = pdfCreator.createPdf(
+									toPDFFileChooser.getSelectedFile(),
+									cwbrowser.getCrossword());
+							JOptionPane.showMessageDialog(
+									myJFrame.this,
+									"Crossword saved in: "
+											+ toPDFFile.getAbsolutePath());
+						} catch (FileNotFoundException e1) {
+							JOptionPane.showMessageDialog(myJFrame.this,
+									"Directory to write crossword not found");
+						} catch (DocumentException e1) {
+							JOptionPane.showMessageDialog(myJFrame.this,
+									"There is no possibility to create PDF");
+						} catch (IOException e1) {
+							JOptionPane.showMessageDialog(myJFrame.this,
+									"Failed to create PDF with crossword");
+						}
 					}
 				} else {
 					JOptionPane.showMessageDialog(myJFrame.this,
 							"You have to generate a crossword firstly!");
 				}
-
 			}
 		});
 		toPDFButton.setBounds(21, 60, 90, 25);
 		fourthPanel.add(toPDFButton);
-	}
-
-	public File createPdf(File direct, Crossword cw) {
-		File file = new File(direct.getAbsolutePath() + "/"
-				+ Long.toString(new Date().getTime()));
-		Document document = new Document(PageSize.A4);
-		document.addTitle("Crossword example");
-		document.addAuthor("Krzysztof Spytkowski");
-		document.addSubject("Crossword");
-		document.addKeywords("crossword");
-		document.addCreator("My program using iText");
-		Paragraph p = new Paragraph();
-		PdfWriter pdfWriter = null;
-		try {
-			BaseFont bf = BaseFont.createFont(BaseFont.TIMES_ROMAN,
-					BaseFont.CP1250, BaseFont.EMBEDDED);
-			Font f = new Font(bf, 16, Font.NORMAL);
-			pdfWriter = PdfWriter.getInstance(document,
-					new FileOutputStream(file.getAbsoluteFile()));
-			document.open();
-			PdfContentByte cb = pdfWriter.getDirectContent();
-			for (int i = 0; i < cw.getBoard().getHeight(); i++) {
-				p.add(new Chunk((i + 1) + "\n", f).setLineHeight(30));
-				for (int j = 0; j < cw.getBoard().getWidth(); j++) {
-					if (cw.getBoard().getCell(i, j).content != null) {
-						cb.saveState();
-						cb.setColorStroke(GrayColor.BLACK);
-						cb.setColorFill(GrayColor.WHITE);
-						cb.rectangle(60 + j * 30, -45 + 840 - 30 * i - 30,
-								30, 30); // A4 height = 840f
-						cb.fillStroke();
-						cb.restoreState();
-					}
-				}
-			}
-			p.add(new Chunk("\n", f).setLineHeight(30));
-			for (int i = 1; i <= cw.getBoard().getHeight(); i++) {
-				p.add(new Chunk(i + ". " + cw.getEntries().get(i).getClue()
-						+ "\n\n", f).setLineHeight(15));
-			}
-			document.add(p);
-			document.close();
-		} catch (FileNotFoundException e) {
-			JOptionPane.showMessageDialog(myJFrame.this,
-					"Directory to write crossword not found");
-		} catch (DocumentException e) {
-			JOptionPane.showMessageDialog(myJFrame.this,
-					"There is no possibility to create PDF");
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(myJFrame.this,
-					"Failed to create PDF with crossword");
-		} finally {
-			if (pdfWriter != null)
-				pdfWriter.close();
-			if (document != null)
-				document.close();
-		}
-		return file;
 	}
 }

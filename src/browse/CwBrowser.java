@@ -70,6 +70,15 @@ public class CwBrowser {
 	/**
 	 * Getter
 	 * 
+	 * @return actual path
+	 */
+	public String getPath() {
+		return path;
+	}
+	
+	/**
+	 * Getter
+	 * 
 	 * @return actual database
 	 */
 	public InteliCwDB getDatabase() {
