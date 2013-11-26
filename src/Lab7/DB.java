@@ -15,11 +15,11 @@ public class DB {
 
 	public void connect() {
 		try {
-			Class.forName("org.postgresql.Driver").newInstance();
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			conn = DriverManager.getConnection(
-					"jdbc:postgresql://mysql.agh.edu.pl/books",
-					"kspyt", "");
-
+					"jdbc:mysql://mysql.agh.edu.pl/kspyt", "kspyt",
+					"zPxvWx9f");
+			
 		} catch (SQLException ex) {
 			// handle any errors
 			System.out.println("SQLException: " + ex.getMessage());
@@ -219,6 +219,7 @@ public class DB {
 			connect();
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery("SELECT * FROM books");
+			System.out.println("LOL");
 			while (rs.next()) {
 				String record = rs.getString(1) + " | " + rs.getString(2)
 						+ " | " + rs.getString(3) + " | " + rs.getString(4);
@@ -247,6 +248,12 @@ public class DB {
 
 	public static void main(String[] argv) {
 		DB database = new DB();
+		database.printDB();
+		
+		database.searchByAuthor();
+		database.printDB();
+		
+		database.deleteByISBN();
 		database.printDB();
 	}
 }
