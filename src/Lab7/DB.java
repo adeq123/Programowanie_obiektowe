@@ -17,9 +17,8 @@ public class DB {
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			conn = DriverManager.getConnection(
-					"jdbc:mysql://mysql.agh.edu.pl/kspyt", "kspyt",
-					"zPxvWx9f");
-			
+					"jdbc:mysql://mysql.agh.edu.pl/kspyt", "kspyt", "zPxvWx9f");
+
 		} catch (SQLException ex) {
 			// handle any errors
 			System.out.println("SQLException: " + ex.getMessage());
@@ -246,14 +245,45 @@ public class DB {
 		}
 	}
 
+	public void createTablePracownik() {
+		try {
+			connect();
+			stmt = conn.createStatement();
+			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS prac ("
+					+ "pesel CHAR(11),"
+					+ "wynagrodzenieBrutto DOUBLE,"
+					+ "PRIMARY KEY (pesel));");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void addPracownik() {
+		try {
+			stmt = conn.createStatement();
+			System.out.println("Podaj pesel:");
+			String pes = JIn.getString();
+			System.out.println("Podaj wynagrodzenie brutto:");
+			Double wynBru = JIn.getDouble();
+			stmt.executeUpdate("INSERT INTO prac VALUES (" + pes + ", " + wynBru + ")");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	public static void main(String[] argv) {
-		DB database = new DB();
-		database.printDB();
-		
-		database.searchByAuthor();
-		database.printDB();
-		
-		database.deleteByISBN();
-		database.printDB();
+		/*
+		 * DB database = new DB(); database.printDB();
+		 * 
+		 * database.searchByAuthor(); database.printDB();
+		 * 
+		 * database.deleteByISBN(); database.printDB();
+		 */
+
+		DB pracownicyDatabase = new DB();
+		pracownicyDatabase.createTablePracownik();
+		pracownicyDatabase.addPracownik();
 	}
 }
