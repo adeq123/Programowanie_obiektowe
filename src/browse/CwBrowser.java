@@ -2,10 +2,12 @@ package browse;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import board.Crossword;
 import board.EasytStrategy;
+import dictionary.CwEntry;
 import dictionary.InteliCwDB;
 import exceptions.noPossibilityToGenerateCrosswordException;
 import exceptions.wrongCrosswordDimensionsException;
@@ -191,5 +193,63 @@ public class CwBrowser {
 		System.out.println(actualIndexOfCrossword);
 		actualCrossword = crosswordsList.get(actualIndexOfCrossword);
 		return crosswordsList.get(actualIndexOfCrossword);
+	}
+	
+	public void browseCrosswords() {
+		Iterator<Crossword> iter = crosswordsList.iterator();
+		Crossword cw;
+		while (iter.hasNext()) {
+			cw = iter.next();
+			for (int i = 0; i < cw.getBoard().getHeight(); i++) {
+				for (int j = 0; j < cw.getBoard().getWidth(); j++) {
+					if (cw.getBoard().getCell(i, j).content != null) {
+						System.out.print(cw.getBoard().getCell(i, j).content);
+					} else
+						System.out.print(".");
+				}
+				System.out.println();
+			}
+
+			System.out.println();
+
+			Iterator<CwEntry> it = cw.getEntries().iterator();
+			CwEntry c;
+			while (it.hasNext()) {
+				c = it.next();
+				System.out.println(c.getWord());
+				System.out.println(c.getClue());
+			}
+
+			System.out.println();
+		}
+	}
+
+	public static void main(String[] args)
+			throws noPossibilityToGenerateCrosswordException {
+		CwBrowser cwbrowser = new CwBrowser(
+				"/home/krzysztof/workspace/Programowanie_obiektowe/krzyzowki");
+		// try {
+		// cwbrowser.generateCrossword(10, 20, "cwdb.txt");
+		// cwbrowser.generateCrossword(12, 20, "cwdb.txt");
+		// cwbrowser.generateCrossword(11, 20, "cwdb.txt");
+		// } catch (wrongCrosswordDimensionsException e) {
+		// e.printStackTrace();
+		// }
+
+		try {
+			cwbrowser.saveCrosswords();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		/*
+		 * try { cwbrowser.loadCrosswords(); } catch (NumberFormatException e) {
+		 * e.printStackTrace(); } catch (FileNotFoundException e) {
+		 * e.printStackTrace(); } catch (IOException e) { e.printStackTrace(); }
+		 */
+
+		cwbrowser.browseCrosswords();
+
+		System.out.println("KONIEC");
 	}
 }

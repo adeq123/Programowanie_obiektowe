@@ -176,12 +176,10 @@ public class myJFrame extends JFrame {
 							.getText()));
 				} catch (FileNotFoundException e1) {
 					JOptionPane.showMessageDialog(myJFrame.this,
-							"File with database not found", "Database error",
-							JOptionPane.ERROR_MESSAGE);
+							"File with database not found");
 				} catch (IOException e1) {
 					JOptionPane.showMessageDialog(myJFrame.this,
-							"Failed to import database from file",
-							"Database error", JOptionPane.ERROR_MESSAGE);
+							"Failed to import database from file");
 				}
 			}
 		});
@@ -463,8 +461,8 @@ public class myJFrame extends JFrame {
 		notSolvedRadioButton.setBounds(20, 25, 140, 25);
 		notSolvedRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				paintType = PaintType.NOTSOLVED;
 				if (cwbrowser.getCrossword() != null) {
-					paintType = PaintType.NOTSOLVED;
 					drawingPanel.drawCrossword(cwbrowser.getCrossword(),
 							paintType);
 				}
@@ -477,8 +475,8 @@ public class myJFrame extends JFrame {
 		solvedRadioButton.setBounds(185, 25, 140, 25);
 		solvedRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				paintType = PaintType.SOLVED;
 				if (cwbrowser.getCrossword() != null) {
-					paintType = PaintType.SOLVED;
 					drawingPanel.drawCrossword(cwbrowser.getCrossword(),
 							paintType);
 				}
