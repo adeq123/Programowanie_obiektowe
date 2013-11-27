@@ -19,7 +19,7 @@ import exceptions.noPossibilityToGenerateCrosswordException;
 public class EasytStrategy extends Strategy {
 
 	/**
-	 * Returns CwEntry beeing new main word
+	 * Returns CwEntry being new main word
 	 * 
 	 * @param cw
 	 *            - Crossword

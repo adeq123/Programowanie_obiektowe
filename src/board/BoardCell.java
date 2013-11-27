@@ -16,6 +16,25 @@ public class BoardCell implements Cloneable {
 	}; // position - START if content of cell could be beginning of word etc.
 
 	/**
+	 * Setter
+	 * 
+	 * @param content
+	 *            - content
+	 */
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	/**
+	 * Getter
+	 * 
+	 * @return content of cell (String)
+	 */
+	public String getContent() {
+		return content;
+	}
+	
+	/**
 	 * Constructor
 	 */
 	public BoardCell() {
@@ -50,24 +69,5 @@ public class BoardCell implements Cloneable {
 	public void setAbility(Direction direction, Position position,
 			boolean ability) {
 		abilities[direction.ordinal()][position.ordinal()] = ability;
-	}
-
-	/**
-	 * Setter
-	 * 
-	 * @param content
-	 *            - content
-	 */
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-	/**
-	 * Getter
-	 * 
-	 * @return content of cell (String)
-	 */
-	public String getContent() {
-		return content;
 	}
 }

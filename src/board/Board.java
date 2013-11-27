@@ -19,6 +19,24 @@ public class Board implements Cloneable {
 	/**
 	 * Getter
 	 * 
+	 * @return width
+	 */
+	public int getWidth() {
+		return width;
+	}
+
+	/**
+	 * Getter
+	 * 
+	 * @return height
+	 */
+	public int getHeight() {
+		return height;
+	}
+	
+	/**
+	 * Getter
+	 * 
 	 * @return board
 	 */
 	public BoardCell[][] getBoard() {
@@ -52,18 +70,6 @@ public class Board implements Cloneable {
 		this.width = width;
 	}
 
-	public Board clone() {
-		Board newBoard = new Board(height, width);
-		newBoard.height = height;
-		newBoard.width = width;
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width; j++) {
-				newBoard.board[i][j] = board[i][j].clone();
-			}
-		}
-		return newBoard;
-	}
-
 	/**
 	 * Constructor
 	 * 
@@ -82,23 +88,17 @@ public class Board implements Cloneable {
 		this.height = height;
 		this.width = width;
 	}
-
-	/**
-	 * Getter
-	 * 
-	 * @return width
-	 */
-	public int getWidth() {
-		return width;
-	}
-
-	/**
-	 * Getter
-	 * 
-	 * @return height
-	 */
-	public int getHeight() {
-		return height;
+	
+	public Board clone() {
+		Board newBoard = new Board(height, width);
+		newBoard.height = height;
+		newBoard.width = width;
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				newBoard.board[i][j] = board[i][j].clone();
+			}
+		}
+		return newBoard;
 	}
 
 	/**

@@ -21,7 +21,8 @@ public class Crossword {
 	private final long id; // id
 	private LinkedList<CwEntry> entries; // list of CwEntries
 	private Board b; // board
-
+	private static InteliCwDB cwdb; // InteliCwDB
+	
 	/**
 	 * Getter
 	 * 
@@ -29,18 +30,6 @@ public class Crossword {
 	 */
 	public long getID(){
 		return id;
-	}
-	
-	/**
-	 * Constructor
-	 * 
-	 * @param id
-	 *            - id
-	 * @throws FileNotFoundException
-	 * @throws IOException
-	 */
-	public Crossword(long id) throws FileNotFoundException, IOException {
-		this.id = id;
 	}
 
 	/**
@@ -81,8 +70,18 @@ public class Crossword {
 		this.b = b;
 	}
 
-	private static InteliCwDB cwdb; // InteliCwDB
-
+	/**
+	 * Constructor
+	 * 
+	 * @param id
+	 *            - id
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	public Crossword(long id) throws FileNotFoundException, IOException {
+		this.id = id;
+	}
+	
 	/**
 	 * Constructor
 	 * 
@@ -164,7 +163,7 @@ public class Crossword {
 		cwdb = new InteliCwDB(filename);
 	}
 
-	/**s
+	/**
 	 * Checks if crossword contains word
 	 * 
 	 * @param word
