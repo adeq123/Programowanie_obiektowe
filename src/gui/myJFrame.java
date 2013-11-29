@@ -1,12 +1,12 @@
 package gui;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -31,6 +31,7 @@ import com.itextpdf.text.DocumentException;
 import dictionary.InteliCwDB;
 import exceptions.noPossibilityToGenerateCrosswordException;
 import exceptions.wrongCrosswordDimensionsException;
+import gui.MyDrawingJPanel.PaintType;
 
 /**
  * 
@@ -73,19 +74,6 @@ public class myJFrame extends JFrame {
 	private JButton generateButton; // Generate new crossword button
 
 	private JPanel fifthPanel; // Panel with type of displayed crossword
-
-	//PRZENIES PAINTTYPE DO JDRAWINGPANELU!!!!!!!!!1
-	
-	/**
-	 * 
-	 * @author krzysztof
-	 * 
-	 */
-	public enum PaintType {
-		SOLVED, NOTSOLVED
-	} // type of displayed crossword: solved or not solved
-
-	PaintType paintType = PaintType.NOTSOLVED; // type of displayed crossword
 	private JRadioButton notSolvedRadioButton; // Not solved radio button
 	private JRadioButton solvedRadioButton; // solved radio button
 
@@ -95,25 +83,6 @@ public class myJFrame extends JFrame {
 
 	private CwBrowser cwbrowser = new CwBrowser(); // Crossword's browser from
 													// file
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					UIManager.setLookAndFeel(UIManager
-							.getSystemLookAndFeelClassName());
-					myJFrame frame = new myJFrame();
-					frame.setTitle("Crossword's Program");
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Constructor
@@ -239,8 +208,8 @@ public class myJFrame extends JFrame {
 								cwbrowser.loadCrosswords();
 
 								if (cwbrowser.crosswordsList.size() > 0) {
-									drawingPanel.drawCrossword(
-											cwbrowser.getCrossword(), paintType);
+									drawingPanel.drawCrossword(cwbrowser
+											.getCrossword());
 									previousButton.setEnabled(true);
 									nextButton.setEnabled(true);
 								} else {
@@ -257,6 +226,10 @@ public class myJFrame extends JFrame {
 								JOptionPane
 										.showMessageDialog(myJFrame.this,
 												"Sorry, there is a problem with loading s from directory");
+							} catch (ParseException e) {
+								JOptionPane
+										.showMessageDialog(myJFrame.this,
+												"Sorry, there is a problem with dispalying a crossword");
 							}
 						} else {
 							JOptionPane
@@ -282,9 +255,14 @@ public class myJFrame extends JFrame {
 		previousButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (cwbrowser != null && cwbrowser.crosswordsList.size() > 0) {
-					drawingPanel.drawCrossword(cwbrowser.previousCrossword(),
-							paintType);
-					System.out.println("Q");
+					try {
+						drawingPanel.drawCrossword(cwbrowser
+								.previousCrossword());
+					} catch (ParseException e) {
+						JOptionPane
+								.showMessageDialog(myJFrame.this,
+										"Sorry, there is a problem with dispalying a crossword");
+					}
 				} else
 					JOptionPane.showMessageDialog(myJFrame.this,
 							"There's no previous crossowrds to display");
@@ -298,8 +276,13 @@ public class myJFrame extends JFrame {
 		nextButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (cwbrowser != null && cwbrowser.crosswordsList.size() > 0) {
-					drawingPanel.drawCrossword(cwbrowser.nextCrossword(),
-							paintType);
+					try {
+						drawingPanel.drawCrossword(cwbrowser.nextCrossword());
+					} catch (ParseException e) {
+						JOptionPane
+								.showMessageDialog(myJFrame.this,
+										"Sorry, there is a problem with dispalying a crossword");
+					}
 				} else
 					JOptionPane.showMessageDialog(myJFrame.this,
 							"There's no next crossowrds to display");
@@ -438,9 +421,7 @@ public class myJFrame extends JFrame {
 						cwbrowser.generateCrossword(
 								((Number) heightSpinner.getValue()).intValue(),
 								((Number) widthSpinner.getValue()).intValue());
-						drawingPanel.drawCrossword(cwbrowser.getCrossword(),
-								paintType);
-						drawingPanel.drawBoardCells();
+						drawingPanel.drawCrossword(cwbrowser.getCrossword());
 					}
 				} catch (wrongCrosswordDimensionsException e) {
 					JOptionPane.showMessageDialog(myJFrame.this,
@@ -449,6 +430,10 @@ public class myJFrame extends JFrame {
 					JOptionPane
 							.showMessageDialog(myJFrame.this,
 									"There is no possibility to generate crossword with entered data!");
+				} catch (ParseException e) {
+					JOptionPane
+							.showMessageDialog(myJFrame.this,
+									"Sorry, there is a problem with dispalying a crossword");
 				}
 			}
 		});
@@ -462,15 +447,15 @@ public class myJFrame extends JFrame {
 		fifthPanel.setBounds(426, 123, 330, 71);
 		contentPane.add(fifthPanel);
 		fifthPanel.setLayout(null);
-		// zlap nullpointer przy
+		// TODO zlap nullpointer przy
 		// pliku!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11
 		notSolvedRadioButton = new JRadioButton("not solved");
 		notSolvedRadioButton.setBounds(20, 25, 140, 25);
 		notSolvedRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				paintType = PaintType.NOTSOLVED;
+				drawingPanel.setPaintType(PaintType.NOTSOLVED);
 				if (cwbrowser.getCrossword() != null) {
-					drawingPanel.drawCrosswordContent(paintType);
+					drawingPanel.drawCrosswordContent();
 				}
 			}
 		});
@@ -481,9 +466,9 @@ public class myJFrame extends JFrame {
 		solvedRadioButton.setBounds(185, 25, 140, 25);
 		solvedRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				paintType = PaintType.SOLVED;
+				drawingPanel.setPaintType(PaintType.SOLVED);
 				if (cwbrowser.getCrossword() != null) {
-					drawingPanel.drawCrosswordContent(paintType);
+					drawingPanel.drawCrosswordContent();
 				}
 			}
 		});

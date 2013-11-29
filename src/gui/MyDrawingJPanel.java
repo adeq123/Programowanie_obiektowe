@@ -1,7 +1,5 @@
 package gui;
 
-import gui.myJFrame.PaintType;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -27,30 +25,48 @@ public class MyDrawingJPanel extends JPanel {
 	private static final long serialVersionUID = 1L; // Default serial version
 														// number
 	Crossword crossword; // Crossword to draw
-	PaintType paintType; // Type of crossword
+
+	/**
+	 * 
+	 * @author krzysztof
+	 * 
+	 */
+	public enum PaintType {
+		SOLVED, NOTSOLVED
+	} // type of displayed crossword: solved or not solved
+
+	PaintType paintType; // Type of displayed crossword
 	LinkedList<JFormattedTextField> boardCells = new LinkedList<JFormattedTextField>(); // list
 																						// of
+																						// text
+																						// fields
+																						// (board
+																						// cells)
 
-	// text
-	// fields
-	// (board
-	// cells)
+	/**
+	 * Setter
+	 * 
+	 * @param pt
+	 *            - paint type
+	 */
+	public void setPaintType(PaintType pt) {
+		this.paintType = pt;
+	}
 
 	/**
 	 * Draw Crossword
 	 * 
 	 * @param crossword
 	 *            - crossword to draw
-	 * @param paintType
-	 *            - type of crossword
+	 * @throws ParseException
 	 */
-	public void drawCrossword(Crossword crossword, PaintType paintType) {
+	public void drawCrossword(Crossword crossword) throws ParseException {
 		this.crossword = crossword;
-		this.paintType = paintType;
 		setPreferredSize(new Dimension(1078, 2 * crossword.getBoard()
 				.getHeight() * 30 + 60));
 		revalidate();
 		repaint();
+		drawBoardCells();
 	}
 
 	@Override
@@ -75,13 +91,15 @@ public class MyDrawingJPanel extends JPanel {
 			}
 		}
 		if (paintType == PaintType.SOLVED)
-			drawCrosswordContent(PaintType.SOLVED);
+			drawCrosswordContent();
 	}
 
 	/**
 	 * Draw board cells as text fields
+	 * 
+	 * @throws ParseException
 	 */
-	public void drawBoardCells() {
+	public void drawBoardCells() throws ParseException {
 		Graphics2D g2d = (Graphics2D) this.getGraphics();
 		for (int k = 0; k < boardCells.size(); k++)
 			this.remove(boardCells.get(k));
@@ -91,12 +109,7 @@ public class MyDrawingJPanel extends JPanel {
 			for (int j = 0; j < crossword.getBoard().getWidth(); j++) {
 				if (crossword.getBoard().getCell(i, j).getContent() != null) {
 					JFormattedTextField jftf = null;
-					try {
-						jftf = new JFormattedTextField(new MaskFormatter("U"));
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					jftf = new JFormattedTextField(new MaskFormatter("U"));
 					jftf.setBounds(41 + j * 30, i * 30 + 31, 28, 28);
 					jftf.setHorizontalAlignment(JTextField.CENTER);
 					boardCells.add(jftf);
@@ -113,7 +126,7 @@ public class MyDrawingJPanel extends JPanel {
 	 * @param paintType
 	 *            - type of crossword to paint
 	 */
-	public void drawCrosswordContent(PaintType paintType) {
+	public void drawCrosswordContent() {
 		if (crossword != null) {
 			Iterator<JFormattedTextField> iter = boardCells.iterator();
 			for (int i = 0; i < crossword.getBoard().getHeight(); i++) {
@@ -135,6 +148,8 @@ public class MyDrawingJPanel extends JPanel {
 								actualCell.setValue(null);
 								actualCell.setEditable(true);
 							}
+							if (j == 0)
+								actualCell.setForeground(Color.GREEN);
 						}
 					}
 				}
