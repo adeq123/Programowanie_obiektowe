@@ -175,7 +175,6 @@ public class CwBrowser {
 		if (actualIndexOfCrossword >= crosswordsList.size())
 			actualIndexOfCrossword = actualIndexOfCrossword
 					% crosswordsList.size();
-		System.out.println(actualIndexOfCrossword);
 		actualCrossword = crosswordsList.get(actualIndexOfCrossword);
 		return crosswordsList.get(actualIndexOfCrossword);
 	}
@@ -190,7 +189,6 @@ public class CwBrowser {
 		if (actualIndexOfCrossword < 0)
 			actualIndexOfCrossword = actualIndexOfCrossword
 					+ crosswordsList.size();
-		System.out.println(actualIndexOfCrossword);
 		actualCrossword = crosswordsList.get(actualIndexOfCrossword);
 		return crosswordsList.get(actualIndexOfCrossword);
 	}

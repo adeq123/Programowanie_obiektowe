@@ -35,11 +35,12 @@ import exceptions.wrongCrosswordDimensionsException;
 /**
  * 
  * @author krzysztof
- *
+ * 
  */
 public class myJFrame extends JFrame {
 
-	private static final long serialVersionUID = 1L; // Serial version default number
+	private static final long serialVersionUID = 1L; // Serial version default
+														// number
 
 	private JPanel contentPane; // Main panel
 
@@ -47,7 +48,7 @@ public class myJFrame extends JFrame {
 	private JTextField pathDatabaseTextField; // Path to file with database
 	private JFileChooser databaseFileChooser; // Database file chooser
 	private JButton threeDotsDatabaseButton; // File chooser button
-	private JButton changeDatabaseButton; // Change database button 
+	private JButton changeDatabaseButton; // Change database button
 
 	private JPanel secondPanel; // Panel with browsed crosswords
 	private JTextField pathTextField; // Path to directory with crosswords
@@ -73,10 +74,12 @@ public class myJFrame extends JFrame {
 
 	private JPanel fifthPanel; // Panel with type of displayed crossword
 
+	//PRZENIES PAINTTYPE DO JDRAWINGPANELU!!!!!!!!!1
+	
 	/**
 	 * 
 	 * @author krzysztof
-	 *
+	 * 
 	 */
 	public enum PaintType {
 		SOLVED, NOTSOLVED
@@ -87,9 +90,11 @@ public class myJFrame extends JFrame {
 	private JRadioButton solvedRadioButton; // solved radio button
 
 	private MyDrawingJPanel drawingPanel; // Panel with actual drown crossword
-	private JScrollPane scrollDrawingPanel; // Scroll Panel with crossword's dimensions
+	private JScrollPane scrollDrawingPanel; // Scroll Panel with crossword's
+											// dimensions
 
-	private CwBrowser cwbrowser = new CwBrowser(); // Crossword's browser from file
+	private CwBrowser cwbrowser = new CwBrowser(); // Crossword's browser from
+													// file
 
 	/**
 	 * Launch the application.
@@ -125,14 +130,14 @@ public class myJFrame extends JFrame {
 		} catch (IOException e1) {
 			cwbrowser.setDatabase(null);
 		}
-		
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 768, 711);
 		contentPane = new JPanel();
 		contentPane.setBorder(UIManager.getBorder("ComboBox.border"));
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
-		
+
 		firstPanel = new JPanel();
 		firstPanel.setBorder(new TitledBorder(new LineBorder(new Color(184,
 				207, 229)), "Change database", TitledBorder.LEADING,
@@ -185,7 +190,7 @@ public class myJFrame extends JFrame {
 		});
 		changeDatabaseButton.setBounds(63, 60, 110, 25);
 		firstPanel.add(changeDatabaseButton);
-		
+
 		secondPanel = new JPanel();
 		secondPanel.setBorder(new TitledBorder(new LineBorder(new Color(184,
 				207, 229)), "Browse crosswords from file", TitledBorder.LEFT,
@@ -303,7 +308,7 @@ public class myJFrame extends JFrame {
 		nextButton.setBounds(200, 60, 110, 25);
 		nextButton.setEnabled(false);
 		secondPanel.add(nextButton);
-		
+
 		thirdPanel = new JPanel();
 		thirdPanel.setBounds(624, 11, 132, 104);
 		contentPane.add(thirdPanel);
@@ -435,6 +440,7 @@ public class myJFrame extends JFrame {
 								((Number) widthSpinner.getValue()).intValue());
 						drawingPanel.drawCrossword(cwbrowser.getCrossword(),
 								paintType);
+						drawingPanel.drawBoardCells();
 					}
 				} catch (wrongCrosswordDimensionsException e) {
 					JOptionPane.showMessageDialog(myJFrame.this,
@@ -456,15 +462,15 @@ public class myJFrame extends JFrame {
 		fifthPanel.setBounds(426, 123, 330, 71);
 		contentPane.add(fifthPanel);
 		fifthPanel.setLayout(null);
-
+		// zlap nullpointer przy
+		// pliku!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11
 		notSolvedRadioButton = new JRadioButton("not solved");
 		notSolvedRadioButton.setBounds(20, 25, 140, 25);
 		notSolvedRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				paintType = PaintType.NOTSOLVED;
 				if (cwbrowser.getCrossword() != null) {
-					drawingPanel.drawCrossword(cwbrowser.getCrossword(),
-							paintType);
+					drawingPanel.drawCrosswordContent(paintType);
 				}
 			}
 		});
@@ -477,8 +483,7 @@ public class myJFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				paintType = PaintType.SOLVED;
 				if (cwbrowser.getCrossword() != null) {
-					drawingPanel.drawCrossword(cwbrowser.getCrossword(),
-							paintType);
+					drawingPanel.drawCrosswordContent(paintType);
 				}
 			}
 		});
@@ -489,6 +494,7 @@ public class myJFrame extends JFrame {
 		group.add(solvedRadioButton);
 
 		drawingPanel = new MyDrawingJPanel();
+		drawingPanel.setLayout(null);
 		drawingPanel.setBackground(Color.white);
 
 		scrollDrawingPanel = new JScrollPane(drawingPanel);
