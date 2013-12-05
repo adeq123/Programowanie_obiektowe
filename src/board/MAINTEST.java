@@ -26,7 +26,7 @@ public class MAINTEST {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		Crossword crossword;
 		try {
-			crossword = new Crossword(8, 5, "tak.txt");
+			crossword = new Crossword(20, 20, "tak.txt");
 
 			HardStrategy s = new HardStrategy();
 			try {

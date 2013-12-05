@@ -106,33 +106,12 @@ public class HardStrategy extends Strategy {
 			throw new noPossibilityToGenerateCrosswordException();
 		Entry finalEntry = finalListOfWords.get(rand.nextInt(finalListOfWords
 				.size()));
-		// return new CwEntry(finalEntry.getWord(), finalEntry.getClue(), 0, 0,
-		// Direction.HORIZ);
-
-		if (cw.getBoard().getHeight() >= cw.getBoard().getWidth())
+		if (cw.getBoard().getHeight() <= cw.getBoard().getWidth())
 			return new CwEntry(finalEntry.getWord(), finalEntry.getClue(), 0,
 					0, Direction.HORIZ);
 		else
 			return new CwEntry(finalEntry.getWord(), finalEntry.getClue(), 0,
 					0, Direction.VERT);
-		/*
-		 * LinkedList<Entry> propriateLengthWords = new LinkedList<Entry>();
-		 * Random rand = new Random();
-		 * 
-		 * Entry e; Iterator<Entry> it = cw.getCwDB().getDict().iterator();
-		 * while (it.hasNext()) { e = it.next(); if (e.getWord().length() <=
-		 * cw.getBoard().getHeight() && e.getWord().length() <=
-		 * cw.getBoard().getWidth()) { propriateLengthWords.add(e); } }
-		 * 
-		 * if (propriateLengthWords.size() == 0) throw new
-		 * noPossibilityToGenerateCrosswordException(); Entry finalEntry =
-		 * propriateLengthWords.get(rand .nextInt(propriateLengthWords.size()));
-		 * // if (cw.getBoard().getHeight() > cw.getBoard().getWidth()) if
-		 * (rand.nextInt() % 2 == 0) return new CwEntry(finalEntry.getWord(),
-		 * finalEntry.getClue(), 0, 0, Direction.HORIZ); else return new
-		 * CwEntry(finalEntry.getWord(), finalEntry.getClue(), 0, 0,
-		 * Direction.VERT);
-		 */
 	}
 
 	/**
@@ -155,42 +134,35 @@ public class HardStrategy extends Strategy {
 		if (cw.getEntries().isEmpty() == true) {
 			cwentry = getFirstWord(cw);
 			System.out.println(cwentry);
-			//return null;
 		} else {
-			do {
-				LinkedList<BoardCell> newBoardCellList = new LinkedList<BoardCell>();
-				// dla kazdej komorki
-				for (int i = 0; i < cw.getBoard().getHeight(); i++) {
-					for (int j = 0; j < cw.getBoard().getHeight(); j++) {
-						// jesli komorka nie jest pusta
-						if (cw.getBoard().getBoard()[i][j].getContent() != null) {
-							newBoardCellList
-									.add(cw.getBoard().getBoard()[i][j]);
-						}
-					}
-				}
-
-				// slownik, usun z niego wyrazy ktore juz sa na krzyzowce!!!!!!
-				LinkedList<Entry> newDictList = new LinkedList<Entry>(
-						cw.getEntries());
-				Iterator<BoardCell> iter = newBoardCellList.iterator();
-				// dopoki newDictList ma slowa...
-				while (iter.hasNext() == true) {
-
-					LinkedList<String> newPatternList = new LinkedList<String>();
-					Iterator<BoardCell> it = newBoardCellList.iterator();
-					while (it.hasNext() == true) {
-
-					}
-				}
-
-				String currentPattern = cw.getBoard().createPattern(
-						amountOfWords - 1, 0, amountOfWords - 1,
-						rand.nextInt(cw.getBoard().getWidth()) - 1);
-				entry = cw.getCwDB().getRandom(currentPattern);
-			} while ((entry == null || cw.contains(entry.getWord()) == true));
-			cwentry = new CwEntry(entry.getWord(), entry.getClue(),
-					amountOfWords - 1, 0, Direction.VERT);
+			/*
+			 * do { LinkedList<BoardCell> newBoardCellList = new
+			 * LinkedList<BoardCell>(); // dla kazdej komorki for (int i = 0; i
+			 * < cw.getBoard().getHeight(); i++) { for (int j = 0; j <
+			 * cw.getBoard().getHeight(); j++) { // jesli komorka nie jest pusta
+			 * if (cw.getBoard().getBoard()[i][j].getContent() != null) {
+			 * newBoardCellList .add(cw.getBoard().getBoard()[i][j]); } } }
+			 * 
+			 * // slownik, usun z niego wyrazy ktore juz sa na krzyzowce!!!!!!
+			 * LinkedList<Entry> newDictList = new LinkedList<Entry>(
+			 * cw.getEntries()); Iterator<BoardCell> iter =
+			 * newBoardCellList.iterator(); // dopoki newDictList ma slowa...
+			 * while (iter.hasNext() == true) {
+			 * 
+			 * LinkedList<String> newPatternList = new LinkedList<String>();
+			 * Iterator<BoardCell> it = newBoardCellList.iterator(); while
+			 * (it.hasNext() == true) {
+			 * 
+			 * } }
+			 * 
+			 * String currentPattern = cw.getBoard().createPattern(
+			 * amountOfWords - 1, 0, amountOfWords - 1,
+			 * rand.nextInt(cw.getBoard().getWidth()) - 1); entry =
+			 * cw.getCwDB().getRandom(currentPattern); } while ((entry == null
+			 * || cw.contains(entry.getWord()) == true)); cwentry = new
+			 * CwEntry(entry.getWord(), entry.getClue(), amountOfWords - 1, 0,
+			 * Direction.VERT);
+			 */
 		}
 		return cwentry;
 	}
@@ -209,115 +181,215 @@ public class HardStrategy extends Strategy {
 			setFirstAbilities(b);
 
 		char[] contentOfString = e.getWord().toCharArray();
-		if (e.getDir() == Direction.VERT) {
-			for (int i = 0; i < e.getWord().length(); i++) {
-				// jezeli dodatkowo przecina jakies komorki to je zmien!!!!!!
-				BoardCell boardcell = new BoardCell();
-				boardcell.setContent(new String(contentOfString, i, 1));
-				boardcell.setAbility(CwEntry.Direction.VERT,
-						BoardCell.Position.START, false);
-				boardcell.setAbility(CwEntry.Direction.VERT,
-						BoardCell.Position.END, false);
-				boardcell.setAbility(CwEntry.Direction.VERT,
-						BoardCell.Position.INNER, false);
-				if (e.getY() + 1 < b.getHeight())
-					boardcell.setAbility(CwEntry.Direction.HORIZ,
-							BoardCell.Position.START, true);
-				else
-					boardcell.setAbility(CwEntry.Direction.HORIZ,
-							BoardCell.Position.START, false);
-				if (e.getY() - 1 > 0)
-					boardcell.setAbility(CwEntry.Direction.HORIZ,
-							BoardCell.Position.END, true);
-				else
-					boardcell.setAbility(CwEntry.Direction.HORIZ,
-							BoardCell.Position.END, false);
-				if ((e.getY() + 1 < b.getHeight()) && (e.getY() - 1 > 0))
-					boardcell.setAbility(CwEntry.Direction.HORIZ,
-							BoardCell.Position.INNER, true);
-				else
-					boardcell.setAbility(CwEntry.Direction.HORIZ,
-							BoardCell.Position.INNER, false);
-				b.setCell(e.getX(), e.getY() + i, boardcell);
-			}
-		} else {
-			for (int i = 0; i < e.getWord().length(); i++) {
-				BoardCell boardcell = new BoardCell();
-				boardcell.setContent(new String(contentOfString, i, 1));
-				boardcell.setAbility(CwEntry.Direction.HORIZ,
-						BoardCell.Position.START, false);
-				boardcell.setAbility(CwEntry.Direction.HORIZ,
-						BoardCell.Position.END, false);
-				boardcell.setAbility(CwEntry.Direction.HORIZ,
-						BoardCell.Position.INNER, false);
-				if (e.getX() + 1 < b.getWidth())
-					boardcell.setAbility(CwEntry.Direction.VERT,
-							BoardCell.Position.START, true);
-				else
-					boardcell.setAbility(CwEntry.Direction.VERT,
-							BoardCell.Position.START, false);
-				if (e.getX() - 1 > 0)
-					boardcell.setAbility(CwEntry.Direction.VERT,
-							BoardCell.Position.END, true);
-				else
-					boardcell.setAbility(CwEntry.Direction.VERT,
-							BoardCell.Position.END, false);
-				if ((e.getX() + 1 < b.getWidth()) && (e.getX() - 1 > 0))
-					boardcell.setAbility(CwEntry.Direction.VERT,
-							BoardCell.Position.INNER, true);
-				else
-					boardcell.setAbility(CwEntry.Direction.VERT,
-							BoardCell.Position.INNER, false);
-				b.setCell(e.getX() + i, e.getY(), boardcell);
+
+		for (int i = 0; i < e.getWord().length(); i++) {
+			if (e.getDir() == Direction.VERT) {
+				b.getCell(e.getX() + i, e.getY()).setContent(
+						new String(contentOfString, i, 1));
+				for (int m = e.getX() - 1 + i; m < e.getX() + 2 + i; m++)
+					for (int n = e.getY() - 1; n < e.getY() + 2 + i; n++) {
+						if (m >= 0 && n >= 0 && m < b.getWidth()
+								&& n < b.getHeight()) {
+							if (m == e.getX() - 1 && n == e.getY() - 1) {
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.START, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.START, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.INNER, false);
+							} else if (m == e.getX() - 1 && n == e.getY()) {
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.START, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.START, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.END, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.END, false);
+							} else if (m == e.getX() - 1 && n == e.getY() + 1) {
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.START, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.START, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.END, false);
+							} else if (m == e.getX() + i && n == e.getY() - 1) {
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.START, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.END, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.END, false);
+							} else if (m == e.getX() + i && n == e.getY()) {
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.START, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.END, false);
+							} else if (m == e.getX() + i && n == e.getY() + 1) {
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.START, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.START, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.END, false);
+							} else if (m == e.getX() + e.getWord().length()
+									&& n == e.getY() - 1) {
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.START, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.END, false);
+							} else if (m == e.getX() + e.getWord().length()
+									&& n == e.getY()) {
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.START, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.START, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.END, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.END, false);
+							} else if (m == e.getX() + e.getWord().length()
+									&& n == e.getY() + 1) {
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.END, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.END, false);
+							}
+						}
+
+					}
+			} else {
+				b.getCell(e.getX(), e.getY() + i).setContent(
+						new String(contentOfString, i, 1));
+				for (int m = e.getX() - 1; m < e.getX() + 2 + i; m++)
+					for (int n = e.getY() - 1 + i; n < e.getY() + 2 + i; n++) {
+						if (m >= 0 && n >= 0 && m < b.getWidth()
+								&& n < b.getHeight()) {
+							if (m == e.getX() - 1 && n == e.getY() - 1) {
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.START, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.START, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.INNER, false);
+							} else if (m == e.getX() && n == e.getY() - 1) {
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.START, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.START, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.END, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.END, false);
+							} else if (m == e.getX() + 1 && n == e.getY() - 1) {
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.START, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.START, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.END, false);
+							} else if (m == e.getX() - 1 && n == e.getY() + i) {
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.START, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.END, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.END, false);
+							} else if (m == e.getX() && n == e.getY() + i) {
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.START, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.END, false);
+							} else if (m == e.getX() + 1 && n == e.getY() + i) {
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.START, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.START, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.END, false);
+							} else if (m == e.getX() - 1
+									&& n == e.getY() + e.getWord().length()) {
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.START, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.END, false);
+							} else if (m == e.getX()
+									&& n == e.getY() + e.getWord().length()) {
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.START, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.START, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.END, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.END, false);
+							} else if (m == e.getX() + 1
+									&& n == e.getY() + e.getWord().length()) {
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.INNER, false);
+								b.getCell(m, n).setAbility(Direction.VERT,
+										Position.END, false);
+								b.getCell(m, n).setAbility(Direction.HORIZ,
+										Position.END, false);
+							}
+						}
+					}
 			}
 		}
-	}
-
-	/**
-	 * Sets abilities of cells in empty board
-	 * 
-	 * @param b
-	 *            - board
-	 */
-	public void setFirstAbilities(Board b) {
-		for (int i = 0; i < b.getHeight(); i++)
-			for (int j = 0; j < b.getWidth(); j++) {
-				b.getCell(i, j).setAbility(Direction.HORIZ, Position.START,
-						true);
-				b.getCell(i, j)
-						.setAbility(Direction.VERT, Position.START, true);
-				b.getCell(i, j).setAbility(Direction.HORIZ, Position.INNER,
-						true);
-				b.getCell(i, j)
-						.setAbility(Direction.VERT, Position.INNER, true);
-				b.getCell(i, j).setAbility(Direction.HORIZ, Position.END, true);
-				b.getCell(i, j).setAbility(Direction.VERT, Position.END, true);
-
-				if (j == b.getWidth() - 1) {
-					b.getCell(i, j).setAbility(Direction.HORIZ, Position.START,
-							false);
-					b.getCell(i, j).setAbility(Direction.HORIZ, Position.INNER,
-							false);
-				}
-				if (i == b.getHeight() - 1) {
-					b.getCell(i, j).setAbility(Direction.VERT, Position.START,
-							false);
-					b.getCell(i, j).setAbility(Direction.VERT, Position.INNER,
-							false);
-				}
-				if (j == 0) {
-					b.getCell(i, j).setAbility(Direction.HORIZ, Position.INNER,
-							false);
-					b.getCell(i, j).setAbility(Direction.HORIZ, Position.END,
-							false);
-				}
-				if (i == 0) {
-					b.getCell(i, j).setAbility(Direction.VERT, Position.INNER,
-							false);
-					b.getCell(i, j).setAbility(Direction.VERT, Position.END,
-							false);
-				}
-			}
 		for (int i = 0; i < b.getHeight(); i++) {
 			for (int j = 0; j < b.getWidth(); j++) {
 				if (b.getCell(i, j).abilities[0][0] == false)
@@ -379,6 +451,53 @@ public class HardStrategy extends Strategy {
 		}
 		System.out.println();
 
+	}
+
+	/**
+	 * Sets abilities of cells in empty board
+	 * 
+	 * @param b
+	 *            - board
+	 */
+	public void setFirstAbilities(Board b) {
+		for (int i = 0; i < b.getHeight(); i++)
+			for (int j = 0; j < b.getWidth(); j++) {
+				b.getCell(i, j).setAbility(Direction.HORIZ, Position.START,
+						true);
+				b.getCell(i, j)
+						.setAbility(Direction.VERT, Position.START, true);
+				b.getCell(i, j).setAbility(Direction.HORIZ, Position.INNER,
+						true);
+				b.getCell(i, j)
+						.setAbility(Direction.VERT, Position.INNER, true);
+				b.getCell(i, j).setAbility(Direction.HORIZ, Position.END, true);
+				b.getCell(i, j).setAbility(Direction.VERT, Position.END, true);
+
+				if (j == b.getWidth() - 1) {
+					b.getCell(i, j).setAbility(Direction.HORIZ, Position.START,
+							false);
+					b.getCell(i, j).setAbility(Direction.HORIZ, Position.INNER,
+							false);
+				}
+				if (i == b.getHeight() - 1) {
+					b.getCell(i, j).setAbility(Direction.VERT, Position.START,
+							false);
+					b.getCell(i, j).setAbility(Direction.VERT, Position.INNER,
+							false);
+				}
+				if (j == 0) {
+					b.getCell(i, j).setAbility(Direction.HORIZ, Position.INNER,
+							false);
+					b.getCell(i, j).setAbility(Direction.HORIZ, Position.END,
+							false);
+				}
+				if (i == 0) {
+					b.getCell(i, j).setAbility(Direction.VERT, Position.INNER,
+							false);
+					b.getCell(i, j).setAbility(Direction.VERT, Position.END,
+							false);
+				}
+			}
 	}
 
 }

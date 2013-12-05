@@ -116,7 +116,7 @@ public class Crossword {
 	 * @throws wrongCrosswordDimensionsException 
 	 */
 	public Crossword(int height, int width, InteliCwDB db) throws wrongCrosswordDimensionsException {
-		if (height < 1 || width < 2)
+		if (height < 2 || width < 2)
 			throw new wrongCrosswordDimensionsException();
 		entries = new LinkedList<CwEntry>();
 		b = new Board(height, width);
