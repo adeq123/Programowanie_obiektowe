@@ -183,4 +183,18 @@ public class Board implements Cloneable {
 		}
 		return new String(tableOfChar, 0, tableOfChar.length);
 	}
+	
+	/**
+	 * Checks if Board has only empty cells
+	 * 
+	 * @return true if is empty, false otherwise
+	 */
+	public boolean isEmpty(){
+		for (int i = 0; i < height; i++)
+			for (int j = 0; j < width; j++){
+				if (board[i][j].getContent() != null)
+					return false;
+			}
+		return true;
+	}
 }

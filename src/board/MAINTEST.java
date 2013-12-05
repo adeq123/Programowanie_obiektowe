@@ -26,7 +26,7 @@ public class MAINTEST {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		Crossword crossword;
 		try {
-			crossword = new Crossword(6, 6, "tak.txt");
+			crossword = new Crossword(8, 5, "tak.txt");
 
 			HardStrategy s = new HardStrategy();
 			try {
@@ -41,7 +41,7 @@ public class MAINTEST {
 				// System.out.println(c.getWord());
 				// System.out.println(c.getClue());
 			}
-			for (int i = 0; i < crossword.getBoard().getHeight(); i++) {
+		/*	for (int i = 0; i < crossword.getBoard().getHeight(); i++) {
 				for (int j = 0; j < crossword.getBoard().getWidth(); j++) {
 					if (crossword.getBoard().getCell(i, j).content != null)
 						System.out
@@ -50,7 +50,7 @@ public class MAINTEST {
 						System.out.print(".");
 				}
 				System.out.println();
-			}
+			}*/
 		} catch (wrongCrosswordDimensionsException e1) {
 			e1.printStackTrace();
 		} // od 2 do 12
