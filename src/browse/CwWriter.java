@@ -41,7 +41,8 @@ public class CwWriter implements Writer {
 		Crossword crossword;
 		while (it.hasNext()) {
 			crossword = it.next();
-			FileWriter fileWriter = new FileWriter(file.getAbsoluteFile() + "/" + Long.toString(getUniqueID()));
+			File f = new File(file.getAbsoluteFile() + "/" + Long.toString(getUniqueID()));
+			FileWriter fileWriter = new FileWriter(f);
 			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 			if (crossword.getStrategy().toString().equals("Easy"))
 				bufferedWriter.write("Easy");
@@ -61,6 +62,7 @@ public class CwWriter implements Writer {
 			}
 			if (bufferedWriter != null)
 				bufferedWriter.close();
+			f.setWritable(false);
 		}
 	}
 

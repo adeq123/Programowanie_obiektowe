@@ -398,9 +398,7 @@ public class myJFrame extends JFrame {
 						threeDotsDatabaseButton.doClick();
 						changeDatabaseButton.doClick();
 					} else {
-						// cwbrowser.setStrategy(h);
 						cwbrowser.generateCrossword(((Number) heightSpinner.getValue()).intValue(), ((Number) widthSpinner.getValue()).intValue(), h);
-						// drawingPanel.setStrategy(e);
 						drawingPanel.drawCrossword(cwbrowser.getCrossword());
 					}
 				} catch (wrongCrosswordDimensionsException e) {
