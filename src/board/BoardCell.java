@@ -33,7 +33,7 @@ public class BoardCell implements Cloneable {
 	public String getContent() {
 		return content;
 	}
-	
+
 	/**
 	 * Constructor
 	 */
@@ -69,5 +69,18 @@ public class BoardCell implements Cloneable {
 	public void setAbility(Direction direction, Position position,
 			boolean ability) {
 		abilities[direction.ordinal()][position.ordinal()] = ability;
+	}
+
+	/**
+	 * Gives the ability of concrete position
+	 * 
+	 * @param direction
+	 *            - direction
+	 * @param position
+	 *            - position
+	 * @return ability
+	 */
+	public boolean getAbility(Direction direction, Position position) {
+		return abilities[direction.ordinal()][position.ordinal()];
 	}
 }

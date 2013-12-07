@@ -14,6 +14,10 @@ import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
 import board.Crossword;
+import board.EasytStrategy;
+import board.Strategy;
+import dictionary.CwEntry;
+import dictionary.CwEntry.Direction;
 
 /**
  * 
@@ -36,13 +40,21 @@ public class MyDrawingJPanel extends JPanel {
 	} // type of displayed crossword: solved or not solved
 
 	PaintType paintType; // Type of displayed crossword
-	LinkedList<JFormattedTextField> boardCells = new LinkedList<JFormattedTextField>(); // list
-																						// of
-																						// text
-																						// fields
-																						// (board
-																						// cells)
-
+	Strategy strategy; // Strategy of displayed crossowrd
+	LinkedList<JFormattedTextField> boardCells = new LinkedList<JFormattedTextField>(); // list of text fields (board cells)
+																						 
+																						 
+																						 
+																						 
+	/**
+	 * Setter 
+	 * 																					
+	 * @param s - strategy
+	 */
+	public void setStrategy(Strategy s){
+		strategy = s;
+	}
+	
 	/**
 	 * Setter
 	 * 
@@ -62,8 +74,8 @@ public class MyDrawingJPanel extends JPanel {
 	 */
 	public void drawCrossword(Crossword crossword) throws ParseException {
 		this.crossword = crossword;
-		setPreferredSize(new Dimension(1078, 2 * crossword.getBoard()
-				.getHeight() * 30 + 60));
+		setPreferredSize(new Dimension(1078, crossword.getBoard()
+				.getHeight() * 30 + 60 + crossword.getEntries().size()*30));
 		revalidate();
 		repaint();
 		drawBoardCells();
@@ -76,21 +88,47 @@ public class MyDrawingJPanel extends JPanel {
 		// zmien to, przeciez crossword zawsze != nul!!
 		if (crossword != null) {
 			Crossword cw = crossword;
+			CwEntry temp;
+			Iterator<CwEntry> it = cw.getROEntryIter();
+			
+			int k = 0;
+			int s = 0; 
+			if(strategy.getClass().getName().equals("board.EasytStrategy") == true){// && paintType == PaintType.NOTSOLVED){
+				s = 1;
+				it.next();
+			}
+			while(it.hasNext() == true){
+				temp = it.next();
+				if (temp.getDir() == Direction.HORIZ){
+					if (k + 1 < 10)
+					g2.drawString(String.valueOf(k + 1) + " ", temp.getY()*30 + 30, temp.getX()*30 + 50);
+					else
+					g2.drawString(String.valueOf(k + 1) + " ", temp.getY()*30 + 22, temp.getX()*30 + 50);
+					
+					
+				}
+				else{
+					if (k + 1 < 10)
+						g2.drawString(String.valueOf(k + 1) + " ", temp.getY()*30 + 52, temp.getX()*30 + 26);
+						else
+						g2.drawString(String.valueOf(k + 1) + " ", temp.getY()*30 + 46, temp.getX()*30 + 26);
+					
+				}
+				g2.drawString(String.valueOf(k + 1) + ".", 20, k*30 + 70 + cw.getBoard().getHeight()*30);
+				g2.drawString(cw.getEntries().get(s).getClue(), 40, k*30 + 70 + cw.getBoard().getHeight()*30);
+				k++;
+				s++;
+			}
 			for (int i = 0; i < cw.getBoard().getHeight(); i++) {
-				g2.drawString(String.valueOf(i + 1) + " ", 20, 50 + i * 30);
-				g2.drawString(String.valueOf(i + 1) + ".", 20, 70 + i * 30 + 30
-						* cw.getBoard().getHeight());
 				for (int j = 0; j < cw.getBoard().getWidth(); j++) {
 					if (cw.getBoard().getCell(i, j).getContent() != null) {
 						g2.setColor(Color.BLACK);
 						g2.drawRect(40 + j * 30, i * 30 + 30, 30, 30);
-						g2.drawString(cw.getEntries().get(i + 1).getClue(), 40,
-								70 + 30 * i + 30 * cw.getBoard().getHeight());
 					}
 				}
 			}
 		}
-		if (paintType == PaintType.SOLVED)
+		//if (paintType == PaintType.SOLVED)
 			drawCrosswordContent();
 	}
 
@@ -148,7 +186,7 @@ public class MyDrawingJPanel extends JPanel {
 								actualCell.setValue(null);
 								actualCell.setEditable(true);
 							}
-							if (j == 0)
+							if (j == 0 && strategy.getClass().getName().equals("board.EasytStrategy") == true && paintType == PaintType.SOLVED)
 								actualCell.setForeground(Color.GREEN);
 						}
 					}

@@ -24,6 +24,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import board.EasytStrategy;
+import board.HardStrategy;
 import browse.CwBrowser;
 
 import com.itextpdf.text.DocumentException;
@@ -83,6 +85,8 @@ public class myJFrame extends JFrame {
 
 	private CwBrowser cwbrowser = new CwBrowser(); // Crossword's browser from
 													// file
+	private EasytStrategy e = new EasytStrategy(); // Easy strategy used to generate crosswords
+	private HardStrategy h = new HardStrategy(); // Hard strategy used to generate crosswords
 
 	/**
 	 * Constructor
@@ -418,9 +422,11 @@ public class myJFrame extends JFrame {
 						threeDotsDatabaseButton.doClick();
 						changeDatabaseButton.doClick();
 					} else {
+						cwbrowser.setStrategy(e);
 						cwbrowser.generateCrossword(
 								((Number) heightSpinner.getValue()).intValue(),
 								((Number) widthSpinner.getValue()).intValue());
+						drawingPanel.setStrategy(e);
 						drawingPanel.drawCrossword(cwbrowser.getCrossword());
 					}
 				} catch (wrongCrosswordDimensionsException e) {
@@ -455,7 +461,8 @@ public class myJFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				drawingPanel.setPaintType(PaintType.NOTSOLVED);
 				if (cwbrowser.getCrossword() != null) {
-					drawingPanel.drawCrosswordContent();
+					//drawingPanel.drawCrosswordContent();
+					drawingPanel.repaint();
 				}
 			}
 		});
@@ -468,7 +475,8 @@ public class myJFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				drawingPanel.setPaintType(PaintType.SOLVED);
 				if (cwbrowser.getCrossword() != null) {
-					drawingPanel.drawCrosswordContent();
+					//drawingPanel.drawCrosswordContent();
+					drawingPanel.repaint();
 				}
 			}
 		});
@@ -481,6 +489,7 @@ public class myJFrame extends JFrame {
 		drawingPanel = new MyDrawingJPanel();
 		drawingPanel.setLayout(null);
 		drawingPanel.setBackground(Color.white);
+		drawingPanel.setPaintType(PaintType.NOTSOLVED);
 
 		scrollDrawingPanel = new JScrollPane(drawingPanel);
 		scrollDrawingPanel.setBorder(new TitledBorder(new LineBorder(new Color(

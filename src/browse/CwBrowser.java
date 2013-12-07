@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import board.Crossword;
-import board.EasytStrategy;
+import board.Strategy;
 import dictionary.CwEntry;
 import dictionary.InteliCwDB;
 import exceptions.noPossibilityToGenerateCrosswordException;
@@ -25,7 +25,9 @@ public class CwBrowser {
 	public int actualIndexOfCrossword; // actual index of crossword
 	public InteliCwDB actualDatabase; // actual database
 	public LinkedList<Crossword> crosswordsList; // list of crosswords
-	EasytStrategy s; // Strategy used to generate crosswords
+	Strategy s;
+	//EasytStrategy e; // Easy strategy used to generate crosswords
+	//HardStrategy h; // Hard strategy used to generate crosswords
 
 	/**
 	 * Constructor
@@ -37,9 +39,28 @@ public class CwBrowser {
 		actualIndexOfCrossword = 0;
 		actualDatabase = null;
 		crosswordsList = new LinkedList<Crossword>();
-		s = new EasytStrategy();
+		//e = new EasytStrategy();
+		//h = new HardStrategy();
 	}
 
+	/**
+	 * Setter
+	 * 
+	 * @param s - new strategy
+	 */
+	public void setStrategy(Strategy s){
+		this.s = s;
+	}
+	
+	/**
+	 * Getter
+	 * 
+	 * @return actual strategy
+	 */
+	public Strategy getStrategy(){
+		return s; 
+	}
+	
 	/**
 	 * Setter
 	 * 
@@ -120,9 +141,12 @@ public class CwBrowser {
 	public void generateCrossword(int height, int width)
 			throws wrongCrosswordDimensionsException,
 			noPossibilityToGenerateCrosswordException {
+		System.out.println("Q");
 		Crossword cw = new Crossword(height, width, actualDatabase);
 		actualCrossword = cw;
+		System.out.println("Q");
 		cw.generate(s);
+		System.out.println("Q");
 	}
 
 	/**

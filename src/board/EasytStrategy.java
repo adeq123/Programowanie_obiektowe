@@ -84,7 +84,7 @@ public class EasytStrategy extends Strategy {
 		Entry finalEntry = finalListOfWords.get(rand.nextInt(finalListOfWords
 				.size()));
 		return new CwEntry(finalEntry.getWord(), finalEntry.getClue(), 0, 0,
-				Direction.HORIZ);
+				Direction.VERT);
 	}
 
 	/**
@@ -111,11 +111,11 @@ public class EasytStrategy extends Strategy {
 			do {
 				String currentPattern = cw.getBoard().createPattern(
 						amountOfWords - 1, 0, amountOfWords - 1,
-						rand.nextInt(cw.getBoard().getWidth() + 1));
+						rand.nextInt(cw.getBoard().getWidth()));
 				entry = cw.getCwDB().getRandom(currentPattern);
 			} while ((entry == null || cw.contains(entry.getWord()) == true));
 			cwentry = new CwEntry(entry.getWord(), entry.getClue(),
-					amountOfWords - 1, 0, Direction.VERT);
+					amountOfWords - 1, 0, Direction.HORIZ);
 		}
 		return cwentry;
 	}
@@ -131,8 +131,17 @@ public class EasytStrategy extends Strategy {
 	@Override
 	public void updateBoard(Board b, CwEntry e) {
 		char[] contentOfString = e.getWord().toCharArray();
-		if (e.getDir() == Direction.VERT) {
+		
+		for (int i = 0; i < e.getWord().length(); i++) {
+			if (e.getDir() == Direction.VERT) {
+				b.getCell(e.getX() + i, e.getY()).setContent(new String(contentOfString, i, 1));
+			}
+			else
+				b.getCell(e.getX(), e.getY() + i).setContent(new String(contentOfString, i, 1));
+				
+		/*if (e.getDir() == Direction.HORIZ) {
 			for (int i = 0; i < e.getWord().length(); i++) {
+				b.getCell(x, y)
 				BoardCell boardcell = new BoardCell();
 				boardcell.setContent(new String(contentOfString, i, 1));
 				b.setCell(e.getX(), e.getY() + i, boardcell);
@@ -142,7 +151,7 @@ public class EasytStrategy extends Strategy {
 				BoardCell boardcell = new BoardCell();
 				boardcell.setContent(new String(contentOfString, i, 1));
 				b.setCell(e.getX() + i, e.getY(), boardcell);
-			}
+			}*/
 		}
 	}
 }

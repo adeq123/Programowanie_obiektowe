@@ -33,7 +33,7 @@ public class Board implements Cloneable {
 	public int getHeight() {
 		return height;
 	}
-	
+
 	/**
 	 * Getter
 	 * 
@@ -88,7 +88,7 @@ public class Board implements Cloneable {
 		this.height = height;
 		this.width = width;
 	}
-	
+
 	public Board clone() {
 		Board newBoard = new Board(height, width);
 		newBoard.height = height;
@@ -137,16 +137,53 @@ public class Board implements Cloneable {
 		LinkedList<BoardCell> startBoardCelllinkedList = new LinkedList<BoardCell>();
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
-				if (board[i][j].abilities[Direction.HORIZ.ordinal()][Position.START
-						.ordinal()] == true
-						|| board[i][j].abilities[Direction.VERT.ordinal()][Position.START
-								.ordinal()] == true) {
+				 if
+				 (board[i][j].abilities[Direction.HORIZ.ordinal()][Position.START
+				 .ordinal()] == true
+				 ||
+				 board[i][j].abilities[Direction.VERT.ordinal()][Position.START
+				 .ordinal()] == true) {
+				 startBoardCelllinkedList.add(board[i][j]);
+				 }
+		/*		if (board[i][j].abilities[Direction.VERT.ordinal()][Position.START
+						.ordinal()] == true) {
 					startBoardCelllinkedList.add(board[i][j]);
+				//	System.out.println("VERT");
 				}
-
+				if (board[i][j].abilities[Direction.HORIZ.ordinal()][Position.START
+				                             						.ordinal()] == true) {
+					//System.out.println("HORIZ");
+					startBoardCelllinkedList.add(board[i][j]);
+				                             				}
+*/
 			}
 		}
 		return startBoardCelllinkedList;
+	}
+
+	/**
+	 * Creates list of BoardCells that can be endings of words
+	 * 
+	 * @return list of BoardCells
+	 */
+	public LinkedList<BoardCell> getEndCells(int x, int y, Direction dir) {
+		LinkedList<BoardCell> endBoardCelllinkedList = new LinkedList<BoardCell>();
+		if (dir == Direction.HORIZ) {
+			y++;
+			for (; y < width; y++) {
+				if (board[x][y].abilities[dir.ordinal()][Position.END.ordinal()] == true) {
+					endBoardCelllinkedList.add(board[x][y]);
+				}
+			}
+		} else {
+			x++;
+			for (; x < height; x++) {
+				if (board[x][y].abilities[dir.ordinal()][Position.END.ordinal()] == true) {
+					endBoardCelllinkedList.add(board[x][y]);
+				}
+			}
+		}
+		return endBoardCelllinkedList;
 	}
 
 	/**
@@ -160,41 +197,79 @@ public class Board implements Cloneable {
 	 *            - position of ending of x
 	 * @param toy
 	 *            - position of ending of y
-	 * @return pattern (String) 
+	 * @return pattern (String)
 	 */
 	public String createPattern(int fromx, int fromy, int tox, int toy) {
-		char[] tableOfChar = new char[(((toy - fromy) > 0) ? (toy - fromy)
-				: (tox - fromx))];
+		//System.out.println(fromx + " " + fromy + " " + tox + " " + toy);
+		char[] tableOfChar = new char[(((toy - fromy) > 0) ? (toy - fromy + 1)
+				: (tox - fromx + 1))];
 		if (fromx == tox) {
-			for (int i = fromy; i < toy; i++) {
-					if (board[fromx][fromy + i].content != null)
-						tableOfChar[i] = board[fromx][fromy + i].content
-								.charAt(0);
-					else
-						tableOfChar[i] = '.';
+			for (int i = fromy; i < toy + 1; i++) {
+				if (board[fromx][i].content != null)
+					tableOfChar[i - fromy] = board[fromx][i].content.charAt(0);
+				else
+					tableOfChar[i - fromy] = '.';
 			}
 		} else if (fromy == toy) {
-			for (int i = fromx; i < tox; i++) {
-				if (board[fromx + i][fromy].content != null)
-					tableOfChar[i] = board[fromx + i][fromy].content.charAt(0);
-				else
-					tableOfChar[i] = '.';
+			for (int i = fromx; i < tox + 1; i++) {
+				if (board[i][fromy].content != null) {
+					tableOfChar[i - fromx] = board[i][fromy].content.charAt(0);
+				} else
+					tableOfChar[i - fromx] = '.';
 			}
 		}
 		return new String(tableOfChar, 0, tableOfChar.length);
 	}
-	
+
 	/**
 	 * Checks if Board has only empty cells
 	 * 
 	 * @return true if is empty, false otherwise
 	 */
-	public boolean isEmpty(){
+	public boolean isEmpty() {
 		for (int i = 0; i < height; i++)
-			for (int j = 0; j < width; j++){
+			for (int j = 0; j < width; j++) {
 				if (board[i][j].getContent() != null)
 					return false;
 			}
 		return true;
 	}
+
+	/**
+	 * Gives horizontal position of board cell
+	 * 
+	 * @param bc
+	 *            - boardCell
+	 * @return horizontal position
+	 */
+	public int getHorizPosition(BoardCell bc) {
+		for (int i = 0; i < height; i++)
+			for (int j = 0; j < width; j++) {
+				if (bc == board[i][j])
+					return j;
+			}
+		return -1;
+	}
+
+	/**
+	 * Gives vertical position of board cell
+	 * 
+	 * @param bc
+	 *            - boardCell
+	 * @return vertical position
+	 */
+	public int getVertPosition(BoardCell bc) {
+		for (int i = 0; i < height; i++)
+			for (int j = 0; j < width; j++) {
+				if (bc == board[i][j])
+					return i;
+			}
+		return -1;
+	}
+
+	/*
+	 * public static void main(String[] args){ Board b = new Board(5,5);
+	 * BoardCell bc = b.getCell(2, 3);
+	 * System.out.println(b.getHorizPosition(bc)); }
+	 */
 }
