@@ -412,7 +412,7 @@ public class HardStrategy extends Strategy {
 			System.out.println();
 		}
 		System.out.println();*/
-		/* To debug letters in cells*/
+		/* To debug letters in cells
 		for (int i = 0; i < b.getHeight(); i++) {
 			for (int j = 0; j < b.getWidth(); j++) {
 				if (b.getCell(i, j).getContent() != null)
@@ -422,7 +422,7 @@ public class HardStrategy extends Strategy {
 			}
 			System.out.println();
 		}
-		System.out.println();
+		System.out.println();*/
 	}
 
 	/**
@@ -457,6 +457,11 @@ public class HardStrategy extends Strategy {
 					b.getCell(i, j).setAbility(Direction.VERT, Position.END, false);
 				}
 			}
+	}
+
+	@Override
+	public String toString() {
+		return "Hard";
 	}
 
 }

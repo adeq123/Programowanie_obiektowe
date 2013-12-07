@@ -22,6 +22,16 @@ public class Crossword {
 	private LinkedList<CwEntry> entries; // list of CwEntries
 	private Board b; // board
 	private static InteliCwDB cwdb; // InteliCwDB
+	private final Strategy s; // Strategy
+	
+	/**
+	 * Getter
+	 * 
+	 * @return actual strategy
+	 */
+	public Strategy getStrategy(){
+		return s; 
+	}
 	
 	/**
 	 * Getter
@@ -78,7 +88,8 @@ public class Crossword {
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public Crossword(long id) throws FileNotFoundException, IOException {
+	public Crossword(long id, Strategy s) throws FileNotFoundException, IOException {
+		this.s = s;
 		this.id = id;
 	}
 	
@@ -95,9 +106,10 @@ public class Crossword {
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
 	 */
-	public Crossword(int height, int width, String filename) throws wrongCrosswordDimensionsException, FileNotFoundException, IOException {
+	public Crossword(int height, int width, String filename, Strategy s) throws wrongCrosswordDimensionsException, FileNotFoundException, IOException {
 		if (height < 1 || width < 2)
 			throw new wrongCrosswordDimensionsException();
+		this.s = s;
 		entries = new LinkedList<CwEntry>();
 		b = new Board(height, width);
 		cwdb = new InteliCwDB(filename);
@@ -115,9 +127,10 @@ public class Crossword {
 	 *            - database
 	 * @throws wrongCrosswordDimensionsException 
 	 */
-	public Crossword(int height, int width, InteliCwDB db) throws wrongCrosswordDimensionsException {
+	public Crossword(int height, int width, InteliCwDB db, Strategy s) throws wrongCrosswordDimensionsException {
 		if (height < 2 || width < 2)
 			throw new wrongCrosswordDimensionsException();
+		this.s = s;
 		entries = new LinkedList<CwEntry>();
 		b = new Board(height, width);
 		cwdb = db;

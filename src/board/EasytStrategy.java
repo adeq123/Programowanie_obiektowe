@@ -154,4 +154,9 @@ public class EasytStrategy extends Strategy {
 			}*/
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "Easy";
+	}
 }

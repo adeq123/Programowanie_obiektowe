@@ -29,4 +29,9 @@ public abstract class Strategy {
 	 *            - CwEntry to add to board
 	 */
 	public abstract void updateBoard(Board b, CwEntry e);
+	
+	/**
+	 * returns the name of strategy
+	 */
+	public abstract String toString();
 }

@@ -25,7 +25,7 @@ public class CwBrowser {
 	public int actualIndexOfCrossword; // actual index of crossword
 	public InteliCwDB actualDatabase; // actual database
 	public LinkedList<Crossword> crosswordsList; // list of crosswords
-	Strategy s;
+	//Strategy s;
 	//EasytStrategy e; // Easy strategy used to generate crosswords
 	//HardStrategy h; // Hard strategy used to generate crosswords
 
@@ -49,7 +49,7 @@ public class CwBrowser {
 	 * @param s - new strategy
 	 */
 	public void setStrategy(Strategy s){
-		this.s = s;
+	//	this.s = s;
 	}
 	
 	/**
@@ -57,9 +57,9 @@ public class CwBrowser {
 	 * 
 	 * @return actual strategy
 	 */
-	public Strategy getStrategy(){
-		return s; 
-	}
+	//public Strategy getStrategy(){
+	//	return s; 
+	//}
 	
 	/**
 	 * Setter
@@ -138,15 +138,12 @@ public class CwBrowser {
 	 * @throws noPossibilityToGenerateCrosswordException
 	 * @throws wrongCrosswordDimensionsException
 	 */
-	public void generateCrossword(int height, int width)
+	public void generateCrossword(int height, int width, Strategy s)
 			throws wrongCrosswordDimensionsException,
 			noPossibilityToGenerateCrosswordException {
-		System.out.println("Q");
-		Crossword cw = new Crossword(height, width, actualDatabase);
+		Crossword cw = new Crossword(height, width, actualDatabase,s);
 		actualCrossword = cw;
-		System.out.println("Q");
 		cw.generate(s);
-		System.out.println("Q");
 	}
 
 	/**
