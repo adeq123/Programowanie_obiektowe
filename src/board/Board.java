@@ -89,6 +89,7 @@ public class Board implements Cloneable {
 		this.width = width;
 	}
 
+	@Override
 	public Board clone() {
 		Board newBoard = new Board(height, width);
 		newBoard.height = height;
@@ -137,25 +138,9 @@ public class Board implements Cloneable {
 		LinkedList<BoardCell> startBoardCelllinkedList = new LinkedList<BoardCell>();
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
-				 if
-				 (board[i][j].abilities[Direction.HORIZ.ordinal()][Position.START
-				 .ordinal()] == true
-				 ||
-				 board[i][j].abilities[Direction.VERT.ordinal()][Position.START
-				 .ordinal()] == true) {
-				 startBoardCelllinkedList.add(board[i][j]);
-				 }
-		/*		if (board[i][j].abilities[Direction.VERT.ordinal()][Position.START
-						.ordinal()] == true) {
+				if (board[i][j].abilities[Direction.HORIZ.ordinal()][Position.START.ordinal()] == true || board[i][j].abilities[Direction.VERT.ordinal()][Position.START.ordinal()] == true) {
 					startBoardCelllinkedList.add(board[i][j]);
-				//	System.out.println("VERT");
 				}
-				if (board[i][j].abilities[Direction.HORIZ.ordinal()][Position.START
-				                             						.ordinal()] == true) {
-					//System.out.println("HORIZ");
-					startBoardCelllinkedList.add(board[i][j]);
-				                             				}
-*/
 			}
 		}
 		return startBoardCelllinkedList;
@@ -164,6 +149,12 @@ public class Board implements Cloneable {
 	/**
 	 * Creates list of BoardCells that can be endings of words
 	 * 
+	 * @param x
+	 *            - horizontal position
+	 * @param y
+	 *            - vertical position
+	 * @param dir
+	 *            - direction
 	 * @return list of BoardCells
 	 */
 	public LinkedList<BoardCell> getEndCells(int x, int y, Direction dir) {
@@ -200,9 +191,7 @@ public class Board implements Cloneable {
 	 * @return pattern (String)
 	 */
 	public String createPattern(int fromx, int fromy, int tox, int toy) {
-		//System.out.println(fromx + " " + fromy + " " + tox + " " + toy);
-		char[] tableOfChar = new char[(((toy - fromy) > 0) ? (toy - fromy + 1)
-				: (tox - fromx + 1))];
+		char[] tableOfChar = new char[(((toy - fromy) > 0) ? (toy - fromy + 1) : (tox - fromx + 1))];
 		if (fromx == tox) {
 			for (int i = fromy; i < toy + 1; i++) {
 				if (board[fromx][i].content != null)
@@ -267,9 +256,4 @@ public class Board implements Cloneable {
 		return -1;
 	}
 
-	/*
-	 * public static void main(String[] args){ Board b = new Board(5,5);
-	 * BoardCell bc = b.getCell(2, 3);
-	 * System.out.println(b.getHorizPosition(bc)); }
-	 */
 }

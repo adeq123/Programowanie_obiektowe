@@ -107,7 +107,7 @@ public class Crossword {
 	 * @throws FileNotFoundException 
 	 */
 	public Crossword(int height, int width, String filename, Strategy s) throws wrongCrosswordDimensionsException, FileNotFoundException, IOException {
-		if (height < 1 || width < 2)
+		if (height < 2 || width < 2)
 			throw new wrongCrosswordDimensionsException();
 		this.s = s;
 		entries = new LinkedList<CwEntry>();

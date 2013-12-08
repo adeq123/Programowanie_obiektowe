@@ -26,6 +26,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import dictionary.CwEntry;
 import dictionary.CwEntry.Direction;
+import exceptions.toLargeCrossowrdToCreatePdfFileException;
 
 /**
  * 
@@ -36,6 +37,7 @@ public class CwWriter implements Writer {
 
 	@Override
 	public void write(String path, LinkedList<Crossword> crosswordsList) throws IOException {
+
 		File file = new File(path);
 		Iterator<Crossword> it = crosswordsList.iterator();
 		Crossword crossword;
@@ -79,28 +81,31 @@ public class CwWriter implements Writer {
 	 * @param cw
 	 *            - crossword
 	 * @return file with written crossword
+	 * @throws toLargeCrossowrdToCreatePdfFileException
 	 * @throws DocumentException
 	 * @throws IOException
 	 */
-	public File createPdf(File direct, Crossword cw) throws DocumentException, IOException {
+	public File createPdf(File direct, Crossword cw) throws DocumentException, IOException, toLargeCrossowrdToCreatePdfFileException {
+
+		if (cw.getBoard().getHeight() > 26 || cw.getBoard().getWidth() > 17)
+			throw new toLargeCrossowrdToCreatePdfFileException();
 
 		File file = new File(direct.getAbsolutePath() + "/" + Long.toString(new Date().getTime()) + ".pdf");
 		Document document = new Document(PageSize.A4);
 		document.addTitle("Crossword example");
 		document.addAuthor("Krzysztof Spytkowski");
 		document.addSubject("Crossword");
-		document.addKeywords("crossword");
-		document.addCreator("My program using iText");
-		Paragraph p = new Paragraph();
+		document.addCreator("Crossword's creator");
+		BaseFont baseFont = BaseFont.createFont(BaseFont.TIMES_ROMAN, BaseFont.CP1250, BaseFont.EMBEDDED);
+		Font font = new Font(baseFont, 16, Font.NORMAL);
 		PdfWriter pdfWriter = null;
-		BaseFont bf = BaseFont.createFont(BaseFont.TIMES_ROMAN, BaseFont.CP1250, BaseFont.EMBEDDED);
-		Font f = new Font(bf, 16, Font.NORMAL);
 		pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(file.getAbsoluteFile()));
+
 		document.open();
 		PdfContentByte cb = pdfWriter.getDirectContent();
-
 		Graphics2D g2 = new PdfGraphics2D(cb, PageSize.A4.getWidth(), PageSize.A4.getHeight());
 
+		Paragraph p = new Paragraph();
 		CwEntry temp;
 		Iterator<CwEntry> it = cw.getROEntryIter();
 		int k = 0;
@@ -119,41 +124,28 @@ public class CwWriter implements Writer {
 					g2.drawString(String.valueOf(k + 1) + " ", temp.getY() * 30 + 52, temp.getX() * 30 + 26);
 				else
 					g2.drawString(String.valueOf(k + 1) + " ", temp.getY() * 30 + 48, temp.getX() * 30 + 26);
-
 			}
-			// g2.drawString(String.valueOf(k + 1) + ".", 20, k*30 + 70 +
-			// cw.getBoard().getHeight()*30);
-			// g2.drawString(cw.getEntries().get(s).getClue(), 40, k*30 + 70 +
-			// cw.getBoard().getHeight()*30);
 			k++;
 		}
 		for (int i = 0; i < cw.getBoard().getHeight(); i++) {
-			p.add(new Chunk("\n", f).setLineHeight(30));
+			p.add(new Chunk("\n", font).setLineHeight(30));
 			for (int j = 0; j < cw.getBoard().getWidth(); j++) {
-				if (cw.getBoard().getCell(i, j).content != null) {
-					/*
-					 * cb.saveState(); cb.setColorStroke(GrayColor.BLACK);
-					 * cb.setColorFill(GrayColor.WHITE); cb.rectangle(60 + j *
-					 * 30, -45 + 840 - 30 * i - 30, 30, 30); // A4 // height //
-					 * = // 840f cb.fillStroke(); cb.restoreState();
-					 */
+				if (cw.getBoard().getCell(i, j).getContent() != null) {
 					g2.setColor(Color.BLACK);
 					g2.drawRect(40 + j * 30, i * 30 + 30, 30, 30);
 				}
 			}
 		}
-		p.add(new Chunk("\n", f).setLineHeight(30));
+		p.add(new Chunk("\n", font).setLineHeight(30));
 		int i = 1, j = 0;
-		if (cw.getStrategy().getClass().getName().equals("board.EasytStrategy") == true)
+		if (cw.getStrategy().getClass().getName().equals("board.EasytStrategy") == true) {
 			j++;
+		}
 		for (; j < cw.getEntries().size(); i++, j++) {
-			p.add(new Chunk(i + ". " + cw.getEntries().get(j).getClue() + "\n\n", f).setLineHeight(10));
+			p.add(new Chunk(i + ". " + cw.getEntries().get(j).getClue() + "\n\n", font).setLineHeight(10));
 		}
 		g2.dispose();
 		document.add(p);
-		document.close();
-		if (pdfWriter != null)
-			pdfWriter.close();
 		if (document != null)
 			document.close();
 		return file;

@@ -138,20 +138,6 @@ public class EasytStrategy extends Strategy {
 			}
 			else
 				b.getCell(e.getX(), e.getY() + i).setContent(new String(contentOfString, i, 1));
-				
-		/*if (e.getDir() == Direction.HORIZ) {
-			for (int i = 0; i < e.getWord().length(); i++) {
-				b.getCell(x, y)
-				BoardCell boardcell = new BoardCell();
-				boardcell.setContent(new String(contentOfString, i, 1));
-				b.setCell(e.getX(), e.getY() + i, boardcell);
-			}
-		} else {
-			for (int i = 0; i < e.getWord().length(); i++) {
-				BoardCell boardcell = new BoardCell();
-				boardcell.setContent(new String(contentOfString, i, 1));
-				b.setCell(e.getX() + i, e.getY(), boardcell);
-			}*/
 		}
 	}
 

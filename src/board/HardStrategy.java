@@ -1,9 +1,6 @@
 package board;
 
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Random;
 
 import board.BoardCell.Position;
@@ -18,80 +15,6 @@ import exceptions.noPossibilityToGenerateCrosswordException;
  * 
  */
 public class HardStrategy extends Strategy {
-
-	/**
-	 * Returns CwEntry being new main word
-	 * 
-	 * @param cw
-	 *            - Crossword
-	 * @return CwEntry
-	 * @throws noPossibilityToGenerateCrosswordException
-	 */
-	public CwEntry getFirstWord(Crossword cw) throws noPossibilityToGenerateCrosswordException {
-
-		Map<Character, Integer> firstLettersInDictionaryWithPropriateLength = new HashMap<Character, Integer>();
-		LinkedList<Entry> sameLengthWords = new LinkedList<Entry>();
-		Random rand = new Random();
-
-		Entry e = null;
-		Iterator<Entry> it = cw.getCwDB().getDict().iterator();
-		while (it.hasNext()) {
-			e = it.next();
-			if (cw.getBoard().getHeight() >= cw.getBoard().getWidth()) {
-				if ((firstLettersInDictionaryWithPropriateLength.containsKey(e.getWord().charAt(0)) == false) && (e.getWord().length() <= cw.getBoard().getWidth()))
-					firstLettersInDictionaryWithPropriateLength.put(e.getWord().charAt(0), 1);
-				else if (e.getWord().length() <= cw.getBoard().getWidth())
-					firstLettersInDictionaryWithPropriateLength.put(e.getWord().charAt(0), firstLettersInDictionaryWithPropriateLength.get(e.getWord().charAt(0)) + 1);
-				if (e.getWord().length() <= cw.getBoard().getHeight()) {
-					sameLengthWords.add(new Entry(e.getWord(), e.getClue()));
-				}
-			} else {
-				if ((firstLettersInDictionaryWithPropriateLength.containsKey(e.getWord().charAt(0)) == false) && (e.getWord().length() <= cw.getBoard().getHeight()))
-					firstLettersInDictionaryWithPropriateLength.put(e.getWord().charAt(0), 1);
-				else if (e.getWord().length() <= cw.getBoard().getHeight())
-					firstLettersInDictionaryWithPropriateLength.put(e.getWord().charAt(0), firstLettersInDictionaryWithPropriateLength.get(e.getWord().charAt(0)) + 1);
-				if (e.getWord().length() <= cw.getBoard().getWidth()) {
-					sameLengthWords.add(new Entry(e.getWord(), e.getClue()));
-				}
-			}
-		}
-
-		Iterator<Entry> iter = sameLengthWords.iterator();
-		LinkedList<Entry> finalListOfWords = new LinkedList<Entry>(sameLengthWords);
-		while (iter.hasNext() == true) {
-			e = iter.next();
-			Map<Character, Integer> lettersInWord = new HashMap<Character, Integer>();
-			for (int j = 0; j < e.getWord().length(); j++) {
-				if (lettersInWord.containsKey(e.getWord().charAt(j)) == false) {
-
-					lettersInWord.put(e.getWord().charAt(j), 1);
-				} else {
-
-					lettersInWord.put(e.getWord().charAt(j), lettersInWord.get(e.getWord().charAt(j)) + 1);
-				}
-			}
-			for (Map.Entry<Character, Integer> entry : lettersInWord.entrySet()) {
-				if (firstLettersInDictionaryWithPropriateLength.containsKey(entry.getKey()) == true) {
-					if (entry.getValue() >= firstLettersInDictionaryWithPropriateLength.get(entry.getKey())) {
-						finalListOfWords.remove(e);
-						break;
-					}
-				} else {
-					finalListOfWords.remove(e);
-					break;
-				}
-			}
-
-		}
-
-		if (finalListOfWords.size() == 0)
-			throw new noPossibilityToGenerateCrosswordException();
-		Entry finalEntry = finalListOfWords.get(rand.nextInt(finalListOfWords.size()));
-		if (cw.getBoard().getHeight() <= cw.getBoard().getWidth())
-			return new CwEntry(finalEntry.getWord(), finalEntry.getClue(), 0, 0, Direction.HORIZ);
-		else
-			return new CwEntry(finalEntry.getWord(), finalEntry.getClue(), 0, 0, Direction.VERT);
-	}
 
 	/**
 	 * Finds new CwEntry that could be added to crossword
@@ -116,8 +39,6 @@ public class HardStrategy extends Strategy {
 			}	
 			entry = cw.getCwDB().getRandom(".{2," + cw.getBoard().getWidth() + "}");
 			return new CwEntry(entry.getWord(), entry.getClue(), 0, 0, Direction.HORIZ);
-			//cwentry = getFirstWord(cw);
-			//return cwentry;
 		} else {
 			LinkedList<BoardCell> startingBoardCells = cw.getBoard().getStartCells();
 			while (startingBoardCells.isEmpty() == false) {
@@ -134,7 +55,6 @@ public class HardStrategy extends Strategy {
 				if (directionFlag == true) {
 					LinkedList<BoardCell> endingBoardCells = cw.getBoard().getEndCells(cw.getBoard().getVertPosition(startBC), cw.getBoard().getHorizPosition(startBC), Direction.HORIZ);
 					while (endingBoardCells.isEmpty() == false) {
-						//int p = rand.nextInt(endingBoardCells.size());
 						int p = endingBoardCells.size() - 1;
 						endBC = endingBoardCells.get(p);
 						boolean possible = true;
@@ -178,7 +98,6 @@ public class HardStrategy extends Strategy {
 				} else {
 					LinkedList<BoardCell> endingBoardCells = cw.getBoard().getEndCells(cw.getBoard().getVertPosition(startBC), cw.getBoard().getHorizPosition(startBC), Direction.VERT);
 					while (endingBoardCells.isEmpty() == false) {
-						//int p = rand.nextInt(endingBoardCells.size());
 						int p = endingBoardCells.size() - 1;
 						endBC = endingBoardCells.get(p);
 						boolean possible = true;
@@ -236,6 +155,7 @@ public class HardStrategy extends Strategy {
 	 */
 	@Override
 	public void updateBoard(Board b, CwEntry e) {
+		
 		if (b.isEmpty() == true)
 			setFirstAbilities(b);
 
@@ -351,78 +271,6 @@ public class HardStrategy extends Strategy {
 					}
 			}
 		}
-		/* To debug abilities of cells
-		  for (int i = 0; i < b.getHeight(); i++) {
-			for (int j = 0; j < b.getWidth(); j++) {
-				if (b.getCell(i, j).abilities[0][0] == false)
-					System.out.print("F");
-				else
-					System.out.print("T");
-			}
-			System.out.println();
-		}
-		System.out.println();
-		for (int i = 0; i < b.getHeight(); i++) {
-			for (int j = 0; j < b.getWidth(); j++) {
-				if (b.getCell(i, j).abilities[1][0] == false)
-					System.out.print("F");
-				else
-					System.out.print("T");
-			}
-			System.out.println();
-		}
-		System.out.println();
-		for (int i = 0; i < b.getHeight(); i++) {
-			for (int j = 0; j < b.getWidth(); j++) {
-				if (b.getCell(i, j).abilities[0][1] == false)
-					System.out.print("F");
-				else
-					System.out.print("T");
-			}
-			System.out.println();
-		}
-		System.out.println();
-		for (int i = 0; i < b.getHeight(); i++) {
-			for (int j = 0; j < b.getWidth(); j++) {
-				if (b.getCell(i, j).abilities[1][1] == false)
-					System.out.print("F");
-				else
-					System.out.print("T");
-			}
-			System.out.println();
-		}
-		System.out.println();
-		for (int i = 0; i < b.getHeight(); i++) {
-			for (int j = 0; j < b.getWidth(); j++) {
-				if (b.getCell(i, j).abilities[0][2] == false)
-					System.out.print("F");
-				else
-					System.out.print("T");
-			}
-			System.out.println();
-		}
-		System.out.println();
-		for (int i = 0; i < b.getHeight(); i++) {
-			for (int j = 0; j < b.getWidth(); j++) {
-				if (b.getCell(i, j).abilities[1][2] == false)
-					System.out.print("F");
-				else
-					System.out.print("T");
-			}
-			System.out.println();
-		}
-		System.out.println();*/
-		/* To debug letters in cells
-		for (int i = 0; i < b.getHeight(); i++) {
-			for (int j = 0; j < b.getWidth(); j++) {
-				if (b.getCell(i, j).getContent() != null)
-					System.out.print(b.getCell(i, j).getContent());
-				else
-					System.out.print("-");
-			}
-			System.out.println();
-		}
-		System.out.println();*/
 	}
 
 	/**

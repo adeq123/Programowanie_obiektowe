@@ -11,6 +11,11 @@ public class BoardCell implements Cloneable {
 	public String content; // letter in cell
 	public Boolean[][] abilities; // [HORIZ/VERT][START/END/INNER]
 
+	/**
+	 * 
+	 * @author krzysztof
+	 *
+	 */
 	public enum Position {
 		START, END, INNER
 	}; // position - START if content of cell could be beginning of word etc.
@@ -42,6 +47,7 @@ public class BoardCell implements Cloneable {
 		abilities = new Boolean[2][3];
 	}
 
+	@Override
 	public BoardCell clone() {
 		BoardCell newBoardCell = new BoardCell();
 		if (content != null)
