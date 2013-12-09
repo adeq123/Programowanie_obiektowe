@@ -1,9 +1,12 @@
-package board;
+package strategy;
 
 import java.util.LinkedList;
 import java.util.Random;
 
+import board.Board;
+import board.BoardCell;
 import board.BoardCell.Position;
+import board.Crossword;
 import dictionary.CwEntry;
 import dictionary.CwEntry.Direction;
 import dictionary.Entry;
@@ -33,12 +36,17 @@ public class HardStrategy extends Strategy {
 		BoardCell endBC = null;
 
 		if (cw.getEntries().isEmpty() == true) {
-			if (cw.getBoard().getHeight() >= cw.getBoard().getWidth()){
+			if (cw.getBoard().getHeight() >= cw.getBoard().getWidth()) {
 				entry = cw.getCwDB().getRandom(".{2," + cw.getBoard().getHeight() + "}");
+				if (entry == null)
+					throw new noPossibilityToGenerateCrosswordException("There is no possibility to generate hard crossword with entered data!");
 				return new CwEntry(entry.getWord(), entry.getClue(), 0, 0, Direction.VERT);
-			}	
-			entry = cw.getCwDB().getRandom(".{2," + cw.getBoard().getWidth() + "}");
-			return new CwEntry(entry.getWord(), entry.getClue(), 0, 0, Direction.HORIZ);
+			} else {
+				entry = cw.getCwDB().getRandom(".{2," + cw.getBoard().getWidth() + "}");
+				if (entry == null)
+					throw new noPossibilityToGenerateCrosswordException("There is no possibility to generate hard crossword with entered data!");
+				return new CwEntry(entry.getWord(), entry.getClue(), 0, 0, Direction.HORIZ);
+			}
 		} else {
 			LinkedList<BoardCell> startingBoardCells = cw.getBoard().getStartCells();
 			while (startingBoardCells.isEmpty() == false) {
@@ -59,8 +67,7 @@ public class HardStrategy extends Strategy {
 						endBC = endingBoardCells.get(p);
 						boolean possible = true;
 						for (int r = 1; r < cw.getBoard().getHorizPosition(endBC) - cw.getBoard().getHorizPosition(startBC); r++) {
-							if (r < (cw.getBoard().getHorizPosition(endBC) - cw.getBoard().getHorizPosition(startBC))
-									&& cw.getBoard().getCell(cw.getBoard().getVertPosition(startBC), cw.getBoard().getHorizPosition(startBC) + r).getAbility(Direction.HORIZ, Position.INNER) == true)
+							if (r < (cw.getBoard().getHorizPosition(endBC) - cw.getBoard().getHorizPosition(startBC)) && cw.getBoard().getCell(cw.getBoard().getVertPosition(startBC), cw.getBoard().getHorizPosition(startBC) + r).getAbility(Direction.HORIZ, Position.INNER) == true)
 								continue;
 							else {
 								possible = false;
@@ -80,8 +87,7 @@ public class HardStrategy extends Strategy {
 							endingBoardCells.remove(p);
 						}
 						if (possible == true) {
-							String currentPattern = cw.getBoard().createPattern(cw.getBoard().getVertPosition(startBC), cw.getBoard().getHorizPosition(startBC), cw.getBoard().getVertPosition(endBC),
-									cw.getBoard().getHorizPosition(endBC));
+							String currentPattern = cw.getBoard().createPattern(cw.getBoard().getVertPosition(startBC), cw.getBoard().getHorizPosition(startBC), cw.getBoard().getVertPosition(endBC), cw.getBoard().getHorizPosition(endBC));
 							LinkedList<Entry> patternDict = cw.getCwDB().findAll(currentPattern);
 							while (patternDict.size() > 0) {
 								int kk = rand.nextInt(patternDict.size());
@@ -102,8 +108,7 @@ public class HardStrategy extends Strategy {
 						endBC = endingBoardCells.get(p);
 						boolean possible = true;
 						for (int r = 1; r < cw.getBoard().getVertPosition(endBC) - cw.getBoard().getVertPosition(startBC); r++) {
-							if (r < (cw.getBoard().getVertPosition(endBC) - cw.getBoard().getVertPosition(startBC))
-									&& cw.getBoard().getCell(cw.getBoard().getVertPosition(startBC) + r, cw.getBoard().getHorizPosition(startBC)).getAbility(Direction.VERT, Position.INNER) == true)
+							if (r < (cw.getBoard().getVertPosition(endBC) - cw.getBoard().getVertPosition(startBC)) && cw.getBoard().getCell(cw.getBoard().getVertPosition(startBC) + r, cw.getBoard().getHorizPosition(startBC)).getAbility(Direction.VERT, Position.INNER) == true)
 								continue;
 							else {
 								possible = false;
@@ -123,8 +128,7 @@ public class HardStrategy extends Strategy {
 							endingBoardCells.remove(p);
 						}
 						if (possible == true) {
-							String currentPattern = cw.getBoard().createPattern(cw.getBoard().getVertPosition(startBC), cw.getBoard().getHorizPosition(startBC), cw.getBoard().getVertPosition(endBC),
-									cw.getBoard().getHorizPosition(endBC));
+							String currentPattern = cw.getBoard().createPattern(cw.getBoard().getVertPosition(startBC), cw.getBoard().getHorizPosition(startBC), cw.getBoard().getVertPosition(endBC), cw.getBoard().getHorizPosition(endBC));
 							LinkedList<Entry> patternDict = cw.getCwDB().findAll(currentPattern);
 							while (patternDict.size() > 0) {
 								int kk = rand.nextInt(patternDict.size());
@@ -155,7 +159,7 @@ public class HardStrategy extends Strategy {
 	 */
 	@Override
 	public void updateBoard(Board b, CwEntry e) {
-		
+
 		if (b.isEmpty() == true)
 			setFirstAbilities(b);
 

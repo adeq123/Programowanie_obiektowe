@@ -54,11 +54,12 @@ public class MyDrawingJPanel extends JPanel {
 	 * 
 	 * @param crossword
 	 *            - crossword to draw
-	 * @throws ParseException
 	 */
-	public void drawCrossword(Crossword crossword) throws ParseException {
+	public void drawCrossword(Crossword crossword) {
 		this.crossword = crossword;
-		setPreferredSize(new Dimension(1078, crossword.getBoard().getHeight() * 30 + 60 + crossword.getEntries().size() * 30));
+		int newWidth = 1078 > 70 + crossword.getBoard().getWidth() * 30 ? 1078 : 70 + crossword.getBoard().getWidth() * 30;
+		int newHeight = crossword.getBoard().getHeight() * 30 + 60 + crossword.getEntries().size() * 30;
+		setPreferredSize(new Dimension(newWidth, newHeight));
 		revalidate();
 		repaint();
 		createBoardCells();
@@ -73,7 +74,7 @@ public class MyDrawingJPanel extends JPanel {
 			Iterator<CwEntry> it = crossword.getROEntryIter();
 			int k = 0;
 			int s = 0;
-			if (crossword.getStrategy().getClass().getName().equals("board.EasytStrategy") == true) {
+			if (crossword.getStrategy().getClass().getSimpleName().equals("EasyStrategy") == true) {
 				s = 1;
 				it.next();
 			}
@@ -126,7 +127,7 @@ public class MyDrawingJPanel extends JPanel {
 								actualCell.setText(crossword.getBoard().getCell(i, j).content);
 								actualCell.setEditable(false);
 							}
-							if (j == 0 && crossword.getStrategy().getClass().getName().equals("board.EasytStrategy") == true && paintType == PaintType.SOLVED)
+							if (j == 0 && crossword.getStrategy().getClass().getSimpleName().equals("EasyStrategy") == true && paintType == PaintType.SOLVED)
 								actualCell.setForeground(Color.GREEN);
 						}
 					}

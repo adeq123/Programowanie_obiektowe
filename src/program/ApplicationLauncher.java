@@ -1,6 +1,6 @@
 package program;
 
-import gui.myJFrame;
+import gui.MyJFrame;
 
 import java.awt.EventQueue;
 
@@ -22,9 +22,9 @@ public class ApplicationLauncher {
 				try {
 					UIManager.setLookAndFeel(UIManager
 							.getSystemLookAndFeelClassName());
-					myJFrame frame = new myJFrame();
-					frame.setTitle("Krzysztof Spytkowski - Crossword Application");
-					frame.setVisible(true);
+					MyJFrame myJFrame = new MyJFrame();
+					myJFrame.setTitle("Krzysztof Spytkowski - Crossword Application");
+					myJFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

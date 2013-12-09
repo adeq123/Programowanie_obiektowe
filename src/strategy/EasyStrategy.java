@@ -1,4 +1,4 @@
-package board;
+package strategy;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Random;
 
+import board.Board;
+import board.Crossword;
 import dictionary.CwEntry;
 import dictionary.CwEntry.Direction;
 import dictionary.Entry;
@@ -16,7 +18,7 @@ import exceptions.noPossibilityToGenerateCrosswordException;
  * @author krzysztof
  * 
  */
-public class EasytStrategy extends Strategy {
+public class EasyStrategy extends Strategy {
 
 	/**
 	 * Returns CwEntry being new main word
@@ -75,11 +77,9 @@ public class EasytStrategy extends Strategy {
 					break;
 				}
 			}
-		
 		}
-		
 		if (finalListOfWords.size() == 0)
-			throw new noPossibilityToGenerateCrosswordException();
+			throw new noPossibilityToGenerateCrosswordException("There is no possibility to generate easy crossword with entered data!");
 		Random rand = new Random();
 		Entry finalEntry = finalListOfWords.get(rand.nextInt(finalListOfWords
 				.size()));

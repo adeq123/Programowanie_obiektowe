@@ -4,9 +4,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import strategy.Strategy;
 import board.Crossword;
-import board.Strategy;
 import dictionary.InteliCwDB;
+import exceptions.noCrosswordFoundToLoadException;
 import exceptions.noPossibilityToGenerateCrosswordException;
 import exceptions.wrongCrosswordDimensionsException;
 
@@ -35,7 +36,7 @@ public class CwBrowser {
 		actualDatabase = null;
 		crosswordsList = new LinkedList<Crossword>();
 	}
-	
+
 	/**
 	 * Setter
 	 * 
@@ -113,10 +114,8 @@ public class CwBrowser {
 	 * @throws noPossibilityToGenerateCrosswordException
 	 * @throws wrongCrosswordDimensionsException
 	 */
-	public void generateCrossword(int height, int width, Strategy s)
-			throws wrongCrosswordDimensionsException,
-			noPossibilityToGenerateCrosswordException {
-		Crossword cw = new Crossword(height, width, actualDatabase,s);
+	public void generateCrossword(int height, int width, Strategy s) throws wrongCrosswordDimensionsException, noPossibilityToGenerateCrosswordException {
+		Crossword cw = new Crossword(height, width, actualDatabase, s);
 		cw.generate(s);
 		actualCrossword = cw;
 	}
@@ -146,20 +145,17 @@ public class CwBrowser {
 	/**
 	 * Loads crosswords from file
 	 * 
-	 * @throws NumberFormatException
+	 * @throws noCrosswordFoundToLoadException
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public void loadCrosswords() throws NumberFormatException,
-			FileNotFoundException, IOException {
+	public void loadCrosswords() throws noCrosswordFoundToLoadException, FileNotFoundException, IOException {
 		LinkedList<Crossword> newCrosswordsList;
 		newCrosswordsList = cwreader.getAllCws(path);
-		if (newCrosswordsList.size() > 0) {
-			crosswordsList.removeAll(crosswordsList);
-			crosswordsList = newCrosswordsList;
-			actualIndexOfCrossword = 0;
-			actualCrossword = crosswordsList.get(0);
-		}
+		crosswordsList.removeAll(crosswordsList);
+		crosswordsList = newCrosswordsList;
+		actualIndexOfCrossword = 0;
+		actualCrossword = crosswordsList.get(0);
 	}
 
 	/**
@@ -169,9 +165,9 @@ public class CwBrowser {
 	 */
 	public Crossword nextCrossword() {
 		actualIndexOfCrossword++;
-		if (actualIndexOfCrossword >= crosswordsList.size())
-			actualIndexOfCrossword = actualIndexOfCrossword
-					% crosswordsList.size();
+		if (actualIndexOfCrossword >= crosswordsList.size()) {
+			actualIndexOfCrossword = actualIndexOfCrossword % crosswordsList.size();
+		}
 		actualCrossword = crosswordsList.get(actualIndexOfCrossword);
 		return crosswordsList.get(actualIndexOfCrossword);
 	}
@@ -183,9 +179,9 @@ public class CwBrowser {
 	 */
 	public Crossword previousCrossword() {
 		actualIndexOfCrossword--;
-		if (actualIndexOfCrossword < 0)
-			actualIndexOfCrossword = actualIndexOfCrossword
-					+ crosswordsList.size();
+		if (actualIndexOfCrossword < 0) {
+			actualIndexOfCrossword = actualIndexOfCrossword + crosswordsList.size();
+		}
 		actualCrossword = crosswordsList.get(actualIndexOfCrossword);
 		return crosswordsList.get(actualIndexOfCrossword);
 	}

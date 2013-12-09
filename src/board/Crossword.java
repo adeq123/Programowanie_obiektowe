@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
+import strategy.Strategy;
 import dictionary.CwEntry;
 import dictionary.InteliCwDB;
 import exceptions.noPossibilityToGenerateCrosswordException;
@@ -108,7 +109,9 @@ public class Crossword {
 	 */
 	public Crossword(int height, int width, String filename, Strategy s) throws wrongCrosswordDimensionsException, FileNotFoundException, IOException {
 		if (height < 2 || width < 2)
-			throw new wrongCrosswordDimensionsException();
+			throw new wrongCrosswordDimensionsException("The dimensions of crossword are wrong!");
+		if (height * width > 625)
+			throw new wrongCrosswordDimensionsException("The dimensions of crossword are wrong! Product of crossword's dimensions should be less or equal to 625");
 		this.s = s;
 		entries = new LinkedList<CwEntry>();
 		b = new Board(height, width);
@@ -129,7 +132,9 @@ public class Crossword {
 	 */
 	public Crossword(int height, int width, InteliCwDB db, Strategy s) throws wrongCrosswordDimensionsException {
 		if (height < 2 || width < 2)
-			throw new wrongCrosswordDimensionsException();
+			throw new wrongCrosswordDimensionsException("The dimensions of crossword are wrong!");
+		if (height * width > 625)
+			throw new wrongCrosswordDimensionsException("The dimensions of crossword are wrong! Product of crossword's dimensions should be less or equal to 625");
 		this.s = s;
 		entries = new LinkedList<CwEntry>();
 		b = new Board(height, width);

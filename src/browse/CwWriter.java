@@ -46,7 +46,7 @@ public class CwWriter implements Writer {
 			File f = new File(file.getAbsoluteFile() + "/" + Long.toString(getUniqueID()));
 			FileWriter fileWriter = new FileWriter(f);
 			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-			if (crossword.getStrategy().toString().equals("Easy"))
+			if (crossword.getStrategy().getClass().getSimpleName().equals("EasyStrategy"))
 				bufferedWriter.write("Easy");
 			else
 				bufferedWriter.write("Hard");
@@ -85,10 +85,10 @@ public class CwWriter implements Writer {
 	 * @throws DocumentException
 	 * @throws IOException
 	 */
-	public File createPdf(File direct, Crossword cw) throws DocumentException, IOException, toLargeCrossowrdToCreatePdfFileException {
+	public File createPdf(File direct, Crossword cw) throws toLargeCrossowrdToCreatePdfFileException, DocumentException, IOException {
 
 		if (cw.getBoard().getHeight() > 26 || cw.getBoard().getWidth() > 17)
-			throw new toLargeCrossowrdToCreatePdfFileException();
+			throw new toLargeCrossowrdToCreatePdfFileException("The dimensions of crossword are to large to create A4 pdf file");
 
 		File file = new File(direct.getAbsolutePath() + "/" + Long.toString(new Date().getTime()) + ".pdf");
 		Document document = new Document(PageSize.A4);
@@ -109,7 +109,7 @@ public class CwWriter implements Writer {
 		CwEntry temp;
 		Iterator<CwEntry> it = cw.getROEntryIter();
 		int k = 0;
-		if (cw.getStrategy().getClass().getName().equals("board.EasytStrategy") == true) {
+		if (cw.getStrategy().getClass().getSimpleName().equals("EasyStrategy") == true) {
 			it.next();
 		}
 		while (it.hasNext() == true) {
@@ -138,7 +138,7 @@ public class CwWriter implements Writer {
 		}
 		p.add(new Chunk("\n", font).setLineHeight(30));
 		int i = 1, j = 0;
-		if (cw.getStrategy().getClass().getName().equals("board.EasytStrategy") == true) {
+		if (cw.getStrategy().getClass().getSimpleName().equals("EasyStrategy") == true) {
 			j++;
 		}
 		for (; j < cw.getEntries().size(); i++, j++) {
