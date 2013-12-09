@@ -11,7 +11,7 @@ import crossword.gui.MyJFrame;
  * @author krzysztof
  *
  */
-public class ApplicationLauncher {
+public class Main {
 	
 	/**
 	 * Launch the application.
