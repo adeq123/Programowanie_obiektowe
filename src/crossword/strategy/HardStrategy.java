@@ -50,8 +50,10 @@ public class HardStrategy extends Strategy {
 		} else {
 			LinkedList<BoardCell> startingBoardCells = cw.getBoard().getStartCells();
 			while (startingBoardCells.isEmpty() == false) {
+				
 				int i = rand.nextInt(startingBoardCells.size());
 				startBC = startingBoardCells.get(i);
+				
 				boolean directionFlag = true;
 				if (startBC.getAbility(Direction.HORIZ, Position.START) == true && startBC.getAbility(Direction.VERT, Position.START) == true)
 					directionFlag = rand.nextBoolean();
