@@ -1,6 +1,6 @@
-package pkg2;
+package Lab2.pkg2;
 
-import pkg1.B;
+import Lab2.pkg1.B;
 
 public class C extends B {
 	public C(int number, String name) {

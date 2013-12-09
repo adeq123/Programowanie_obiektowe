@@ -1,4 +1,4 @@
-package pkg1;
+package Lab2.pkg1;
 
 public class B extends A {
 	protected void decrement() {

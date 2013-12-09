@@ -1,13 +1,13 @@
 package Lab2;
 
-import pkg1.A;
-import pkg1.B;
-import pkg2.C;
+import Lab2.pkg1.A;
+import Lab2.pkg1.B;
+import Lab2.pkg2.C;
 
 public class ABCMain {
 
-	/*1.Pola o dostêpie pakietowym sa widoczne w klasach pochodnych znajduj¹cych siê w tym samym
-	 * pakiecie, natomiast nie s¹ widoczne w klasach pochodnych w innych pakietach.
+	/*1.Pola o dostï¿½pie pakietowym sa widoczne w klasach pochodnych znajdujï¿½cych siï¿½ w tym samym
+	 * pakiecie, natomiast nie sï¿½ widoczne w klasach pochodnych w innych pakietach.
 	 * 
 	 */
 	public static void main(String[] args) {
