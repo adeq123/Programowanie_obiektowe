@@ -73,7 +73,7 @@ public class CwWriter implements Writer {
 	}
 
 	/**
-	 * Creates the PDF File with crossword
+	 * Creates PDF File with crossword
 	 * 
 	 * @param direct
 	 *            - directory to write to

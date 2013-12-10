@@ -13,6 +13,7 @@ import crossword.board.Crossword;
 public interface Writer {
 
 	/**
+	 * Writes crosswords to files
 	 * 
 	 * @param path
 	 *            - path to file
@@ -20,8 +21,7 @@ public interface Writer {
 	 *            - list of crosswords to write to file
 	 * @throws IOException
 	 */
-	public void write(String path, LinkedList<Crossword> crosswordsList)
-			throws IOException;
+	public void write(String path, LinkedList<Crossword> crosswordsList) throws IOException;
 
 	/**
 	 * Creatures unique ID

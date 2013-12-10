@@ -28,8 +28,7 @@ public class EasyStrategy extends Strategy {
 	 * @return CwEntry
 	 * @throws noPossibilityToGenerateCrosswordException
 	 */
-	public CwEntry getMainWord(Crossword cw)
-			throws noPossibilityToGenerateCrosswordException {
+	public CwEntry getMainWord(Crossword cw) throws noPossibilityToGenerateCrosswordException {
 		Map<Character, Integer> firstLettersInDictionaryWithPropriateLength = new HashMap<Character, Integer>();
 		LinkedList<Entry> sameLengthWords = new LinkedList<Entry>();
 
@@ -40,35 +39,27 @@ public class EasyStrategy extends Strategy {
 			if ((firstLettersInDictionaryWithPropriateLength.containsKey(e.getWord().charAt(0)) == false) && (e.getWord().length() <= cw.getBoard().getWidth()))
 				firstLettersInDictionaryWithPropriateLength.put(e.getWord().charAt(0), 1);
 			else if (e.getWord().length() <= cw.getBoard().getWidth())
-				firstLettersInDictionaryWithPropriateLength
-						.put(e.getWord().charAt(0), firstLettersInDictionaryWithPropriateLength
-								.get(e.getWord().charAt(0)) + 1);
+				firstLettersInDictionaryWithPropriateLength.put(e.getWord().charAt(0), firstLettersInDictionaryWithPropriateLength.get(e.getWord().charAt(0)) + 1);
 			if (e.getWord().length() == cw.getBoard().getHeight()) {
-				sameLengthWords.add(new Entry(e.getWord(),e.getClue()));
+				sameLengthWords.add(new Entry(e.getWord(), e.getClue()));
 			}
 		}
-		
+
 		Iterator<Entry> iter = sameLengthWords.iterator();
-		LinkedList<Entry> finalListOfWords = new LinkedList<Entry>(
-				sameLengthWords);
+		LinkedList<Entry> finalListOfWords = new LinkedList<Entry>(sameLengthWords);
 		while (iter.hasNext() == true) {
 			e = iter.next();
 			Map<Character, Integer> lettersInWord = new HashMap<Character, Integer>();
 			for (int j = 0; j < e.getWord().length(); j++) {
-				if (lettersInWord.containsKey(e.getWord().charAt(j)) == false){
-					
+				if (lettersInWord.containsKey(e.getWord().charAt(j)) == false) {
 					lettersInWord.put(e.getWord().charAt(j), 1);
-				}
-				else{
-					
-					lettersInWord.put(e.getWord().charAt(j),
-							lettersInWord.get(e.getWord().charAt(j)) + 1);
+				} else {
+					lettersInWord.put(e.getWord().charAt(j), lettersInWord.get(e.getWord().charAt(j)) + 1);
 				}
 			}
 			for (Map.Entry<Character, Integer> entry : lettersInWord.entrySet()) {
 				if (firstLettersInDictionaryWithPropriateLength.containsKey(entry.getKey()) == true) {
-					if (entry.getValue() >= firstLettersInDictionaryWithPropriateLength.get(entry
-							.getKey())) {
+					if (entry.getValue() >= firstLettersInDictionaryWithPropriateLength.get(entry.getKey())) {
 						finalListOfWords.remove(e);
 						break;
 					}
@@ -81,10 +72,8 @@ public class EasyStrategy extends Strategy {
 		if (finalListOfWords.size() == 0)
 			throw new noPossibilityToGenerateCrosswordException("There is no possibility to generate easy crossword with entered data!");
 		Random rand = new Random();
-		Entry finalEntry = finalListOfWords.get(rand.nextInt(finalListOfWords
-				.size()));
-		return new CwEntry(finalEntry.getWord(), finalEntry.getClue(), 0, 0,
-				Direction.VERT);
+		Entry finalEntry = finalListOfWords.get(rand.nextInt(finalListOfWords.size()));
+		return new CwEntry(finalEntry.getWord(), finalEntry.getClue(), 0, 0, Direction.VERT);
 	}
 
 	/**
@@ -96,8 +85,7 @@ public class EasyStrategy extends Strategy {
 	 * @throws noPossibilityToGenerateCrosswordException
 	 */
 	@Override
-	public CwEntry findEntry(Crossword cw)
-			throws noPossibilityToGenerateCrosswordException {
+	public CwEntry findEntry(Crossword cw) throws noPossibilityToGenerateCrosswordException {
 		Random rand = new Random();
 		Entry entry = null;
 		CwEntry cwentry = null;
@@ -109,13 +97,10 @@ public class EasyStrategy extends Strategy {
 			cwentry = getMainWord(cw);
 		} else {
 			do {
-				String currentPattern = cw.getBoard().createPattern(
-						amountOfWords - 1, 0, amountOfWords - 1,
-						rand.nextInt(cw.getBoard().getWidth()));
+				String currentPattern = cw.getBoard().createPattern(amountOfWords - 1, 0, amountOfWords - 1, rand.nextInt(cw.getBoard().getWidth()));
 				entry = cw.getCwDB().getRandom(currentPattern);
 			} while ((entry == null || cw.contains(entry.getWord()) == true));
-			cwentry = new CwEntry(entry.getWord(), entry.getClue(),
-					amountOfWords - 1, 0, Direction.HORIZ);
+			cwentry = new CwEntry(entry.getWord(), entry.getClue(), amountOfWords - 1, 0, Direction.HORIZ);
 		}
 		return cwentry;
 	}
@@ -131,12 +116,11 @@ public class EasyStrategy extends Strategy {
 	@Override
 	public void updateBoard(Board b, CwEntry e) {
 		char[] contentOfString = e.getWord().toCharArray();
-		
+
 		for (int i = 0; i < e.getWord().length(); i++) {
 			if (e.getDir() == Direction.VERT) {
 				b.getCell(e.getX() + i, e.getY()).setContent(new String(contentOfString, i, 1));
-			}
-			else
+			} else
 				b.getCell(e.getX(), e.getY() + i).setContent(new String(contentOfString, i, 1));
 		}
 	}

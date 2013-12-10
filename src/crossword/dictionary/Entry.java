@@ -39,8 +39,9 @@ public class Entry {
 	public String getClue() {
 		return clue;
 	}
-	
-	public String toString(){
+
+	@Override
+	public String toString() {
 		return "(" + word + " " + clue + ")";
 	}
 }

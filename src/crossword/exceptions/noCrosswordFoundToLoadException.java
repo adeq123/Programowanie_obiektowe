@@ -1,8 +1,8 @@
 package crossword.exceptions;
 
 public class noCrosswordFoundToLoadException extends Exception {
-	
-	private static final long serialVersionUID = 1L; // default serial version number
+
+	private static final long serialVersionUID = 1L; // default serial version
 
 	/**
 	 * Constructor

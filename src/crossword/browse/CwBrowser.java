@@ -17,6 +17,7 @@ import crossword.strategy.Strategy;
  * 
  */
 public class CwBrowser {
+	
 	String path; // path to files
 	public CwReader cwreader; // to file reader
 	public CwWriter cwwriter; // to file writer
@@ -24,18 +25,6 @@ public class CwBrowser {
 	public int actualIndexOfCrossword; // actual index of crossword
 	public InteliCwDB actualDatabase; // actual database
 	public LinkedList<Crossword> crosswordsList; // list of crosswords
-
-	/**
-	 * Constructor
-	 */
-	public CwBrowser() {
-		cwreader = new CwReader();
-		cwwriter = new CwWriter();
-		actualCrossword = null;
-		actualIndexOfCrossword = 0;
-		actualDatabase = null;
-		crosswordsList = new LinkedList<Crossword>();
-	}
 
 	/**
 	 * Setter
@@ -102,6 +91,18 @@ public class CwBrowser {
 	 */
 	public CwBrowser(String path) {
 		this.path = path;
+	}
+	
+	/**
+	 * Constructor
+	 */
+	public CwBrowser() {
+		cwreader = new CwReader();
+		cwwriter = new CwWriter();
+		actualCrossword = null;
+		actualIndexOfCrossword = 0;
+		actualDatabase = null;
+		crosswordsList = new LinkedList<Crossword>();
 	}
 
 	/**

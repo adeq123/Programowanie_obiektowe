@@ -21,7 +21,7 @@ public class CwDB {
 	/**
 	 * Getter
 	 * 
-	 * @return dict
+	 * @return dictionary
 	 */
 	public LinkedList<Entry> getDict() {
 		return dict;
@@ -131,14 +131,12 @@ public class CwDB {
 	 * @throws IOException
 	 *             - possible exception
 	 */
-	protected void createDB(String filename) throws FileNotFoundException,
-			IOException {
+	protected void createDB(String filename) throws FileNotFoundException, IOException {
 		FileReader fileReader = new FileReader(filename);
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
 		String word = null;
 		String clue = null;
-		while ((word = bufferedReader.readLine()) != null
-				&& ((clue = bufferedReader.readLine()) != null))
+		while ((word = bufferedReader.readLine()) != null && ((clue = bufferedReader.readLine()) != null))
 			add(word, clue);
 		if (bufferedReader != null)
 			bufferedReader.close();

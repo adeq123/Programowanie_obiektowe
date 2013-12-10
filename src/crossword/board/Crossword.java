@@ -24,22 +24,22 @@ public class Crossword {
 	private Board b; // board
 	private static InteliCwDB cwdb; // InteliCwDB
 	private final Strategy s; // Strategy
-	
+
 	/**
 	 * Getter
 	 * 
 	 * @return actual strategy
 	 */
-	public Strategy getStrategy(){
-		return s; 
+	public Strategy getStrategy() {
+		return s;
 	}
-	
+
 	/**
 	 * Getter
 	 * 
 	 * @return ID
 	 */
-	public long getID(){
+	public long getID() {
 		return id;
 	}
 
@@ -82,6 +82,27 @@ public class Crossword {
 	}
 
 	/**
+	 * Getter
+	 * 
+	 * @return CwDB
+	 */
+	public InteliCwDB getCwDB() {
+		return cwdb;
+	}
+
+	/**
+	 * Setter
+	 * 
+	 * @param cwdb
+	 *            - CwDB
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 */
+	public static void setCwDB(String filename) throws FileNotFoundException, IOException {
+		cwdb = new InteliCwDB(filename);
+	}
+
+	/**
 	 * Constructor
 	 * 
 	 * @param id
@@ -93,7 +114,7 @@ public class Crossword {
 		this.s = s;
 		this.id = id;
 	}
-	
+
 	/**
 	 * Constructor
 	 * 
@@ -103,13 +124,13 @@ public class Crossword {
 	 *            - width
 	 * @param filename
 	 *            - file contained dictionary
-	 * @throws wrongCrosswordDimensionsException 
-	 * @throws IOException 
-	 * @throws FileNotFoundException 
+	 * @throws wrongCrosswordDimensionsException
+	 * @throws IOException
+	 * @throws FileNotFoundException
 	 */
 	public Crossword(int height, int width, String filename, Strategy s) throws wrongCrosswordDimensionsException, FileNotFoundException, IOException {
 		if (height < 2 || width < 2)
-			throw new wrongCrosswordDimensionsException("The dimensions of crossword are wrong!");
+			throw new wrongCrosswordDimensionsException("The dimensions of crossword are wrong! Height and Width should be more or equal to 2");
 		if (height * width > 625)
 			throw new wrongCrosswordDimensionsException("The dimensions of crossword are wrong! Product of crossword's dimensions should be less or equal to 625");
 		this.s = s;
@@ -128,11 +149,11 @@ public class Crossword {
 	 *            - width
 	 * @param db
 	 *            - database
-	 * @throws wrongCrosswordDimensionsException 
+	 * @throws wrongCrosswordDimensionsException
 	 */
 	public Crossword(int height, int width, InteliCwDB db, Strategy s) throws wrongCrosswordDimensionsException {
 		if (height < 2 || width < 2)
-			throw new wrongCrosswordDimensionsException("The dimensions of crossword are wrong!");
+			throw new wrongCrosswordDimensionsException("The dimensions of crossword are wrong! Height and Width should be more or equal to 2");
 		if (height * width > 625)
 			throw new wrongCrosswordDimensionsException("The dimensions of crossword are wrong! Product of crossword's dimensions should be less or equal to 625");
 		this.s = s;
@@ -141,7 +162,7 @@ public class Crossword {
 		cwdb = db;
 		id = -1;
 	}
-	
+
 	/**
 	 * Returns read-only iterator of list of CwEntries
 	 * 
@@ -161,27 +182,6 @@ public class Crossword {
 	}
 
 	/**
-	 * Getter
-	 * 
-	 * @return CwDB
-	 */
-	public InteliCwDB getCwDB() {
-		return cwdb;
-	}
-
-	/**
-	 * Setter
-	 * 
-	 * @param cwdb
-	 *            - CwDB
-	 * @throws IOException 
-	 * @throws FileNotFoundException 
-	 */
-	public static void setCwDB(String filename) throws FileNotFoundException, IOException {
-		cwdb = new InteliCwDB(filename);
-	}
-
-	/**
 	 * Checks if crossword contains word
 	 * 
 	 * @param word
@@ -190,8 +190,7 @@ public class Crossword {
 	 */
 	public boolean contains(String word) {
 		CwEntry temp = null;
-		for (ListIterator<CwEntry> iter = entries.listIterator(); iter
-				.hasNext();) {
+		for (ListIterator<CwEntry> iter = entries.listIterator(); iter.hasNext();) {
 			temp = iter.next();
 			if (temp.getWord().equals(word))
 				return true;
@@ -217,7 +216,7 @@ public class Crossword {
 	 * 
 	 * @param s
 	 *            - Strategy
-	 * @throws noPossibilityToGenerateCrosswordException 
+	 * @throws noPossibilityToGenerateCrosswordException
 	 */
 	public final void generate(Strategy s) throws noPossibilityToGenerateCrosswordException {
 		CwEntry e = null;

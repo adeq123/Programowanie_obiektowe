@@ -14,7 +14,7 @@ public class BoardCell implements Cloneable {
 	/**
 	 * 
 	 * @author krzysztof
-	 *
+	 * 
 	 */
 	public enum Position {
 		START, END, INNER
@@ -72,8 +72,7 @@ public class BoardCell implements Cloneable {
 	 * @param ability
 	 *            - ability
 	 */
-	public void setAbility(Direction direction, Position position,
-			boolean ability) {
+	public void setAbility(Direction direction, Position position, boolean ability) {
 		abilities[direction.ordinal()][position.ordinal()] = ability;
 	}
 

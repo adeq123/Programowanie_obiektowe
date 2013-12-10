@@ -18,7 +18,7 @@ public abstract class Strategy {
 	 * @param cw
 	 *            - Crossword
 	 * @return found CwEntry
-	 * @throws noPossibilityToGenerateCrosswordException 
+	 * @throws noPossibilityToGenerateCrosswordException
 	 */
 	public abstract CwEntry findEntry(Crossword cw) throws noPossibilityToGenerateCrosswordException;
 
@@ -31,7 +31,7 @@ public abstract class Strategy {
 	 *            - CwEntry to add to board
 	 */
 	public abstract void updateBoard(Board b, CwEntry e);
-	
+
 	/**
 	 * returns the name of strategy
 	 */

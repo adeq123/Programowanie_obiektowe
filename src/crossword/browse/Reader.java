@@ -15,14 +15,14 @@ import crossword.exceptions.noCrosswordFoundToLoadException;
 public interface Reader {
 
 	/**
+	 * Reads crosswords from files
 	 * 
 	 * @param path
 	 *            - path to file
 	 * @return list of crosswords from directory
-	 * @throws noCrosswordFoundToLoadException 
+	 * @throws noCrosswordFoundToLoadException
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public LinkedList<Crossword> getAllCws(String path)
-			throws  noCrosswordFoundToLoadException, FileNotFoundException, IOException;
+	public LinkedList<Crossword> getAllCws(String path) throws noCrosswordFoundToLoadException, FileNotFoundException, IOException;
 }

@@ -11,10 +11,10 @@ import crossword.gui.MyJFrame;
 /**
  * 
  * @author krzysztof
- *
+ * 
  */
 public class Main {
-	
+
 	/**
 	 * Launch the application.
 	 */
@@ -22,8 +22,7 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					UIManager.setLookAndFeel(UIManager
-							.getSystemLookAndFeelClassName());
+					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 					MyJFrame myJFrame = new MyJFrame();
 					myJFrame.setTitle("Krzysztof Spytkowski - Crossword Application");
 					myJFrame.setResizable(false);
@@ -38,5 +37,5 @@ public class Main {
 			}
 		});
 	}
-	
+
 }

@@ -25,8 +25,7 @@ public class InteliCwDB extends CwDB {
 	 * @throws FileNotFoundException
 	 *             , IOException
 	 */
-	public InteliCwDB(String filename) throws FileNotFoundException,
-			IOException {
+	public InteliCwDB(String filename) throws FileNotFoundException, IOException {
 		super(filename);
 	}
 

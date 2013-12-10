@@ -42,7 +42,7 @@ import crossword.strategy.HardStrategy;
  */
 public class MyJFrame extends JFrame {
 
-	private static final long serialVersionUID = 1L; // Serial version default number
+	private static final long serialVersionUID = 1L; // Default serial version
 
 	private JPanel contentPane; // Main panel
 

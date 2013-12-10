@@ -50,10 +50,10 @@ public class HardStrategy extends Strategy {
 		} else {
 			LinkedList<BoardCell> startingBoardCells = cw.getBoard().getStartCells();
 			while (startingBoardCells.isEmpty() == false) {
-				
+
 				int i = rand.nextInt(startingBoardCells.size());
 				startBC = startingBoardCells.get(i);
-				
+
 				boolean directionFlag = true;
 				if (startBC.getAbility(Direction.HORIZ, Position.START) == true && startBC.getAbility(Direction.VERT, Position.START) == true)
 					directionFlag = rand.nextBoolean();
@@ -149,6 +149,40 @@ public class HardStrategy extends Strategy {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Sets abilities of cells in empty board
+	 * 
+	 * @param b
+	 *            - board
+	 */
+	public void setFirstAbilities(Board b) {
+		for (int i = 0; i < b.getHeight(); i++)
+			for (int j = 0; j < b.getWidth(); j++) {
+				b.getCell(i, j).setAbility(Direction.HORIZ, Position.START, true);
+				b.getCell(i, j).setAbility(Direction.VERT, Position.START, true);
+				b.getCell(i, j).setAbility(Direction.HORIZ, Position.INNER, true);
+				b.getCell(i, j).setAbility(Direction.VERT, Position.INNER, true);
+				b.getCell(i, j).setAbility(Direction.HORIZ, Position.END, true);
+				b.getCell(i, j).setAbility(Direction.VERT, Position.END, true);
+				if (j == b.getWidth() - 1) {
+					b.getCell(i, j).setAbility(Direction.HORIZ, Position.START, false);
+					b.getCell(i, j).setAbility(Direction.HORIZ, Position.INNER, false);
+				}
+				if (i == b.getHeight() - 1) {
+					b.getCell(i, j).setAbility(Direction.VERT, Position.START, false);
+					b.getCell(i, j).setAbility(Direction.VERT, Position.INNER, false);
+				}
+				if (j == 0) {
+					b.getCell(i, j).setAbility(Direction.HORIZ, Position.INNER, false);
+					b.getCell(i, j).setAbility(Direction.HORIZ, Position.END, false);
+				}
+				if (i == 0) {
+					b.getCell(i, j).setAbility(Direction.VERT, Position.INNER, false);
+					b.getCell(i, j).setAbility(Direction.VERT, Position.END, false);
+				}
+			}
 	}
 
 	/**
@@ -277,40 +311,6 @@ public class HardStrategy extends Strategy {
 					}
 			}
 		}
-	}
-
-	/**
-	 * Sets abilities of cells in empty board
-	 * 
-	 * @param b
-	 *            - board
-	 */
-	public void setFirstAbilities(Board b) {
-		for (int i = 0; i < b.getHeight(); i++)
-			for (int j = 0; j < b.getWidth(); j++) {
-				b.getCell(i, j).setAbility(Direction.HORIZ, Position.START, true);
-				b.getCell(i, j).setAbility(Direction.VERT, Position.START, true);
-				b.getCell(i, j).setAbility(Direction.HORIZ, Position.INNER, true);
-				b.getCell(i, j).setAbility(Direction.VERT, Position.INNER, true);
-				b.getCell(i, j).setAbility(Direction.HORIZ, Position.END, true);
-				b.getCell(i, j).setAbility(Direction.VERT, Position.END, true);
-				if (j == b.getWidth() - 1) {
-					b.getCell(i, j).setAbility(Direction.HORIZ, Position.START, false);
-					b.getCell(i, j).setAbility(Direction.HORIZ, Position.INNER, false);
-				}
-				if (i == b.getHeight() - 1) {
-					b.getCell(i, j).setAbility(Direction.VERT, Position.START, false);
-					b.getCell(i, j).setAbility(Direction.VERT, Position.INNER, false);
-				}
-				if (j == 0) {
-					b.getCell(i, j).setAbility(Direction.HORIZ, Position.INNER, false);
-					b.getCell(i, j).setAbility(Direction.HORIZ, Position.END, false);
-				}
-				if (i == 0) {
-					b.getCell(i, j).setAbility(Direction.VERT, Position.INNER, false);
-					b.getCell(i, j).setAbility(Direction.VERT, Position.END, false);
-				}
-			}
 	}
 
 	@Override

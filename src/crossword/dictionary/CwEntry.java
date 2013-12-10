@@ -68,8 +68,8 @@ public class CwEntry extends Entry {
 		return d;
 	}
 
+	@Override
 	public String toString() {
-		return getDir().toString() + " " + getX() + " " + getY() + " "
-				+ getWord() + "\n" + getClue();
+		return getDir().toString() + " " + getX() + " " + getY() + " " + getWord() + "\n" + getClue();
 	}
 }

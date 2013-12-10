@@ -25,7 +25,7 @@ public class CwReader implements Reader {
 
 	@Override
 	public LinkedList<Crossword> getAllCws(String path) throws FileNotFoundException, IOException, noCrosswordFoundToLoadException {
-		
+
 		LinkedList<Crossword> crosswords = new LinkedList<Crossword>();
 		File file = new File(path);
 		String[] files = file.list();

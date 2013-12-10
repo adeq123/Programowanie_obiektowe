@@ -2,8 +2,8 @@ package crossword.exceptions;
 
 public class toLargeCrossowrdToCreatePdfFileException extends Exception {
 
-	private static final long serialVersionUID = 1L; //serial version
-	
+	private static final long serialVersionUID = 1L; // default serial version
+
 	/**
 	 * Constructor
 	 */
