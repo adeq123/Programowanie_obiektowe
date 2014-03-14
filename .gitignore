@@ -3,4 +3,5 @@
 .gitignore
 .project
 .classpath
+/.settings
 
