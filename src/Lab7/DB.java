@@ -17,7 +17,7 @@ public class DB {
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			conn = DriverManager.getConnection(
-					"jdbc:mysql://mysql.agh.edu.pl/kspyt", "kspyt", "zPxvWx9f");
+					"jdbc:mysql://mysql.agh.edu.pl/kspyt", "kspyt", "AvZsozn5");
 
 		} catch (SQLException ex) {
 			// handle any errors
